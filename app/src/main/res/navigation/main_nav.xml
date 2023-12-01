@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/talkSplashFragment">
+    <fragment
+        android:id="@+id/talkSplashFragment"
+        android:name="com.example.wetalk.TalkSplashFragment"
+        android:label="fragment_talk_splash"
+        tools:layout="@layout/fragment_talk_splash" >
+        <action
+            android:id="@+id/action_talkSplashFragment_to_talkLoginFragment"
+            app:destination="@id/talkLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkLoginFragment"
+        android:name="com.example.wetalk.TalkLoginFragment"
+        android:label="fragment_talk_login"
+        tools:layout="@layout/fragment_talk_login" >
+        <action
+            android:id="@+id/action_talkLoginFragment_to_talkRegisterFragment"
+            app:destination="@id/talkRegisterFragment" />
+        <action
+            android:id="@+id/action_talkLoginFragment_to_talkHomeFragment"
+            app:destination="@id/talkHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkRegisterFragment"
+        android:name="com.example.wetalk.TalkRegisterFragment"
+        android:label="fragment_talk_register"
+        tools:layout="@layout/fragment_talk_register" >
+        <action
+            android:id="@+id/action_talkRegisterFragment_to_talkOtpFragment"
+            app:destination="@id/talkOtpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkOtpFragment"
+        android:name="com.example.wetalk.TalkOtpFragment"
+        android:label="fragment_talk_otp"
+        tools:layout="@layout/fragment_talk_otp" >
+        <action
+            android:id="@+id/action_talkOtpFragment_to_talkDoneFragment2"
+            app:destination="@id/talkDoneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkDoneFragment"
+        android:name="com.example.wetalk.TalkDoneFragment"
+        android:label="fragment_talk_done"
+        tools:layout="@layout/fragment_talk_done" >
+        <action
+            android:id="@+id/action_talkDoneFragment_to_talkLoginFragment2"
+            app:destination="@id/talkLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkHomeFragment"
+        android:name="com.example.wetalk.TalkHomeFragment"
+        android:label="fragment_talk_home"
+        tools:layout="@layout/fragment_talk_home" >
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkChatFragment"
+            app:destination="@id/talkChatFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkStudyFragment"
+            app:destination="@id/talkStudyFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkProfileFragment"
+            app:destination="@id/talkProfileFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkNetWorkFragment"
+            app:destination="@id/talkNetWorkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkChatFragment"
+        android:name="com.example.wetalk.TalkChatFragment"
+        android:label="fragment_talk_chat"
+        tools:layout="@layout/fragment_talk_chat" >
+        <action
+            android:id="@+id/action_talkChatFragment_to_talkSearchUserFragment"
+            app:destination="@id/talkSearchUserFragment" />
+        <action
+            android:id="@+id/action_talkChatFragment_to_talkChatHomeFragment"
+            app:destination="@id/talkChatHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkStudyFragment"
+        android:name="com.example.wetalk.TalkStudyFragment"
+        android:label="fragment_talk_study"
+        tools:layout="@layout/fragment_talk_study" >
+        <action
+            android:id="@+id/action_talkStudyFragment_to_talkStudyVocabularyFragment"
+            app:destination="@id/talkStudyVocabularyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkProfileFragment"
+        android:name="com.example.wetalk.TalkProfileFragment"
+        android:label="fragment_talk_profile"
+        tools:layout="@layout/fragment_talk_profile" >
+        <action
+            android:id="@+id/action_talkProfileFragment_to_talkProfileEditFragment"
+            app:destination="@id/talkProfileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkNetWorkFragment"
+        android:name="com.example.wetalk.TalkNetWorkFragment"
+        android:label="fragment_talk_net_work"
+        tools:layout="@layout/fragment_talk_net_work" >
+        <action
+            android:id="@+id/action_talkNetWorkFragment_to_talkNeworkUpFragment"
+            app:destination="@id/talkNeworkUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkSearchUserFragment"
+        android:name="com.example.wetalk.TalkSearchUserFragment"
+        android:label="fragment_talk_search_user"
+        tools:layout="@layout/fragment_talk_search_user" />
+    <fragment
+        android:id="@+id/talkChatHomeFragment"
+        android:name="com.example.wetalk.TalkChatHomeFragment"
+        android:label="fragment_talk_chat_home"
+        tools:layout="@layout/fragment_talk_chat_home" />
+    <fragment
+        android:id="@+id/talkStudyVocabularyFragment"
+        android:name="com.example.wetalk.TalkStudyVocabularyFragment"
+        android:label="fragment_talk_study_vocabulary"
+        tools:layout="@layout/fragment_talk_study_vocabulary" >
+        <action
+            android:id="@+id/action_talkStudyVocabularyFragment_to_talkVocabularyViewFragment"
+            app:destination="@id/talkVocabularyViewFragment" />
+        <action
+            android:id="@+id/action_talkStudyVocabularyFragment_to_talkVocabularyUpFragment"
+            app:destination="@id/talkVocabularyUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkVocabularyViewFragment"
+        android:name="com.example.wetalk.TalkVocabularyViewFragment"
+        android:label="fragment_talk_vocabulary_view"
+        tools:layout="@layout/fragment_talk_vocabulary_view" />
+    <fragment
+        android:id="@+id/talkVocabularyUpFragment"
+        android:name="com.example.wetalk.TalkVocabularyUpFragment"
+        android:label="fragment_talk_vocabulary_up"
+        tools:layout="@layout/fragment_talk_vocabulary_up" >
+        <action
+            android:id="@+id/action_talkVocabularyUpFragment_to_talkSelectVideoFragment"
+            app:destination="@id/talkSelectVideoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkSelectVideoFragment"
+        android:name="com.example.wetalk.TalkSelectVideoFragment"
+        android:label="fragment_talk_select_video"
+        tools:layout="@layout/fragment_talk_select_video" />
+    <fragment
+        android:id="@+id/talkProfileEditFragment"
+        android:name="com.example.wetalk.TalkProfileEditFragment"
+        android:label="fragment_talk_profile_edit"
+        tools:layout="@layout/fragment_talk_profile_edit" />
+    <fragment
+        android:id="@+id/talkNeworkUpFragment"
+        android:name="com.example.wetalk.TalkNeworkUpFragment"
+        android:label="fragment_talk_nework_up"
+        tools:layout="@layout/fragment_talk_nework_up" />
+</navigation>

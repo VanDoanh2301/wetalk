@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#13B6CC</color>
+    <color name="colorPrimaryDark">#13B6CC</color>
+    <color name="colorAccent">#13B6CC</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+    <color name="selected_background_color">#5843CC</color>
+    <color name="deselected_background_color">#D6D6D6</color>
+    <color name="deselected_text_color">#3F51B5</color>
+    <color name="blue_sea">#3a7bd5</color>
+    <color name="ultramarine_blue">#3567FA</color>
+    <color name="cornflower_blue">#6EA1F5</color>
+    <color name="maya_blue">#75B2FB</color>
+    <color name="united_nations_blue">#528FF1</color>
+    <color name="concrete">#F1F2F3</color>
+    <color name="jordy_blue">#92BBF1</color>
+    <color name="polo_blue">#93AFCF</color>
+    <color name="chateau_green">#3FB450</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="my_primary">#FF5964</color>
+    <color name="my_secondary">#FFE74C</color>
+
+    <color name="off_white">#FAFAFA</color>
+    <color name="light_gray">#C3C3C3</color>
+
+    <color name="chat_color_sender">#1E88E5</color>
+    <color name="chat_color_receiver">#7CB342</color>
+</resources>
