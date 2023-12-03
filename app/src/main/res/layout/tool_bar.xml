@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:id="@+id/main_toolbar">
+            <com.rey.material.widget.ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:clickable="true"
+                style="@style/ripple_btn_tab_widget_light"
+                android:padding="18dp"
+                android:src="@drawable/ic_menu"
+                app:tint="@color/white"
+                tools:ignore="SpeakableTextPresentCheck" />
+            <com.rey.material.widget.ImageView
+                android:id="@+id/main_search_btn"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:clickable="true"
+                android:padding="18dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_search_diary"
+                app:tint="@color/white"
+                style="@style/ripple_btn_tab_widget_light"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </RelativeLayout>
+</com.google.android.material.appbar.AppBarLayout>

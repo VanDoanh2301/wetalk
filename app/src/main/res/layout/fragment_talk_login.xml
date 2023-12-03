@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:gravity="center"
-    tools:context=".TalkLoginFragment"
+    tools:context=".ui.fragment.TalkLoginFragment"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView

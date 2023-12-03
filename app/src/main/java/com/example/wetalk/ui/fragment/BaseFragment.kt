@@ -1,0 +1,68 @@
+package com.example.wetalk.ui.fragment
+
+import android.app.Activity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+
+import com.example.wetalk.R
+import com.example.wetalk.ui.activity.MainActivity
+import com.rey.material.app.DialogFragment
+
+
+abstract class BaseFragment : DialogFragment() {
+    protected var view: View? = null
+    protected var activity: MainActivity? = null
+    protected var isCreated = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val currentActivity: Activity? = getActivity()
+        if (currentActivity is MainActivity) {
+            activity = currentActivity as MainActivity?
+        }
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        isCreated = true
+        view = inflater.inflate(layoutId, container, false)
+        return view
+    }
+
+    protected abstract val layoutId: Int
+
+    companion object {
+        fun add(activity: AppCompatActivity?, fragment: Fragment) {
+            if (activity != null && activity.supportFragmentManager != null) {
+                if (activity.supportFragmentManager.findFragmentByTag(fragment.javaClass.name) == null) {
+                    addFragment(activity, fragment, fragment.javaClass.name)
+                }
+            }
+        }
+
+        private fun addFragment(
+            activity: AppCompatActivity, fragment: Fragment,
+            tag: String
+        ) {
+            activity.supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.anim_in,
+                    R.anim.anim_out,
+                    R.anim.anim_in,
+                    R.anim.anim_out
+                )
+                .addToBackStack(tag)
+                .add(R.id.navHostFragment, fragment, tag)
+                .commitAllowingStateLoss()
+        }
+    }
+}
