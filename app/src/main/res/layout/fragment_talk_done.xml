@@ -100,28 +100,6 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:hint="Username"
-                android:inputType="text"
-                android:gravity="center"
-                android:layout_margin="10dp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:elevation="5dp"
-                android:id="@+id/login_username"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
@@ -139,6 +117,7 @@
                 android:indeterminateTint="@color/blue_sea"
                 android:layout_marginTop="6dp"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:id="@+id/login_progress_bar"/>
         </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.Task
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Calendar
@@ -29,6 +30,20 @@ class WeTalkApp : Application(), Application.ActivityLifecycleCallbacks, Lifecyc
         fun W(): Int {
             return w
         }
+
+        fun showDatePicker(activity: AppCompatActivity, timeCallback: Task<Long>) {
+            val calendar = Calendar.getInstance()
+
+            val datePickerDialog = DatePickerDialog(activity, { _: DatePicker?, i: Int, i1: Int, i2: Int ->
+                calendar.set(Calendar.YEAR, i)
+                calendar.set(Calendar.MONTH, i1)
+                calendar.set(Calendar.DAY_OF_MONTH, i2)
+                timeCallback.callback(calendar.timeInMillis)
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
+
+            val datePicker = datePickerDialog.datePicker
+            datePickerDialog.show()
+        }
     }
 
     private var currentActivity: Activity? = null
@@ -41,23 +56,12 @@ class WeTalkApp : Application(), Application.ActivityLifecycleCallbacks, Lifecyc
         super.onCreate()
         this.registerActivityLifecycleCallbacks(this)
         app = this
+        SharedPreferencesUtils.init(this)
         w = WeTalkApp.get().resources.displayMetrics.widthPixels
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
-    fun showDatePicker(activity: AppCompatActivity, timeCallback: Task<Long>) {
-        val calendar = Calendar.getInstance()
 
-        val datePickerDialog = DatePickerDialog(activity, { _: DatePicker?, i: Int, i1: Int, i2: Int ->
-            calendar.set(Calendar.YEAR, i)
-            calendar.set(Calendar.MONTH, i1)
-            calendar.set(Calendar.DAY_OF_MONTH, i2)
-            timeCallback.callback(calendar.timeInMillis)
-        }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
-
-        val datePicker = datePickerDialog.datePicker
-        datePickerDialog.show()
-    }
 
     /** ActivityLifecycleCallback methods. */
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
