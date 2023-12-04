@@ -43,6 +43,7 @@ class TalkLoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment)
             onLogin()
         }
         initLogin();
@@ -68,7 +69,7 @@ class TalkLoginFragment : Fragment() {
                     is Resource.Success -> {
                         SharedPreferencesUtils.setString("isLogin", it.data!!.accessToken);
                         binding.loginProgressBar.visibility = View.VISIBLE
-                       findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment)
+
                     }
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()

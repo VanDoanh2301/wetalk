@@ -16,7 +16,7 @@ object SharedPreferencesUtils {
         mPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
     }
 
-     fun set(cmd: Cmd, data: String?) {
+    fun set(cmd: Cmd, data: String?) {
         if (mPref != null) {
             val edit = mPref!!.edit()
             edit.putString(cmd.toString(), data)
