@@ -57,7 +57,7 @@ abstract class BaseFragment : DialogFragment() {
                     R.anim.anim_out
                 )
                 .addToBackStack(tag)
-                .add(R.id.navHostFragment, fragment, tag)
+                .add(R.id.main, fragment, tag)
                 .commitAllowingStateLoss()
         }
     }
