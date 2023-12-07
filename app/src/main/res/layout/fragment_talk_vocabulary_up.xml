@@ -26,7 +26,9 @@
                 android:layout_height="?actionBarSize">
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:contentInsetStart="0dp"
+                    >
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/bt_back"
                         android:layout_width="?actionBarSize"

@@ -54,12 +54,14 @@ object Utils {
 
     fun shareImageFileInApp(context: Context, path: String?) {
         val bm = BitmapFactory.decodeFile(path)
-        val uri: Uri = getImageToShare(bm)!!
-        bm.recycle()
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_STREAM, uri)
-        intent.type = "image/png"
-        context.startActivity(Intent.createChooser(intent, "Share Image"))
+        if (bm != null) {
+            val uri: Uri = getImageToShare(bm)!!
+            bm.recycle()
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_STREAM, uri)
+            intent.type = "image/png"
+            context.startActivity(Intent.createChooser(intent, "Share Image"))
+        }
     }
     private fun getImageToShare(bitmap: Bitmap): Uri? {
         val imageFolder: File = File(WeTalkApp.get().cacheDir, "shared_images")

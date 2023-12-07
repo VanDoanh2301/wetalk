@@ -60,6 +60,18 @@
         <action
             android:id="@+id/action_talkHomeFragment_to_talkVocabularyUpFragment"
             app:destination="@id/talkVocabularyUpFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkVocabularyViewFragment"
+            app:destination="@id/talkVocabularyViewFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkProfileEditFragment"
+            app:destination="@id/talkProfileEditFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkSignFragment"
+            app:destination="@id/talkSignFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkSignLanguageFragment"
+            app:destination="@id/talkSignLanguageFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkChatFragment"

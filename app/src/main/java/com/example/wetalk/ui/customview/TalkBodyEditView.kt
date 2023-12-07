@@ -30,7 +30,7 @@ class TalkBodyEditView : LinearLayout {
     fun addImage(result: ArrayList<StorageImageItem>) {
         val item: VideoBodyItem = VideoBodyItem.newImageItem(result)
         videoLocal.videoBodies.bodyItems.add(item)
-        addView(object : ProvideImageView(activity, item, false, deleteCallback) {
+        addView(object : TalkImageView(activity, item, false, deleteCallback) {
            override fun deleteImage() {
                 videoLocal.videoBodies.bodyItems.remove(item)
                 this@TalkBodyEditView.removeView(this)
@@ -49,7 +49,7 @@ class TalkBodyEditView : LinearLayout {
     }
 
     private fun addImagePreview(item: VideoBodyItem) {
-        addView(object : ProvideImageView(activity, item, true, deleteCallback) {
+        addView(object : TalkImageView(activity, item, true, deleteCallback) {
             override  fun deleteImage() {}
         })
     }

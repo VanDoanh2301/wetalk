@@ -13,9 +13,12 @@ import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.wetalk.R
 import com.example.wetalk.WeTalkApp
@@ -29,6 +32,7 @@ import com.xujiaji.happybubble.Auto
 import com.xujiaji.happybubble.BubbleDialog
 import com.xujiaji.happybubble.BubbleLayout
 import java.io.File
+import javax.sql.DataSource
 
 abstract class TalkImageViewItem @JvmOverloads constructor(
     context: Context,
@@ -42,6 +46,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
 
     constructor(context: MainActivity, item: StorageImageItem, isPreview: Boolean) : this(context as Context) {
         removeAllViews()
+        this.item = item
         addView(LayoutInflater.from(context).inflate(R.layout.talk_item_talk_image_item, null))
 
         cvFrame = findViewById(R.id.cv_frame)
@@ -56,21 +61,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .skipMemoryCache(true)
                 .load(item.devicePath)
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        Glide.with(getContext())
-                            .load(item.path)
-                            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .skipMemoryCache(true)
-                            .override((w!! * 100).toInt())
-                            .apply(RequestOptions.bitmapTransform(RoundedCorners(Utils.dpToPx(10f).toInt())))
-                            .into(imgPaint)
-                    }
-
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        // Handle cleanup
-                    }
-                })
+                .into(imgPaint)
         } else {
             Glide.with(getContext())
                 .load(item.path)
@@ -115,12 +106,12 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         if (item.isVideo != null) {
             val file = File(item.devicePath ?: "")
             if (file.exists()) {
-                Utils.shareFileOutApp(getContext(), item.devicePath, "video")
+                Utils.shareFileOutApp(context, item.devicePath, "video")
             } else {
-                Utils.shareImageFileInApp(getContext(), item.path ?: "")
+                Utils.shareImageFileInApp(context, item.path )
             }
         } else {
-            Utils.shareImageFileInApp(getContext(), item.path ?: "")
+            Utils.shareImageFileInApp(context, item.path)
         }
     }
 
