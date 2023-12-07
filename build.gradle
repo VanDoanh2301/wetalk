@@ -2,7 +2,7 @@
 buildscript {
     ext {
         fragment_version = '1.5.0'
-        kotlin_version = '1.5.0'
+        kotlin_version = '1.6.21'
     }
     repositories {
         google()
@@ -13,7 +13,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:2.38.1"
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.1'
     }
 }
 

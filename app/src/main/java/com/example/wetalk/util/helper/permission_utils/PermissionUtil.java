@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * Created by kayvan on 10/26/15.
  */
 public class PermissionUtil {
-
     public static PermissionObject with(AppCompatActivity activity) {
         return new PermissionObject(activity);
     }

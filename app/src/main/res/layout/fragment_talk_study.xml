@@ -75,6 +75,8 @@
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Bảng chữ cái"
+                                android:fontFamily="@font/roboto_medium"
+                                android:textSize="16sp"
                                 android:textColor="@color/black"
                                 />
 
@@ -150,6 +152,8 @@
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Số đếm"
+                                android:fontFamily="@font/roboto_medium"
+                                android:textSize="16sp"
                                 android:textColor="@color/black"
 
                                 />
@@ -226,6 +230,8 @@
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Dấu trong tiếng việt"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/roboto_medium"
                                 android:textColor="@color/black"
                                 />
 

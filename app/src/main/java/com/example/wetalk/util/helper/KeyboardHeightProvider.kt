@@ -58,7 +58,7 @@ class KeyboardHeightProvider(private val activity: Activity) : PopupWindow(activ
         dismiss()
     }
 
-    fun setKeyboardHeightObserver(observer: KeyboardHeightObserver) {
+    fun setKeyboardHeightObserver(observer: KeyboardHeightObserver?) {
         this.observer = observer
     }
 

@@ -173,7 +173,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         set()
     }
 
-    /** show paint menu example zoom, delete, share,..*/]
+    /** show paint menu example zoom, delete, share,..*/
     private fun showPaintMenu(v: View, type: Task<Int>) {
         val popup = LayoutInflater.from(context).inflate(R.layout.talk_popup_menu_paint_view, null)
         val bubbleLayout = BubbleLayout(context)

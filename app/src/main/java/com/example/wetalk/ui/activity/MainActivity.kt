@@ -1,15 +1,10 @@
 package com.example.wetalk.ui.activity
 
-import android.R.attr
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.wetalk.R
-import com.example.wetalk.ui.fragment.TalkHomeFragment
-import com.example.wetalk.ui.fragment.TalkLoginFragment
+import com.example.wetalk.ui.fragment.TalkVocabularyUpFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -21,4 +16,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        val index = supportFragmentManager.backStackEntryCount
+        if (index > 0) {
+            /** get fragment in stack and pop */
+            val backEntry = supportFragmentManager.getBackStackEntryAt(index - 1)
+            val tag = backEntry.name
+            supportFragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
