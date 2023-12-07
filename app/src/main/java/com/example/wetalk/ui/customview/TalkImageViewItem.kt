@@ -43,11 +43,8 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
     constructor(context: MainActivity, item: StorageImageItem, isPreview: Boolean) : this(context as Context) {
         removeAllViews()
         addView(LayoutInflater.from(context).inflate(R.layout.talk_item_talk_image_item, null))
-
         cvFrame = findViewById(R.id.cv_frame)
-
         val imgPaint: ImageView = findViewById(R.id.img_image)
-
         w = ((WeTalkApp.W() - Utils.dpToPx(32f)) / 100f)
 
         if (TextUtils.isEmpty(item.path)) {
@@ -111,6 +108,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         }
     }
 
+    /** share image */
     private fun share() {
         if (item.isVideo != null) {
             val file = File(item.devicePath ?: "")
@@ -124,12 +122,14 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         }
     }
 
+    /** set Frame */
     private fun set() {
         cvFrame!!.layoutParams.width = (w?.times(item!!.w))!!.toInt()
         (cvFrame!!.layoutParams as MarginLayoutParams).leftMargin = (w!! * item!!.transX).toInt()
         cvFrame!!.requestLayout()
     }
 
+    /** transRight */
     private fun transRight() {
         val t = item!!.transX ?: 0
         if (t > 90) {
@@ -139,7 +139,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         }
         set()
     }
-
+    /** transLeft */
     private fun transLeft() {
         val t = item!!.transX ?: 0
         if (t < -90) {
@@ -149,7 +149,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         }
         set()
     }
-
+    /** Zoom In */
     private fun zoomIn() {
         val w = item!!.w ?: 0
         item!!.w = w + 2
@@ -159,6 +159,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         set()
     }
 
+    /** Zoom out */
     private fun zoomOut() {
         val w = item!!.w ?: 0
         item!!.w = w - 2
@@ -168,6 +169,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         set()
     }
 
+    /** Zoom Full */
     private fun full() {
         if (item!!.w ?: 0 < 50) {
             item!!.w = 50
@@ -180,6 +182,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         set()
     }
 
+    /** show paint menu example zoom, delete, share,..*/]
     private fun showPaintMenu(v: View, type: Task<Int>) {
         val popup = LayoutInflater.from(context).inflate(R.layout.talk_popup_menu_paint_view, null)
         val bubbleLayout = BubbleLayout(context)
