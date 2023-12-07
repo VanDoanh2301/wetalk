@@ -9,7 +9,7 @@ import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.ui.activity.MainActivity
 import com.google.android.flexbox.FlexboxLayout
 
-abstract class ProvideImageView @JvmOverloads constructor(
+abstract class TalkImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -33,7 +33,7 @@ abstract class ProvideImageView @JvmOverloads constructor(
                     box.removeView(this)
                     item.storageImage.imageItems.remove(image)
                     if (item.storageImage.imageItems.isEmpty()) {
-                        this@ProvideImageView.deleteImage()
+                        this@TalkImageView.deleteImage()
                     }
                 }
             })

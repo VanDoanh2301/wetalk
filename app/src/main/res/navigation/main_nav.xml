@@ -58,17 +58,20 @@
         android:label="fragment_talk_home"
         tools:layout="@layout/fragment_talk_home" >
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkChatFragment"
-            app:destination="@id/talkChatFragment" />
+            android:id="@+id/action_talkHomeFragment_to_talkVocabularyUpFragment"
+            app:destination="@id/talkVocabularyUpFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkStudyFragment"
-            app:destination="@id/talkStudyFragment" />
+            android:id="@+id/action_talkHomeFragment_to_talkVocabularyViewFragment"
+            app:destination="@id/talkVocabularyViewFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkProfileFragment"
-            app:destination="@id/talkProfileFragment" />
+            android:id="@+id/action_talkHomeFragment_to_talkProfileEditFragment"
+            app:destination="@id/talkProfileEditFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkNetWorkFragment"
-            app:destination="@id/talkNetWorkFragment" />
+            android:id="@+id/action_talkHomeFragment_to_talkSignFragment"
+            app:destination="@id/talkSignFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkSignLanguageFragment"
+            app:destination="@id/talkSignLanguageFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkChatFragment"
@@ -86,44 +89,7 @@
         android:id="@+id/talkStudyFragment"
         android:name="com.example.wetalk.ui.fragment.TalkStudyFragment"
         android:label="fragment_talk_study"
-        tools:layout="@layout/fragment_talk_study" >
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkTestFragment"
-            app:destination="@id/talkTestFragment" />
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkVocabularyUpFragment"
-            app:destination="@id/talkVocabularyUpFragment" />
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkVocabularyViewFragment"
-            app:destination="@id/talkVocabularyViewFragment" />
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkSignLanguageFragment"
-            app:destination="@id/talkSignLanguageFragment" />
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkSignNumberFragment"
-            app:destination="@id/talkSignNumberFragment" />
-        <action
-            android:id="@+id/action_talkStudyFragment_to_talkSignFragment"
-            app:destination="@id/talkSignFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/talkProfileFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkProfileFragment"
-        android:label="fragment_talk_profile"
-        tools:layout="@layout/fragment_talk_profile" >
-        <action
-            android:id="@+id/action_talkProfileFragment_to_talkProfileEditFragment"
-            app:destination="@id/talkProfileEditFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/talkNetWorkFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkNetWorkFragment"
-        android:label="fragment_talk_net_work"
-        tools:layout="@layout/fragment_talk_net_work" >
-        <action
-            android:id="@+id/action_talkNetWorkFragment_to_talkNeworkUpFragment"
-            app:destination="@id/talkNeworkUpFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_talk_study" />
     <fragment
         android:id="@+id/talkSearchUserFragment"
         android:name="com.example.wetalk.ui.fragment.TalkSearchUserFragment"

@@ -4,9 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 
 import com.example.wetalk.R
+import com.example.wetalk.ui.activity.MainActivity
+import com.rey.material.widget.Button
 
 /**
  * A simple [Fragment] subclass.
@@ -14,7 +19,7 @@ import com.example.wetalk.R
  * create an instance of this fragment.
  */
 class TalkDoneFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,4 +30,12 @@ class TalkDoneFragment : Fragment() {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.login_let_me_in_btn).setOnClickListener {
+
+            (activity as MainActivity).supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            findNavController().navigate(R.id.talkLoginFragment)
+        }
+    }
 }
