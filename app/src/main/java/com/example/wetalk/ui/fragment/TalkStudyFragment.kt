@@ -30,5 +30,8 @@ class TalkStudyFragment : Fragment() {
         binding.rltHandbook.setOnClickListener {
             findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment)
         }
+        binding.btnLanguage.setOnClickListener {
+            findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment)
+        }
     }
 }
