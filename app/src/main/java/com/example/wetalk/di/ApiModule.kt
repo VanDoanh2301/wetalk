@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 @InstallIn(ViewModelComponent::class)
 object ApiModule {
 
-    private const val BASE_URL = "http://14.225.255.146:8080/"
+    private const val BASE_URL = "http://14.225.255.146:8090/"
     @Provides
     @ViewModelScoped
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {

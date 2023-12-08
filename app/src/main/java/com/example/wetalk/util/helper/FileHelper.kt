@@ -23,9 +23,6 @@ object FileHelper {
         return file.absolutePath + File.separator
     }
 
-    fun getNewPaintPath(): String {
-        return getDataFolder() + "diary_paint_" + System.currentTimeMillis() + ".webp"
-    }
 
     fun getNewImagePreviewPath(): String {
         return getDataFolder() + "diary_image_" + System.currentTimeMillis() + ".webp"
@@ -35,9 +32,7 @@ object FileHelper {
         return getDataFolder() + "diary_video_" + System.currentTimeMillis() + ".webp"
     }
 
-    fun getNewVideoPath(file: File): String {
-        return getDataFolder() + "diary_video_" + System.currentTimeMillis() + "." + getFileExtension(file)
-    }
+
 
     private fun getFileExtension(file: File): String {
         val name = file.name
@@ -48,9 +43,7 @@ object FileHelper {
         return name.substring(lastIndexOf)
     }
 
-    fun getNewRecordPath(): String {
-        return getDataFolder() + "diary_record_" + System.currentTimeMillis() + ".mp3"
-    }
+
 
     fun checkAndSavePreview(item: StorageImageItem, bitmap: Bitmap) {
         val vdFile = File(if (item.isVideo) getNewVideoPreviewPath() else getNewImagePreviewPath())

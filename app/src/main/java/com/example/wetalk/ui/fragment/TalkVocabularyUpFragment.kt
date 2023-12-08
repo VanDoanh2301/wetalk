@@ -3,12 +3,13 @@ package com.example.wetalk.ui.fragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,12 +27,19 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
+import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Task
 import com.example.wetalk.util.Utils
 import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 
 /**
@@ -39,6 +47,7 @@ import com.example.wetalk.util.helper.permission_utils.PermissionUtil
  * Use the [TalkVocabularyUpFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class TalkVocabularyUpFragment : Fragment() {
 
     private val viewModel : TalkVocabularyViewModel by viewModels()
@@ -50,6 +59,8 @@ class TalkVocabularyUpFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var alertDialog: AlertDialog
     private val paths = ArrayList<String>()
+    private var devicePath : String? =null
+    private var uri:Uri? =null
     private lateinit var talkImageItems: ArrayList<StorageImageItem>
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
 
@@ -94,7 +105,17 @@ class TalkVocabularyUpFragment : Fragment() {
         onCallBack()
         onFolder();
         onBack();
+        onUploadVideo();
 
+    }
+
+    private fun onUploadVideo() {
+        binding.cvSave.setOnClickListener{
+            val file = File(devicePath)
+            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            viewModel.uploadVideo(filePart)
+        }
     }
 
     private fun onBack() {
@@ -121,6 +142,7 @@ class TalkVocabularyUpFragment : Fragment() {
                                     object : Task<ArrayList<StorageImageItem>> {
                                         override fun callback(result: ArrayList<StorageImageItem>) {
                                             menuCallback.addMedia(result)
+                                            devicePath =result[0].devicePath
                                         }
                                     }
                                 )
@@ -143,7 +165,6 @@ class TalkVocabularyUpFragment : Fragment() {
                     result,
                     object : Task<ArrayList<StorageImageItem>> {
                         override fun callback(result: ArrayList<StorageImageItem>) {
-//                            talkBodyEditView.addImage(result)
                             viewModel.addImageItems(result)
                         }
                     })
@@ -177,6 +198,7 @@ class TalkVocabularyUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         paths.clear()
         if (requestCode == 1111) {
+            uri = data!!.data
             paths.add(data!!.data.toString())
             talkImageItems = ArrayList<StorageImageItem>()
             for (devicePath in paths) {
@@ -193,6 +215,7 @@ class TalkVocabularyUpFragment : Fragment() {
         }
 //        talkBodyEditView.addImage(talkImageItems)
         viewModel.addImageItems(talkImageItems)
+        devicePath = RealPathUtil.getRealPath(requireContext(), uri)
     }
 
     interface MenuCallback {
