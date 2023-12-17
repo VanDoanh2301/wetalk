@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -15,9 +16,11 @@ import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.wetalk.WeTalkApp
 import com.rey.material.BuildConfig
@@ -114,4 +117,21 @@ object Utils {
         setColorFilter(img, Color.parseColor(color))
     }
 
+    fun convertPixelsToDp(px: Int, context: Context): Int {
+        return (px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+    fun getWidthScreen(context: Context): Int {
+        val display =
+            (context as AppCompatActivity).windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return size.x
+    }
+
+    fun getColorFromAttr(context: Context, resId: Int): Int {
+        val typedValue = TypedValue()
+        val theme = context.theme
+        theme.resolveAttribute(resId, typedValue, true)
+        return typedValue.data
+    }
 }

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +29,8 @@ import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
 import com.example.wetalk.util.RealPathUtil
+import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.Task
 import com.example.wetalk.util.Utils
 import com.example.wetalk.util.helper.FileHelper
@@ -35,6 +38,7 @@ import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -50,7 +54,7 @@ import java.io.File
 @AndroidEntryPoint
 class TalkVocabularyUpFragment : Fragment() {
 
-    private val viewModel : TalkVocabularyViewModel by viewModels()
+    private val viewModel: TalkVocabularyViewModel by viewModels()
     private lateinit var keyboardHeightProvider: KeyboardHeightProvider
     private lateinit var videoLocal: VideoLocal
     private lateinit var talkBodyEditView: TalkBodyEditView
@@ -59,8 +63,8 @@ class TalkVocabularyUpFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var alertDialog: AlertDialog
     private val paths = ArrayList<String>()
-    private var devicePath : String? =null
-    private var uri:Uri? =null
+    private var devicePath: String? = null
+    private var uri: Uri? = null
     private lateinit var talkImageItems: ArrayList<StorageImageItem>
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
 
@@ -95,6 +99,19 @@ class TalkVocabularyUpFragment : Fragment() {
             viewModel.talkImageItems.collect { talkImageItems ->
                 talkBodyEditView.addImage(talkImageItems)
             }
+            viewModel.uploadResult.collect {
+                when (it) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
 
         binding.imgRecord.setOnClickListener {
@@ -110,7 +127,7 @@ class TalkVocabularyUpFragment : Fragment() {
     }
 
     private fun onUploadVideo() {
-        binding.cvSave.setOnClickListener{
+        binding.cvSave.setOnClickListener {
             val file = File(devicePath)
             val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
@@ -125,31 +142,31 @@ class TalkVocabularyUpFragment : Fragment() {
     }
 
     private fun onFolder() {
-        binding.imgOpen.setOnClickListener{
-                mRequestObject = PermissionUtil.with(activity as MainActivity)
-                    .request(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .onAllGranted(object : Func() {
-                        override fun call() {
-                            Utils.hideKeyboard(activity)
-                            menuCallback.clearCursor()
-                            menuCallback.scrollBottom()
-                            BaseFragment.add(
-                                activity as MainActivity,
-                                TalkSelectVideoFragment.newInstance().setVideoTask(
-                                    object : Task<ArrayList<StorageImageItem>> {
-                                        override fun callback(result: ArrayList<StorageImageItem>) {
-                                            menuCallback.addMedia(result)
-                                            devicePath =result[0].devicePath
-                                        }
+        binding.imgOpen.setOnClickListener {
+            mRequestObject = PermissionUtil.with(activity as MainActivity)
+                .request(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .onAllGranted(object : Func() {
+                    override fun call() {
+                        Utils.hideKeyboard(activity)
+                        menuCallback.clearCursor()
+                        menuCallback.scrollBottom()
+                        BaseFragment.add(
+                            activity as MainActivity,
+                            TalkSelectVideoFragment.newInstance().setVideoTask(
+                                object : Task<ArrayList<StorageImageItem>> {
+                                    override fun callback(result: ArrayList<StorageImageItem>) {
+                                        menuCallback.addMedia(result)
+                                        devicePath = result[0].devicePath
                                     }
-                                )
+                                }
                             )
+                        )
 
-                        }
-                    }).ask(12)
+                    }
+                }).ask(12)
         }
         binding.imgOpenTag.setOnClickListener {
             showDialogTag()
@@ -198,24 +215,27 @@ class TalkVocabularyUpFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         paths.clear()
         if (requestCode == 1111) {
-            uri = data!!.data
-            paths.add(data!!.data.toString())
-            talkImageItems = ArrayList<StorageImageItem>()
-            for (devicePath in paths) {
-                talkImageItems.add(
-                    StorageImageItem(
-                        true,
-                        devicePath,
-                        devicePath,
-                        if (paths.size > 2) 25 else 45,
-                        0
+            try {
+                uri = data!!.data
+                paths.add(data!!.data.toString())
+                talkImageItems = ArrayList<StorageImageItem>()
+                for (devicePath in paths) {
+                    talkImageItems.add(
+                        StorageImageItem(
+                            true,
+                            devicePath,
+                            devicePath,
+                            if (paths.size > 2) 25 else 45,
+                            0
+                        )
                     )
-                )
-            }
+                }
+                viewModel.addImageItems(talkImageItems)
+                devicePath = RealPathUtil.getRealPath(requireContext(), uri)
+            } catch (e : Exception) {}
         }
 //        talkBodyEditView.addImage(talkImageItems)
-        viewModel.addImageItems(talkImageItems)
-        devicePath = RealPathUtil.getRealPath(requireContext(), uri)
+
     }
 
     interface MenuCallback {
@@ -247,12 +267,13 @@ class TalkVocabularyUpFragment : Fragment() {
             }
         }
         talkDialogTag.setData(dataList)
-        recyclerView.adapter =talkDialogTag
+        recyclerView.adapter = talkDialogTag
         builder.setView(recyclerView)
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()
         alertDialog.show()
     }
+
     override fun onPause() {
         super.onPause()
         keyboardHeightProvider.setKeyboardHeightObserver(null)

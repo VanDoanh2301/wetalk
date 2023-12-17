@@ -33,5 +33,14 @@ class TalkStudyFragment : Fragment() {
         binding.btnLanguage.setOnClickListener {
             findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment)
         }
+        binding.btnNumber.setOnClickListener {
+            findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignNumberFragment)
+        }
+        binding.btnCharacted.setOnClickListener {
+            findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment)
+        }
+        binding.btnTest.setOnClickListener {
+            findNavController().navigate(R.id.action_talkHomeFragment_to_talkTestFragment)
+        }
     }
 }

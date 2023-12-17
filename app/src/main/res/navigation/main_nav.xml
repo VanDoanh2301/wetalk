@@ -64,27 +64,32 @@
             android:id="@+id/action_talkHomeFragment_to_talkVocabularyViewFragment"
             app:destination="@id/talkVocabularyViewFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkProfileEditFragment"
-            app:destination="@id/talkProfileEditFragment" />
-        <action
             android:id="@+id/action_talkHomeFragment_to_talkSignFragment"
             app:destination="@id/talkSignFragment" />
         <action
             android:id="@+id/action_talkHomeFragment_to_talkSignLanguageFragment"
             app:destination="@id/talkSignLanguageFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkChatHomeFragment"
+            app:destination="@id/talkChatHomeFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkSearchUserFragment"
+            app:destination="@id/talkSearchUserFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkSignNumberFragment"
+            app:destination="@id/talkSignNumberFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkTestFragment"
+            app:destination="@id/talkTestFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkProfileHomeFragment"
+            app:destination="@id/talkProfileHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkChatFragment"
         android:name="com.example.wetalk.ui.fragment.TalkChatFragment"
         android:label="fragment_talk_chat"
-        tools:layout="@layout/fragment_talk_chat" >
-        <action
-            android:id="@+id/action_talkChatFragment_to_talkSearchUserFragment"
-            app:destination="@id/talkSearchUserFragment" />
-        <action
-            android:id="@+id/action_talkChatFragment_to_talkChatHomeFragment"
-            app:destination="@id/talkChatHomeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_talk_chat" />
     <fragment
         android:id="@+id/talkStudyFragment"
         android:name="com.example.wetalk.ui.fragment.TalkStudyFragment"
@@ -149,4 +154,13 @@
         android:name="com.example.wetalk.ui.fragment.TalkSignFragment"
         android:label="fragment_talk_sign"
         tools:layout="@layout/fragment_talk_sign" />
+    <fragment
+        android:id="@+id/talkProfileHomeFragment"
+        android:name="com.example.wetalk.TalkProfileHomeFragment"
+        android:label="fragment_talk_profile_home"
+        tools:layout="@layout/fragment_talk_profile_home" >
+        <action
+            android:id="@+id/action_talkProfileHomeFragment_to_talkProfileEditFragment"
+            app:destination="@id/talkProfileEditFragment" />
+    </fragment>
 </navigation>

@@ -1,0 +1,182 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/viewInfo"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+             />
+
+        <RelativeLayout
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+
+            <com.rey.material.widget.FrameLayout
+                android:id="@+id/btn_back"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:src="@drawable/arrow_left"
+                     />
+
+            </com.rey.material.widget.FrameLayout>
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/rightTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_toLeftOf="@+id/btn_list"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:text="Right Menu"
+                style="@style/ripple_btn_tab_widget_light"
+                android:textColor="@color/white"
+                 />
+
+            <com.rey.material.widget.FrameLayout
+                android:id="@+id/btn_list"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_list_question"
+                    app:tint="@color/white" />
+
+            </com.rey.material.widget.FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/rightTitle"
+                android:layout_toRightOf="@+id/btn_back">
+
+                <TextView
+                    android:id="@+id/timeCounter"
+                    style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="left|center_vertical"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:maxLines="1"
+                    android:paddingTop="2dp"
+                    android:text="Title Title"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                     />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltTimeLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_below="@+id/actionBar"
+            android:layout_centerHorizontal="true">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/viewInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rltTimeLimit"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/background_row_top">
+
+            <RelativeLayout
+                android:id="@+id/viewInfoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <com.rey.material.widget.ImageView
+                    android:id="@+id/icon_next"
+                    style="@style/ripple_btn_tab_widget_light"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="@color/white" />
+
+                <com.rey.material.widget.ImageView
+                    android:id="@+id/icon_previous"
+                    style="@style/ripple_btn_tab_widget_light"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:padding="8dp"
+                    android:rotation="180"
+                    android:scaleY="-1"
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="@color/white" />
+
+                <com.rey.material.widget.ImageView
+                    android:id="@+id/ic_bookmark"
+                    style="@style/ripple_btn_tab_widget_light"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@+id/bottomTitle"
+                    android:padding="12dp"
+                    android:rotation="180"
+                    android:scaleY="-1"
+                    app:tint="@color/white"
+                    />
+                <com.rey.material.widget.ImageView
+                    android:id="@+id/ic_none"
+                    style="@style/ripple_btn_tab_widget_light"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toLeftOf="@+id/bottomTitle"
+                    android:padding="12dp"
+                    android:rotation="180"
+                    android:scaleY="-1"
+                    app:tint="@color/white"
+                    />
+                <TextView
+                    android:id="@+id/bottomTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="top"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="8dp"
+                    android:text="1/20"
+                    android:textColor="@color/white"
+                     />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

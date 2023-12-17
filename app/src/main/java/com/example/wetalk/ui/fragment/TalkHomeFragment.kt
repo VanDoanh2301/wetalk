@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wetalk.R
+import com.example.wetalk.data.local.MenuHome
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
 import com.example.wetalk.ui.activity.MainActivity
+import com.example.wetalk.ui.adapter.TalkMenuAdapter
 import com.example.wetalk.util.Utils
 
 
@@ -40,9 +42,29 @@ class TalkHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBottomNavigation()
+        initTop()
 
     }
 
+    private fun initTop() {
+      binding.frameContainer.apply {
+          rcvMenu.layoutManager = LinearLayoutManager(requireContext())
+          var adapter = TalkMenuAdapter(requireContext(), getMenus())
+          adapter.notifyDataSetChanged()
+          rcvMenu.adapter = adapter
+      }
+    }
+    private fun getMenus(): ArrayList<MenuHome> {
+        val menus: ArrayList<MenuHome> = ArrayList<MenuHome>()
+        menus.add(MenuHome(R.drawable.menu_hangtag, requireContext().getString(R.string.hashtag)))
+        menus.add(MenuHome(R.drawable.menu_passcode, requireContext().getString(R.string.pass_code)))
+        menus.add(MenuHome(R.drawable.menu_notification, requireContext().getString(R.string.notification)))
+        menus.add(MenuHome(R.drawable.menu_atlas, requireContext().getString(R.string.atlas)))
+        menus.add(MenuHome(R.drawable.menu_backup, requireContext().getString(R.string.backup_restore)))
+        menus.add(MenuHome(R.drawable.setting_share, requireContext().getString(R.string.setting)))
+        menus.add(MenuHome(R.drawable.ic_logout, "Đăng xuất"))
+        return menus
+    }
     private fun initBottomNavigation() {
         binding.fgHome.apply {
             /** Custom viewpager */

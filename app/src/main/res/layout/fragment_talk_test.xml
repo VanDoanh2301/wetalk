@@ -6,36 +6,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.TalkTestFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarMain"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:navigationIcon="?attr/homeAsUpIndicator">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ôn tập"
-            android:textSize="18sp"
-            android:fontFamily="@font/roboto_medium"
-            android:textColor="?android:textColorPrimary"
-            android:layout_gravity="center"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:padding="8dp"
+    <include
+        android:id="@+id/main_content"
+        layout="@layout/talk_main_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />
+        app:layout_constraintTop_toTopOf="parent"></include>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

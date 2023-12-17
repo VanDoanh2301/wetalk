@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.example.wetalk.R
-import com.example.wetalk.ui.fragment.TalkVocabularyUpFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 

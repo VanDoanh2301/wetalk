@@ -295,7 +295,7 @@
                         android:weightSum="3">
 
                         <com.rey.material.widget.LinearLayout
-                            android:id="@+id/btnFlashCard"
+                            android:id="@+id/btnTest"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
