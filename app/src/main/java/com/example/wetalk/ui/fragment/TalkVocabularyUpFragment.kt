@@ -45,7 +45,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-
 /**
  * A simple [Fragment] subclass.
  * Use the [TalkVocabularyUpFragment.newInstance] factory method to
@@ -99,21 +98,22 @@ class TalkVocabularyUpFragment : Fragment() {
             viewModel.talkImageItems.collect { talkImageItems ->
                 talkBodyEditView.addImage(talkImageItems)
             }
-            viewModel.uploadResult.collect {
-                when (it) {
-                    is Resource.Loading -> {
+        }
 
-                    }
-                    is Resource.Success -> {
-                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
-                    }
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                    }
+        viewModel.uploadResult.observe(viewLifecycleOwner
+        ){
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Đăng video thành công", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
         binding.imgRecord.setOnClickListener {
             val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(i, 1111)
@@ -131,6 +131,7 @@ class TalkVocabularyUpFragment : Fragment() {
             val file = File(devicePath)
             val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
             viewModel.uploadVideo(filePart)
         }
     }

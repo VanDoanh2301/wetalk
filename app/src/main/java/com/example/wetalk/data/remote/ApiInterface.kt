@@ -3,12 +3,9 @@ package com.example.wetalk.data.remote
 import com.example.wetalk.data.model.objectmodel.User
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
-import com.example.wetalk.data.model.responsemodel.Data
+import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Multipart
@@ -24,12 +21,11 @@ interface ApiInterface {
     suspend  fun validateOtp(@Body registerPost: RegisterPost): Response<HostResponse>
 
     @POST("api/auth/login")
-    suspend  fun login(@Body loginPost: LoginPost): Response<Data>
-
+    suspend  fun login(@Body loginPost: LoginPost): Response<LoginResponse>
     @Multipart
     @POST("api/upload")
     suspend fun uploadVideo(
         @Part file: MultipartBody.Part)
-    : Response<String>
+            : Response<String>
 
 }

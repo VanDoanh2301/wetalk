@@ -64,7 +64,6 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
                 .load(item.path)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .skipMemoryCache(true)
-                .override((w!! * 100).toInt())
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(Utils.dpToPx(10f).toInt())))
                 .into(imgPaint)
         }

@@ -3,10 +3,8 @@ package com.example.wetalk.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.objectmodel.User
 import com.example.wetalk.data.model.postmodel.LoginPost
-import com.example.wetalk.data.model.responsemodel.Data
-import com.example.wetalk.data.model.responsemodel.HostResponse
+import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil.Companion.hasInternetConnection
@@ -24,12 +22,12 @@ class LoginViewModel @Inject constructor(
     private val mRepository: TalkRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-    private val _loginResponseStateFlow: MutableStateFlow<Resource<Data>> =
+    private val _loginResponseStateFlow: MutableStateFlow<Resource<LoginResponse>> =
         MutableStateFlow(Resource.Loading())
-    val loginResponseStateFlow: StateFlow<Resource<Data>>
+    val loginResponseStateFlow: StateFlow<Resource<LoginResponse>>
         get() = _loginResponseStateFlow
 
-    private var loginResponse: Data? = null
+    private var loginResponse: LoginResponse? = null
 
 
     /** Login */
@@ -54,7 +52,7 @@ class LoginViewModel @Inject constructor(
     }
 
     /** Handle Login Response */
-    private fun handleLoginResponse(response: Response<Data>): Resource<Data> {
+    private fun handleLoginResponse(response: Response<LoginResponse>): Resource<LoginResponse> {
         if (response.isSuccessful) {
             LogUtils.d("LOGIN_RETROFIT_SUCCESS: OK")
             response.body()?.let { resultResponse ->

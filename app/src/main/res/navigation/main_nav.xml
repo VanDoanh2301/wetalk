@@ -79,11 +79,11 @@
             android:id="@+id/action_talkHomeFragment_to_talkSignNumberFragment"
             app:destination="@id/talkSignNumberFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkTestFragment"
-            app:destination="@id/talkTestFragment" />
-        <action
             android:id="@+id/action_talkHomeFragment_to_talkProfileHomeFragment"
             app:destination="@id/talkProfileHomeFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkTopicFragment"
+            app:destination="@id/talkTopicFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkChatFragment"
@@ -162,5 +162,14 @@
         <action
             android:id="@+id/action_talkProfileHomeFragment_to_talkProfileEditFragment"
             app:destination="@id/talkProfileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkTopicFragment"
+        android:name="com.example.wetalk.TalkTopicFragment"
+        android:label="fragment_talk_topic"
+        tools:layout="@layout/fragment_talk_topic" >
+        <action
+            android:id="@+id/action_talkTopicFragment_to_talkTestFragment"
+            app:destination="@id/talkTestFragment" />
     </fragment>
 </navigation>

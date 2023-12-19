@@ -1,28 +1,24 @@
 package com.example.wetalk.ui.viewmodels
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.data.local.VideoBody
 import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
-import com.example.wetalk.data.model.postmodel.LoginPost
-import com.example.wetalk.data.model.responsemodel.Data
-import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -32,9 +28,9 @@ class TalkVocabularyViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val _uploadResult: MutableStateFlow<Resource<String>> =
-        MutableStateFlow(Resource.Loading())
-    val uploadResult: StateFlow<Resource<String>>
+    private val _uploadResult: MutableLiveData<Resource<String>> =
+       MutableLiveData(Resource.Loading())
+    val uploadResult: LiveData<Resource<String>>
         get() = _uploadResult
     private val _videoLocal = MutableStateFlow(
         VideoLocal(

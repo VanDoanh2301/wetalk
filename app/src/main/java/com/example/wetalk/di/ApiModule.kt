@@ -3,6 +3,7 @@ package com.example.wetalk.di
 import android.content.Context
 import androidx.databinding.ktx.BuildConfig
 import com.example.wetalk.data.remote.ApiInterface
+import com.example.wetalk.data.remote.UploadInterface
 import com.example.wetalk.util.LogUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -20,11 +21,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object ApiModule {
-    private const val BASE_URL = "http://14.225.255.146:8080/"
+    private const val BASE_URL_1 = "http://202.191.56.11:8080/"
+    private const val BASE_URL_2 = "http://202.191.56.11:8090/"
+
     @Provides
     @ViewModelScoped
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
@@ -39,7 +43,7 @@ object ApiModule {
 
     @Provides
     @ViewModelScoped
-    fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient{
+    fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(Interceptor { chain: Interceptor.Chain ->
@@ -56,8 +60,6 @@ object ApiModule {
             .build()
     }
 
-
-
     @Provides
     @ViewModelScoped
     fun provideGson(): Gson {
@@ -69,9 +71,11 @@ object ApiModule {
 
     @Provides
     @ViewModelScoped
-    fun provideRetrofit(gson: Gson): Retrofit {
+    @ApiOne
+    fun provideRetrofitOne(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL_1)
+            .client(okHttpClient)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -79,7 +83,27 @@ object ApiModule {
 
     @Provides
     @ViewModelScoped
-    fun provideNewsApi(retrofit: Retrofit): ApiInterface {
+    @ApiTwo
+    fun provideRetrofitTwo(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_2)
+            .client(okHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNewsApi(@ApiOne retrofit: Retrofit): ApiInterface {
         return retrofit.create(ApiInterface::class.java)
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUploadApi(@ApiTwo retrofit: Retrofit): UploadInterface {
+        return retrofit.create(UploadInterface::class.java)
+    }
 }
+
+

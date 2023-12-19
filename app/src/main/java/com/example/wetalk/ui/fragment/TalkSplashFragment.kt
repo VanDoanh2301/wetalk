@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.example.wetalk.R
+import com.example.wetalk.util.SharedPreferencesUtils
 
 /**
  * A simple [Fragment] subclass.
@@ -31,6 +32,11 @@ class TalkSplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
+        if (SharedPreferencesUtils.getString("isLogin") != null) {
+            findNavController().navigate(R.id.talkHomeFragment)
+        } else {
+            findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
+        }
+
     }
 }

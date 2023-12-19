@@ -33,7 +33,6 @@ class TalkDoneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.login_let_me_in_btn).setOnClickListener {
-
             (activity as MainActivity).supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             findNavController().navigate(R.id.talkLoginFragment)
         }
