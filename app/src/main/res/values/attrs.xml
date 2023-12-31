@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="color_text_item_setting" format="reference|color" />
     <declare-styleable name="FreeDrawView">
         <attr name="paintColor" format="color"/>
         <attr name="paintWidth" format="dimension"/>

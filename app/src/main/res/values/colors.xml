@@ -5,6 +5,7 @@
     <color name="colorAccent">#13B6CC</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
+    <color name="color_text_item_setting">#3c3c3c</color>
     <color name="selected_background_color">#5843CC</color>
     <color name="deselected_background_color">#D6D6D6</color>
     <color name="deselected_text_color">#3F51B5</color>

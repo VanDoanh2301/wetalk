@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetalk.R
 import com.example.wetalk.data.local.PracticeQuest
+import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.databinding.ItemQuestionResultBinding
 import com.example.wetalk.util.Utils
 
 
-class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest>) :
+class MenuPracticeAdapter(var context: Context, var data:ArrayList<TestQuest>) :
     RecyclerView.Adapter<MenuPracticeAdapter.ViewHolder>() {
 
 
@@ -59,13 +60,13 @@ class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
 
-        fun bind(item: PracticeQuest, isSelected: Boolean) {
+        fun bind(item: TestQuest, isSelected: Boolean) {
             binding.apply {
                 tvNumberQuest.text = (adapterPosition + 1).toString()
 
-                if (item.answerUser != null && item.answerUser.isNotEmpty()) {
+                if (item.answer != null && item.answer.isNotEmpty()) {
                     rltAnswer.visibility = View.VISIBLE
-                    if (item.answerUser.equals(item.questionType.answer_correct)) {
+                    if (item.answer.equals(item.question.answer_correct)) {
                         rltAnswer.setBackgroundResource(R.drawable.b2_grid_item_question_bg_success)
                         tvAnswer.text = convertAnswer(item)
                     } else {
@@ -91,14 +92,14 @@ class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest
             }
         }
 
-        private fun convertAnswer(questionNew: PracticeQuest): String? {
-            return if (questionNew.answerUser == questionNew.questionType.answer_a) {
+        private fun convertAnswer(questionNew: TestQuest): String? {
+            return if (questionNew.answer== questionNew.question.answer_a) {
                 "A"
-            } else if (questionNew.answerUser == questionNew.questionType.answer_b) {
+            } else if (questionNew.answer == questionNew.question.answer_b) {
                 "B"
-            } else if (questionNew.answerUser == questionNew.questionType.answer_c) {
+            } else if (questionNew.answer== questionNew.question.answer_c) {
                 "C"
-            } else if (questionNew.answerUser == questionNew.questionType.answer_d) {
+            } else if (questionNew.answer == questionNew.question.answer_d) {
                 "D"
             } else {
                 ""

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog"
+        android:minWidth="300.0dip"
+        android:orientation="vertical">
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/title_dialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="16.0dip"
+            android:layout_marginLeft="24.0dip"
+            android:layout_marginRight="24.0dip"
+            android:layout_marginTop="20.0dip"
+            android:text="ĐÁNH GIÁ ỨNG DỤNG"
+            android:textColor="?color_text_item_setting"
+        />
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/content_dialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="24.0dip"
+            android:layout_marginRight="24.0dip"
+            android:layout_marginBottom="8.0dip"
+            android:layout_marginTop="8.0dip"
+            android:text="Vui lòng đánh giá ứng dụng để giúp chúng tôi cải tiện chất lượng ứng dụng ngày càng tốt hơn!" />
+
+        <LinearLayout
+            android:id="@+id/lnCustomContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="gone"
+            android:layout_marginLeft="24.0dip"
+            android:layout_marginRight="24.0dip">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnOKCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:visibility="visible"
+            android:layout_marginLeft="24.0dip"
+            android:layout_marginRight="24.0dip"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/btn_cancel"
+                style="@style/ripple_btn_tab_widget_light"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40.0dip"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:minWidth="50.0dip"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/blue_sea"
+                android:background="@drawable/bg_button_custom"
+                android:text="Đóng"
+                android:textAllCaps="true"
+               />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+             ></View>
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/btn_ok"
+                style="@style/ripple_btn_tab_widget_light"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_height="40.0dip"
+                android:layout_toLeftOf="@+id/btn_ok"
+                android:gravity="center"
+                android:text="Lưu"
+                android:background="@drawable/bg_button_custom"
+                android:textColor="@color/blue_sea"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="gone"
+            android:layout_marginLeft="24.0dip"
+            android:layout_marginRight="24.0dip"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/btn_done"
+                style="@style/ripple_btn_tab_widget_light"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_height="40.0dip"
+                android:gravity="center"
+                android:text="Lưu"
+                android:textAllCaps="true"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

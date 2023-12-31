@@ -16,6 +16,7 @@
             android:layout_below="@+id/viewInfo"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="-20dp"
              />
 
         <RelativeLayout
@@ -48,7 +49,9 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="2dp"
-                android:text="Right Menu"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="KẾT THÚC"
                 style="@style/ripple_btn_tab_widget_light"
                 android:textColor="@color/white"
                  />
@@ -86,7 +89,8 @@
                     android:gravity="left|center_vertical"
                     android:maxLines="1"
                     android:paddingTop="2dp"
-                    android:text="Title Title"
+                    android:text="KIỂM TRA"
+                    android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/white"
                     android:textAllCaps="false"
                      />

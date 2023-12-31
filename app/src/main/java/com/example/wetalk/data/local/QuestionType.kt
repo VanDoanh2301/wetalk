@@ -14,8 +14,8 @@ data class QuestionType(
     var answer_d: String,
     var answer_correct: String,
     var explain: String,
-    var hint: String,
-    var image: String
+    var image: String,
+    var video: String
 ) : Parcelable, Cloneable {
 
     fun getQuestionKo(): String {

@@ -1,5 +1,6 @@
 package com.example.wetalk.ui.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -7,19 +8,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.example.wetalk.R
 import com.example.wetalk.data.local.PracticeQuest
 import com.example.wetalk.data.local.QuestionType
+import com.example.wetalk.data.local.Test
+import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.databinding.FragmentTalkTestBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.MenuPracticeAdapter
 import com.example.wetalk.ui.adapter.ViewPagerPracticeAdapter
 import com.example.wetalk.ui.viewmodels.TalkTestViewModel
+import com.example.wetalk.util.DialogClose
+import com.example.wetalk.util.OnUpdateListener
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,13 +37,17 @@ import dagger.hilt.android.AndroidEntryPoint
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTestFragment : Fragment() {
+class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
     private var _binding: FragmentTalkTestBinding? =null
     private val binding get() = _binding!!
     private var currentIndex = 0
     private var practiceQuests: ArrayList<PracticeQuest>? = null
     private var id = 0
+    private lateinit var test:Test
+    private var questions:ArrayList<Question> ? =null
+    private var testQuests: ArrayList<TestQuest> = ArrayList()
     private val viewModel : TalkTestViewModel by viewModels()
+    private var viewPager: ViewPager? = null
     private lateinit var menuTestHardAdapter: MenuPracticeAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,15 +61,39 @@ class TalkTestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         id = arguments?.getInt("id", -1)!!
-        Log.d("TopicId", id.toString())
+
         lifecycleScope.launchWhenStarted {
             viewModel.getAllQuestionByTopicId(id)
             viewModel.questions.collect {
                 when(it) {
                     is Resource.Success -> {
-
-                        val questions:ArrayList<Question> = it.data!!.data
-                        Log.d("data", questions.toString())
+                       val questions = it.data!!.data
+                        for (q in questions) {
+                            val questionType = QuestionType(
+                                question = q.content,
+                                answer_a = q.answers[0].content,
+                                answer_b = q.answers[1].content,
+                                answer_c = q.answers[2].content,
+                                answer_d = q.answers[3].content,
+                                answer_correct = q.answers.find { it.correct }?.content ?: "",
+                                explain = q.explanation,
+                                image = q.imageLocation,
+                                video = q.videoLocation
+                            )
+                            Log.d("Quest", questionType.toString())
+                            val testQuest = TestQuest(
+                                question = questionType,
+                                answer = ""
+                            )
+                            testQuests.add(testQuest)
+                            test = Test(
+                                total = testQuests.size,
+                                correct = 0,
+                                check = 0,
+                                completed = 0
+                            )
+                            initPagerHome();
+                        }
                     }
                     is Resource.Loading -> {
 
@@ -65,60 +101,23 @@ class TalkTestFragment : Fragment() {
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
-
                 }
             }
+
         }
-        practiceQuests = getDataTest()
-        initPagerHome();
+
     }
 
-    private fun getDataTest(): ArrayList<PracticeQuest> {
-        var practices = ArrayList<PracticeQuest>()
-
-        practices.add(PracticeQuest(0,
-            QuestionType(
-            0,
-            "Day la gi?",
-            "A",
-            "B",
-            "C",
-            "D",
-            "A",
-            "",
-            "",
-            ""),
-            "A",
-            false,
-            0
-            ))
-        practices.add(PracticeQuest(1,
-            QuestionType(
-                1,
-                "Video tren la gi?",
-                "A",
-                "B",
-                "C",
-                "D",
-                "B",
-                "",
-                "",
-                ""),
-            "B",
-            false,
-            0
-        ))
-        return practices
-    }
 
     private fun initPagerHome() {
+        viewPager = binding.mainContent.viewpager
         val adapter = ViewPagerPracticeAdapter(
             (activity as MainActivity).supportFragmentManager,
             0,
-            practiceQuests!!)
+            testQuests!!)
         binding.mainContent.viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
         binding.mainContent.viewpager.adapter = adapter
-        menuTestHardAdapter = MenuPracticeAdapter(requireContext(), practiceQuests!!)
+        menuTestHardAdapter = MenuPracticeAdapter(requireContext(), testQuests!!)
         menuTestHardAdapter.setClickListener(object : MenuPracticeAdapter.ItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 binding.mainContent.viewpager.postDelayed(Runnable {
@@ -128,7 +127,7 @@ class TalkTestFragment : Fragment() {
             }
         })
         binding.mainContent.iconNext.setOnClickListener(View.OnClickListener {
-            if (currentIndex < practiceQuests!!.size - 1) {
+            if (currentIndex < testQuests!!.size - 1) {
                 currentIndex++
                 binding.mainContent.viewpager.postDelayed(Runnable {
                     binding.mainContent.viewpager.setCurrentItem(currentIndex, true) }, 0)
@@ -141,6 +140,7 @@ class TalkTestFragment : Fragment() {
                     binding.mainContent.viewpager.setCurrentItem(currentIndex, true) }, 0)
             }
         })
+        binding.mainContent.bottomTitle.text = "Question " + 1 + " / " + testQuests.size
     }
 
     var viewPagerPageChangeListener: OnPageChangeListener = object : OnPageChangeListener {
@@ -168,4 +168,81 @@ class TalkTestFragment : Fragment() {
         override fun onPageScrollStateChanged(arg0: Int) {}
     }
 
+    fun updateTestCurrentIndex(questionDetail: TestQuest?, index: Int) {
+        (activity as MainActivity).runOnUiThread { if (menuTestHardAdapter != null) menuTestHardAdapter.notifyItemChanged(index) }
+
+        var countCorrect = 0
+        var countChecked = 0
+        for (i in testQuests.indices) {
+            val detail = testQuests[i]
+            if (detail.answer != null && !detail.answer.equals("")) {
+                countChecked += 1
+            }
+            if (detail.answer != null && !detail.answer.equals("")) {
+                if (detail.answer.equals(detail.question.answer_correct)) {
+                    countCorrect = countCorrect + 1
+                }
+            }
+        }
+        test.check = countChecked
+        test.correct = countCorrect
+
+        if (test.completed == 0) {
+            if (countChecked == testQuests.size) {
+                test.completed = 1
+                binding.mainContent.rightTitle.text = "Kết Quả"
+                DialogClose.Builder(requireContext())
+                    .title("Kết quả")
+                    .cancelable(true)
+                    .canceledOnTouchOutside(true)
+                    .content("Kết thúc kiểm tra")
+                    .doneText("View Result")
+                    .onDone { finishTest() }
+                    .show()
+            } else if (index == testQuests.size - 1) {
+                binding.mainContent.rightTitle.text = "Kết Thúc"
+                if (countChecked < testQuests.size) {
+                    DialogClose.Builder(requireContext())
+                        .title("Kết quả")
+                        .content("Kết thúc kiểm tra")
+                        .doneText("Đi đến phần review")
+                        .onDone {
+                            for (i in testQuests.indices) {
+                                val detail = testQuests.get(i)
+                                if (detail.answer == null || detail.answer.equals("")
+                                ) {
+                                    val currentIndexTemp: Int = i
+                                    viewPager!!.post {
+                                        currentIndex = currentIndexTemp
+                                        binding.mainContent.bottomTitle.text =
+                                            "Question " + (currentIndex + 1) + " / " + testQuests.size
+                                        viewPager!!.setCurrentItem(currentIndex, false)
+                                    }
+                                    break
+                                }
+                            }
+                        }
+                        .show()
+                }
+            } else if ((index + 1) % 10 == 0 && index > 0) {
+                DialogClose.Builder(requireContext())
+                    .title("Review question")
+                    .cancelable(true)
+                    .canceledOnTouchOutside(true)
+                    .content("Would you like to review the overview of the questions you have done from questions " + (index - 8) + " to " + (index + 1) + "?")
+                    .doneText("Review the questions (" + (index - 8) + " to " + (index + 1) + ")")
+                    .onDone {
+                    }
+                    .show()
+            } else {
+                binding.mainContent.rightTitle.text = "Kết Thúc"
+            }
+        }
+    }
+    private fun finishTest() {
+
+    }
+    override fun updateData(result: TestQuest, index: Int) {
+        Log.d("Dataaa",result.toString())
+    }
 }

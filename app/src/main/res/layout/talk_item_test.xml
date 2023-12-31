@@ -1,29 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:overScrollMode="never"
+    android:scrollbars="none">
 
-    <LinearLayout
+    <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        android:outlineAmbientShadowColor="#B0B0B0"
-        android:outlineSpotShadowColor="#B0B0B0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="#B0B0B0"
+            android:outlineSpotShadowColor="#B0B0B0"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp">
 
-            <LinearLayout
+            <com.rey.material.widget.LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingTop="20dp">
 
@@ -32,76 +32,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"
-                    android:paddingTop="16dp"
+                    android:paddingTop="24dp"
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp"
-                    android:text="Đây là kí hiệu chữ gì ?"
+                    android:text="Đây là kí tự gì?"
+                    android:fontFamily="@font/roboto_medium"
                     />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.google.android.exoplayer2.ui.PlayerView
-                        android:id="@+id/imgVideo"
+                        android:id="@+id/vdQuestion"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="8dp"
                         android:adjustViewBounds="true"
                         android:padding="1dp"
-                        android:scaleType="fitCenter" />
+                        android:scaleType="fitCenter"
+                        />
                     <ImageView
                         android:id="@+id/imgQuestion"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="8dp"
                         android:adjustViewBounds="true"
-                        android:visibility="gone"
                         android:padding="1dp"
                         android:scaleType="fitCenter" />
+
                 </RelativeLayout>
 
-
-            </LinearLayout>
+            </com.rey.material.widget.LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
         <com.rey.material.widget.RelativeLayout
             android:id="@+id/rltView1"
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/tvNumber1"
+                android:id="@+id/tn_index1"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/circle_number"
                 android:gravity="center"
                 android:text="A"
-               />
+                android:fontFamily="@font/roboto_medium"
+                />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView1_success"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/success" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView1_failed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/failed" />
 
             <TextView
                 android:id="@+id/textOption1"
@@ -111,7 +95,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toRightOf="@+id/tvNumber1"
+                android:layout_toRightOf="@+id/tn_index1"
                 android:layout_weight="1"
                 android:background="@drawable/border_textview"
                 android:gravity="left|center_vertical"
@@ -119,42 +103,32 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="12dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="12dp" />
+                android:paddingBottom="12dp"
+                android:text="@string/cancel"
+                android:fontFamily="@font/roboto_regular"
+            />
 
         </com.rey.material.widget.RelativeLayout>
 
         <com.rey.material.widget.RelativeLayout
             android:id="@+id/rltView2"
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/tvNumber2"
+                android:id="@+id/tn_index2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/circle_number"
                 android:gravity="center"
                 android:text="B"
+                android:fontFamily="@font/roboto_medium"
                 />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView2_success"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/success" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView2_failed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/failed" />
 
             <TextView
                 android:id="@+id/textOption2"
@@ -164,49 +138,39 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toRightOf="@+id/tvNumber2"
+                android:layout_toRightOf="@+id/tn_index2"
+                android:layout_weight="1"
                 android:background="@drawable/border_textview"
                 android:gravity="left|center_vertical"
                 android:minHeight="36dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="12dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="12dp" />
+                android:paddingBottom="12dp"
+                android:text="@string/cancel"
+                android:fontFamily="@font/roboto_regular"
+             />
 
         </com.rey.material.widget.RelativeLayout>
-
         <com.rey.material.widget.RelativeLayout
             android:id="@+id/rltView3"
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/tvNumber3"
+                android:id="@+id/tn_index3"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/circle_number"
                 android:gravity="center"
                 android:text="C"
+                android:fontFamily="@font/roboto_medium"
                  />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView3_success"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/success" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView3_failed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/failed" />
 
             <TextView
                 android:id="@+id/textOption3"
@@ -216,7 +180,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toRightOf="@+id/tvNumber3"
+                android:layout_toRightOf="@+id/tn_index3"
                 android:layout_weight="1"
                 android:background="@drawable/border_textview"
                 android:gravity="left|center_vertical"
@@ -224,42 +188,30 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="12dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="12dp" />
+                android:paddingBottom="12dp"
+                android:text="@string/cancel"
+                android:fontFamily="@font/roboto_regular"
+               />
 
         </com.rey.material.widget.RelativeLayout>
-
         <com.rey.material.widget.RelativeLayout
             android:id="@+id/rltView4"
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/tvNumber4"
+                android:id="@+id/tn_index4"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/circle_number"
                 android:gravity="center"
                 android:text="D"
-                />
+                android:fontFamily="@font/roboto_medium"
+                 />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView4_success"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/success" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animView4_failed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                app:lottie_autoPlay="false"
-                app:lottie_loop="false"
-                app:lottie_rawRes="@raw/failed" />
 
             <TextView
                 android:id="@+id/textOption4"
@@ -269,8 +221,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toLeftOf="@+id/imgTick4"
-                android:layout_toRightOf="@+id/tvNumber4"
+                android:layout_toRightOf="@+id/tn_index4"
                 android:layout_weight="1"
                 android:background="@drawable/border_textview"
                 android:gravity="left|center_vertical"
@@ -278,41 +229,58 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="12dp"
                 android:paddingRight="12dp"
-                android:paddingBottom="12dp" />
+                android:paddingBottom="12dp"
+                android:text="@string/cancel"
+                android:fontFamily="@font/roboto_regular"
+                />
 
         </com.rey.material.widget.RelativeLayout>
 
 
+
         <LinearLayout
-            android:id="@+id/lnResult"
+            android:id="@+id/lnExplain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/lnHint"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#9D9D9D" />
+
+            <TextView
+                android:id="@+id/btn_show_explan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:layout_marginTop="12dp"
+               />
 
-                <TextView
-                    android:id="@+id/txHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@+id/tvNumber4"
-                    android:gravity="left|center_vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                />
 
         </LinearLayout>
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.rey.material.widget.LinearLayout>
+</ScrollView>
