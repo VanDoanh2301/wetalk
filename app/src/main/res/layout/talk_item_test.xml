@@ -38,16 +38,32 @@
                     android:text="Đây là kí hiệu chữ gì ?"
                     />
 
-                <ImageView
-                    android:id="@+id/imgQuestion"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="8dp"
-                    android:adjustViewBounds="true"
-                    android:padding="1dp"
-                    android:scaleType="fitCenter" />
+                    android:layout_height="wrap_content">
+                    <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/imgVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:padding="1dp"
+                        android:scaleType="fitCenter" />
+                    <ImageView
+                        android:id="@+id/imgQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:visibility="gone"
+                        android:padding="1dp"
+                        android:scaleType="fitCenter" />
+                </RelativeLayout>
+
 
             </LinearLayout>
 

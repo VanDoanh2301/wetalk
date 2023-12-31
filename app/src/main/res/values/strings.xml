@@ -49,7 +49,7 @@
     <string name="export_to_PDF">Export to PDF</string>
     <string name="diary_period">Diary Period</string>
     <string name="time_range">Time range</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Thoát</string>
     <string name="pack_01">Pack 01</string>
     <string name="pack_02">Pack 02</string>
     <string name="pack_03">Pack 03</string>
@@ -116,7 +116,7 @@
     <string name="preparing">Preparing...</string>
     <string name="pick_a_week">Pick a week</string>
     <string name="pick_a_date_title">Pick a date</string>
-    <string name="ok">OK</string>
+    <string name="ok">Lưu</string>
     <string name="logout">Logout</string>
     <string name="Google_Sign_In_failed">Google Sign In failed</string>
     <string name="Uploading">Uploading</string>

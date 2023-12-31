@@ -9,3 +9,7 @@ annotation class ApiOne
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ApiTwo
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ApiThree

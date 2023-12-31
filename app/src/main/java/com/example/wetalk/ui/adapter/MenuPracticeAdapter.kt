@@ -16,10 +16,7 @@ import com.example.wetalk.util.Utils
 class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest>) :
     RecyclerView.Adapter<MenuPracticeAdapter.ViewHolder>() {
 
-    private var screenPadding:Int
-    init {
-        screenPadding = Utils.convertPixelsToDp(Utils.getWidthScreen(context) / 3, context)
-    }
+
     private var indexSelection = 0
 
     private var current_selected = 0
@@ -68,7 +65,7 @@ class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest
 
                 if (item.answerUser != null && item.answerUser.isNotEmpty()) {
                     rltAnswer.visibility = View.VISIBLE
-                    if (item.answerUser.equals(item.question.answer_correct)) {
+                    if (item.answerUser.equals(item.questionType.answer_correct)) {
                         rltAnswer.setBackgroundResource(R.drawable.b2_grid_item_question_bg_success)
                         tvAnswer.text = convertAnswer(item)
                     } else {
@@ -95,13 +92,13 @@ class MenuPracticeAdapter(var context: Context, var data:ArrayList<PracticeQuest
         }
 
         private fun convertAnswer(questionNew: PracticeQuest): String? {
-            return if (questionNew.answerUser == questionNew.question.answer_a) {
+            return if (questionNew.answerUser == questionNew.questionType.answer_a) {
                 "A"
-            } else if (questionNew.answerUser == questionNew.question.answer_b) {
+            } else if (questionNew.answerUser == questionNew.questionType.answer_b) {
                 "B"
-            } else if (questionNew.answerUser == questionNew.question.answer_c) {
+            } else if (questionNew.answerUser == questionNew.questionType.answer_c) {
                 "C"
-            } else if (questionNew.answerUser == questionNew.question.answer_d) {
+            } else if (questionNew.answerUser == questionNew.questionType.answer_d) {
                 "D"
             } else {
                 ""

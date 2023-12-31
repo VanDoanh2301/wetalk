@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 
-interface ApiInterface {
+interface ApiLogin {
     @POST("api/register/generateOtp")
     suspend fun generateOtp(@Body user: User?): Response<HostResponse>
 

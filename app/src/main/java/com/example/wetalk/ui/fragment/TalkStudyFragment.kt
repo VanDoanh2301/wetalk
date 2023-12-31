@@ -40,7 +40,7 @@ class TalkStudyFragment : Fragment() {
             findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment)
         }
         binding.btnTest.setOnClickListener {
-//            findNavController().navigate(R.id.action_talkHomeFragment_to_talkTestFragment)
+            findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment)
         }
     }
 }

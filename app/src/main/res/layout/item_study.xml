@@ -17,6 +17,7 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:text="A"
+            android:background="@drawable/bg_button_custom"
             android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="24sp"

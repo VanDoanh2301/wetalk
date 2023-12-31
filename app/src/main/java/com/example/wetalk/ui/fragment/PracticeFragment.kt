@@ -29,7 +29,7 @@ class PracticeFragment : Fragment() {
             val testQuestFragment: PracticeFragment =
                 PracticeFragment()
             val mBundle = Bundle()
-            mBundle.putParcelable("question", questionNew)
+            mBundle.putParcelable("questionType", questionNew)
             mBundle.putInt("question_index", question_index)
             testQuestFragment.arguments = mBundle
             return testQuestFragment
@@ -48,7 +48,7 @@ class PracticeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        question = (requireArguments().getParcelable<Parcelable>("question") as PracticeQuest?)!!
+//        questionType = (requireArguments().getParcelable<Parcelable>("questionType") as PracticeQuest?)!!
         question_index = requireArguments().getInt("question_index")
         total_question = requireArguments().getInt("total_question")
 

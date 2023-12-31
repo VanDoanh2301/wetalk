@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PracticeQuest(
     var id: Int,
-    var question: Question,
+    var questionType: QuestionType,
     var answerUser: String,
-    var learnedAudio: Boolean,
+    var learnedVideo: Boolean,
     var zIndex: Int
 ) : Parcelable {}

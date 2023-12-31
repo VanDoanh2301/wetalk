@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.regex.Pattern
 
 @Parcelize
-data class Question(
+data class QuestionType(
     var id: Int = 0,
     var question: String,
     var answer_a: String,

@@ -1,6 +1,7 @@
 package com.example.wetalk.ui.fragment
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wetalk.databinding.FragmentTalkSignLanguageBinding
 import com.example.wetalk.ui.adapter.StudyAdapter
+import com.example.wetalk.util.DialogUtil
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -66,27 +68,27 @@ class TalkSignLanguageFragment : Fragment() {
             .addOnSuccessListener { uri ->
                 callback(uri.toString())
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
             }
     }
 
     private fun showVideoDialog(letter: String) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Video for $letter")
+        val progressDialog = ProgressDialog(requireContext())
+        progressDialog.setTitle("Đang tải")
+        progressDialog.setMessage("Xin chờ...")
+        progressDialog.show()
 
         // Use a callback to get the video URL asynchronously
         getVideoURL(letter) { videoUrl ->
-            val videoView = VideoView(requireContext())
-            videoView.setVideoURI(Uri.parse(videoUrl))
-            videoView.start()
+            progressDialog.dismiss()
 
-            builder.setView(videoView)
-            builder.setPositiveButton("Đóng") { dialog, _ -> dialog.dismiss() }
-
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+            DialogUtil.Builder(requireContext())
+                .title("Chữ $letter")
+                .urlVideo(videoUrl)
+                .show()
         }
     }
+
 
 
 }

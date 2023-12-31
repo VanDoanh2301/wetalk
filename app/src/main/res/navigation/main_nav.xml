@@ -156,7 +156,7 @@
         tools:layout="@layout/fragment_talk_sign" />
     <fragment
         android:id="@+id/talkProfileHomeFragment"
-        android:name="com.example.wetalk.TalkProfileHomeFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkProfileHomeFragment"
         android:label="fragment_talk_profile_home"
         tools:layout="@layout/fragment_talk_profile_home" >
         <action
@@ -165,7 +165,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkTopicFragment"
-        android:name="com.example.wetalk.TalkTopicFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTopicFragment"
         android:label="fragment_talk_topic"
         tools:layout="@layout/fragment_talk_topic" >
         <action
