@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(ViewModelComponent::class)
 object ApiModule {
-    private const val BASE_URL_1 = "http://202.191.56.11:8080/"
-    private const val BASE_URL_2 = "http://202.191.56.11:8090/"
-    private const val BASE_URL_3 = "http://202.191.56.11:8060/"
+    private const val BASE_URL_1 = "http://wetalk.ibme.edu.vn:8080/"
+    private const val BASE_URL_2 = "http://wetalk.ibme.edu.vn:8090/"
+    private const val BASE_URL_3 = "http://wetalk.ibme.edu.vn:8060/"
 
     @Provides
     @ViewModelScoped

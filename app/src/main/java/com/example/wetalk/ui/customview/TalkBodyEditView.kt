@@ -42,7 +42,8 @@ class TalkBodyEditView : LinearLayout {
         removeAllViews()
         this.videoLocal = videoLocal
         this.activity = activity
-        orientation = HORIZONTAL
+        orientation = VERTICAL
+        gravity = TEXT_ALIGNMENT_CENTER
         for (bodyItem in videoLocal.videoBodies.bodyItems) {
             addImagePreview(bodyItem)
         }

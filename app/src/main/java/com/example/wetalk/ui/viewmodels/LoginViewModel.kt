@@ -30,9 +30,11 @@ class LoginViewModel @Inject constructor(
     private var loginResponse: LoginResponse? = null
 
 
+
     /** Login */
     fun login(post: LoginPost) = viewModelScope.launch {
         safeLogin(post)
+
     }
 
     /** Check networking */

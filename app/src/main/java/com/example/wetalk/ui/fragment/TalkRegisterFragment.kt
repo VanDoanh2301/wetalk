@@ -1,6 +1,7 @@
 package com.example.wetalk.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.example.wetalk.data.model.objectmodel.User
 import com.example.wetalk.databinding.FragmentTalkRegisterBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.viewmodels.RegisterViewModel
+import com.example.wetalk.util.Resource
 import com.example.wetalk.util.Task
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.ParseException
@@ -48,17 +50,23 @@ class TalkRegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.loginProgressBar.visibility = View.GONE
-        binding.loginCountrycode.registerCarrierNumberEditText(binding.loginMobileNumber)
         initViewModel()
-        initAge()
         initRegister();
     }
 
     private fun initViewModel() {
         lifecycleScope.launchWhenStarted {
             viewModel.registerResponseStateFlow.collect{
+                    when (it) {
+                        is Resource.Loading -> {
+                        }
+                        is Resource.Success -> {
 
+                        }
+                        is Resource.Error -> {
+
+                        }
+                    }
             }
         }
     }
@@ -66,23 +74,17 @@ class TalkRegisterFragment : Fragment() {
     private fun initRegister() {
         binding.sendOtpBtn.setOnClickListener {
             binding.apply {
-                if(!loginCountrycode.isValidFullNumber){
-                    loginMobileNumber.error = "Phone number not valid";
-                    return@apply;
-                }
                 if (edtPassword.text.toString() != edtConfirm.text.toString()) {
                     edtConfirm.error = "Passwords are not the same";
                 } else {
-                    var user = User(edtName.text.toString(),
+                    var user = User(
+                        edtName.text.toString(),
                         edtEmail.text.toString(),
                         edtPassword.text.toString(),
-                        loginCountrycode.fullNumberWithPlus,
-                        edtAddress.text.toString(),
-                        "USER",
-                        age!!,
-                        edtGender.getText().toString()
+                        "USER"
                     );
                     viewModel.generateOtp(user)
+
                     val bundle = bundleOf("email" to edtEmail.text.toString())
                     findNavController().navigate(R.id.action_talkRegisterFragment_to_talkOtpFragment, bundle)
                 }
@@ -90,36 +92,5 @@ class TalkRegisterFragment : Fragment() {
 
         }
 
-    }
-    /** Parse Age User */
-    private fun initAge() {
-        binding.edtDate.setOnClickListener(View.OnClickListener {
-
-            WeTalkApp.showDatePicker(activity as MainActivity, object  : Task<Long> {
-                override fun callback(result: Long) {
-                    val format =
-                        SimpleDateFormat("EE, dd MMM yyyy", Locale.getDefault())
-                    val dateString: String = format.format(result)
-                    binding.edtDate.text = dateString
-                    try {
-                        val date: Date = format.parse(dateString)
-                        val dob: Calendar = Calendar.getInstance()
-                        dob.time = date
-                        val today: Calendar = Calendar.getInstance()
-                        age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR)
-                        if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
-                            age = age!! - 1
-                        } else if (today.get(Calendar.MONTH) === dob.get(Calendar.MONTH)
-                            && today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)
-                        ) {
-                            age = age!! - 1
-                        }
-                    } catch (e: ParseException) {
-                        e.printStackTrace()
-                    }
-                }
-
-            })
-        })
     }
 }

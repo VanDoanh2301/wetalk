@@ -85,8 +85,6 @@ class TalkVocabularyUpFragment : Fragment() {
             -1, System.currentTimeMillis(), "",
             VideoBody(ArrayList<VideoBodyItem>()), "", 1
         )
-
-
         lifecycleScope.launchWhenStarted {
             viewModel.videoLocal.collect {
                 // Update UI with the videoLocal data

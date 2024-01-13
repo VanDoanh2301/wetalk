@@ -8,6 +8,8 @@ import com.example.wetalk.data.model.responsemodel.HostResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -28,4 +30,6 @@ interface ApiLogin {
         @Part file: MultipartBody.Part)
             : Response<String>
 
+    @GET("users/getUserInfor")
+    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<User>
 }

@@ -1,317 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    tools:context=".ui.fragment.TalkRegisterFragment"
-    android:gravity="center"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+
+    <com.rey.material.widget.ImageView
+        android:id="@+id/img_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/top_background1"
+        />
+
+    <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?actionBarSize"
+        android:layout_marginTop="340dp"
         android:gravity="center"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <androidx.cardview.widget.CardView
             android:id="@+id/tab_home"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="10dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/blue_sea"
             android:background="@drawable/circular_bg"
-            >
+            app:cardBackgroundColor="@color/blue_sea"
+            app:cardCornerRadius="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="18sp"
                 android:layout_gravity="center"
-                android:text="1"/>
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/tab_otp"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="10dp"
-            app:cardCornerRadius="20dp"
             android:background="@drawable/circular_bg"
-            app:cardBackgroundColor="@color/light_gray">
+            app:cardBackgroundColor="@color/light_gray"
+            app:cardCornerRadius="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:text="2"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:text="2"/>
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/tab_user"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="10dp"
-            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="@color/light_gray"
-            >
+            app:cardCornerRadius="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:textSize="18sp"
-                android:text="3"/>
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
-    </LinearLayout>
+    </com.rey.material.widget.LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.rey.material.widget.TextView
+        android:id="@+id/txt_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nhập thông tin tài khoản"
-        android:gravity="center_vertical|center"
-        android:fontFamily="@font/roboto_regular"
-        android:letterSpacing="0.08"
-        android:textColor="@color/black"
+        android:text="Đăng Ký Tài Khoản"
+        android:textSize="40sp"
         android:textStyle="bold"
-        android:textSize="24sp"
-        android:layout_weight="5"/>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        app:cardCornerRadius="4dp"
-        app:cardBackgroundColor="@color/white"
+        android:textColor="#6672FF"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_view"
+        />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_name"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:drawableStart="@drawable/name"
+        android:drawablePadding="16dp"
+        android:hint="Tên người dùng"
         android:layout_marginTop="16dp"
-        >
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+        android:paddingStart="8dp"
+        android:background="@drawable/edt_bg_custom"
+        android:textColorHint="#3B608C"
+        android:textSize="18sp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_view"
+        />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_email"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:drawableStart="@drawable/email"
+        android:drawablePadding="16dp"
+        android:hint="Email"
+        android:layout_marginTop="16dp"
+        android:paddingStart="8dp"
+        android:background="@drawable/edt_bg_custom"
+        android:textColorHint="#3B608C"
+        android:textSize="18sp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_name"
+        />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_password"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:drawableStart="@drawable/password"
+        android:drawablePadding="16dp"
+        android:hint="Mật khẩu"
+        android:paddingStart="8dp"
+        android:background="@drawable/edt_bg_custom"
+        android:textColorHint="#3B608C"
+        android:textSize="18sp"
+        android:ems="10"
+        android:layout_marginTop="16dp"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_email"
+        />
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_confirm"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:drawableStart="@drawable/email"
+        android:drawablePadding="16dp"
+        android:hint="Nhập lại mật khẩu"
+        android:layout_marginTop="16dp"
+        android:paddingStart="8dp"
+        android:background="@drawable/edt_bg_custom"
+        android:textColorHint="#3B608C"
+        android:textSize="18sp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_password"
+        />
+    <com.rey.material.widget.ImageView
+        android:id="@+id/send_otp_btn"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_confirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/btn_arraw1"
+        />
 
-                    <EditText
-                        android:id="@+id/edt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Name"
-                        android:drawableLeft="@drawable/ic_person"
-                        android:drawablePadding="10dp"
-                        android:inputType="text"
-                        android:padding="10dp" />
+    <com.rey.material.widget.TextView
+        android:id="@+id/txt_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#3b60bc"
+        android:text="Quên mật khẩu? Tìm lại"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send_otp_btn"
+        />
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-
-                    <EditText
-                        android:id="@+id/edt_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Email"
-                        android:drawableLeft="@drawable/ic_email"
-                        android:drawablePadding="10dp"
-                        android:inputType="text"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/login_countrycode"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        app:ccp_showFlag="false"
-                        android:elevation="4dp"
-                        app:ccp_showNameCode="false" />
-
-                    <EditText
-                        android:id="@+id/login_mobile_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="7"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Mobile"
-                        android:inputType="phone"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/edt_gender"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Gender"
-                        android:drawableLeft="@drawable/ic_gender"
-                        android:drawablePadding="10dp"
-                        android:layout_weight="1"
-                        android:inputType="text"
-                        android:padding="10dp" />
-
-                    <EditText
-                        android:id="@+id/edt_address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Address"
-                        android:drawableLeft="@drawable/ic_address"
-                        android:drawablePadding="10dp"
-                        android:layout_weight="1"
-                        android:inputType="text"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-
-
-
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/edt_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:hint="Calender"
-                        android:drawableLeft="@drawable/ic_cal"
-                        android:drawablePadding="10dp"
-                        android:textSize = "18sp"
-                        android:inputType="none"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/edt_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:drawableLeft="@drawable/ic_pass"
-                        android:hint="Password"
-                        android:drawablePadding="10dp"
-                        android:inputType="textPassword"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-
-
-                    <EditText
-                        android:id="@+id/edt_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/edit_text_rounded_corner"
-                        android:elevation="5dp"
-                        android:drawablePadding="10dp"
-                        android:hint="Confirm password"
-                        android:drawableLeft="@drawable/ic_pass"
-                        android:inputType="textPassword"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </ScrollView>
-
-
-    </androidx.cardview.widget.CardView>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="20"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <com.rey.material.widget.Button
-            android:id="@+id/send_otp_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_rounded_corner"
-            android:text="Send otp"
-            android:textColor="@color/white" />
-
-        <ProgressBar
-            android:id="@+id/login_progress_bar"
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="6dp"
-            android:indeterminateTint="@color/blue_sea" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

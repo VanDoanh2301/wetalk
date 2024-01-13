@@ -20,28 +20,28 @@
                 android:layout_height="match_parent"
                 app:contentInsetStart="0dp"
                 >
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/bt_back"
-                    android:layout_width="?actionBarSize"
-                    android:layout_height="?actionBarSize"
-                    android:background="@drawable/bg_bt_button"
-                    android:padding="16dp"
-                    android:src="@drawable/arrow_left" />
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:id="@+id/bt_back"-->
+<!--                    android:layout_width="?actionBarSize"-->
+<!--                    android:layout_height="?actionBarSize"-->
+<!--                    android:background="@drawable/bg_bt_button"-->
+<!--                    android:padding="16dp"-->
+<!--                    android:src="@drawable/img" />-->
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:paddingStart="16dp"
-                    android:hint="Tìm kiếm"
-                    android:textColorHint="@color/white"
-                    />
+<!--                <EditText-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:paddingStart="16dp"-->
+<!--                    android:hint="Tìm kiếm"-->
+<!--                    android:textColorHint="@color/white"-->
+<!--                    />-->
                 <com.rey.material.widget.ImageView
                     android:id="@+id/cd_save"
                     android:layout_width="?actionBarSize"
                     android:layout_height="?actionBarSize"
                     android:layout_gravity="right"
-                    android:padding="12dp"
+                    android:padding="14dp"
                     style="@style/ripple_btn_tab_widget_light"
                     android:layout_marginStart="15dp"
                     android:src="@drawable/menu_setting"
@@ -52,15 +52,16 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <RelativeLayout
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rlt_user"
             android:layout_width="match_parent"
             android:background="@color/white"
+            style="@style/ripple_btn_tab_widget_light"
             android:gravity="center"
             android:layout_height="80dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <include
@@ -102,11 +103,13 @@
                 android:padding="12dp"
                 style="@style/ripple_btn_tab_widget_light"
                 android:src="@drawable/ic_change"/>
-        </RelativeLayout>
-        <RelativeLayout
+        </com.rey.material.widget.RelativeLayout>
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rlt_security"
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center"
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_marginTop="8dp"
             android:layout_height="80dp">
             <LinearLayout
@@ -121,7 +124,7 @@
                     android:layout_height="48dp"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/ic_primary"
-                    android:padding="8dp"
+                    android:padding="12dp"
                     android:layout_centerInParent="true"
                     android:layout_toRightOf="@id/back_btn"
                     />
@@ -142,8 +145,9 @@
                 android:padding="16dp"
                 style="@style/ripple_btn_tab_widget_light"
                 android:src="@drawable/arrow_right"/>
-        </RelativeLayout>
-        <RelativeLayout
+        </com.rey.material.widget.RelativeLayout>
+        <com.rey.material.widget.RelativeLayout
+            style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center"
@@ -160,7 +164,7 @@
                     android:layout_height="48dp"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/ic_lock"
-                    android:padding="8dp"
+                    android:padding="12dp"
                     android:layout_centerInParent="true"
                     android:layout_toRightOf="@id/back_btn"
                     />
@@ -181,9 +185,6 @@
                 android:padding="16dp"
                 style="@style/ripple_btn_tab_widget_light"
                 android:src="@drawable/arrow_right"/>
-        </RelativeLayout>
+        </com.rey.material.widget.RelativeLayout>
     </LinearLayout>
-
-
-
 </FrameLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingTop="24dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <com.rey.material.widget.TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/avertabold"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/Play"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/black" />
+
+    <com.rey.material.widget.FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/img_recent_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <FrameLayout
+            android:id="@+id/play_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_play"
+                android:tint="#fafafa" />
+        </FrameLayout>
+    </com.rey.material.widget.FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bt_share"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/bg_bt_button"
+        android:padding="16dp"
+        app:tint="@color/black"
+        android:src="@drawable/setting_share" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bt_back"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:background="@drawable/bg_bt_button"
+        android:padding="16dp"
+        app:tint="@color/black"
+        android:src="@drawable/arrow_left" />
+</com.rey.material.widget.RelativeLayout>

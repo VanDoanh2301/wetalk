@@ -89,18 +89,22 @@ class TalkOtpFragment : Fragment() {
     /** Create Timer */
     private fun startResendTimer() {
         binding.resendOtpTextview.isEnabled = false
-        val timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                timeoutSeconds--
-                activity!!.runOnUiThread { binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds" }
-                if (timeoutSeconds <= 0) {
-                    timeoutSeconds = 60L
-                    binding.loginProgressBar.visibility = View.GONE
-                    timer.cancel()
-                    activity!!.runOnUiThread { binding.resendOtpTextview.isEnabled = true }
+        try{
+            val timer = Timer()
+            timer.scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    timeoutSeconds--
+                    activity!!.runOnUiThread { binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds" }
+                    if (timeoutSeconds <= 0) {
+                        timeoutSeconds = 60L
+                        binding.loginProgressBar.visibility = View.GONE
+                        timer.cancel()
+                    }
                 }
-            }
-        }, 0, 1000)
+            }, 0, 1000)
+        } catch (e : Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
+
     }
 }

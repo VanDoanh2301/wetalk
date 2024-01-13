@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -41,110 +42,42 @@ class TalkHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomNavigation()
-        initTop()
+        onClickView()
 
     }
-
-    private fun initTop() {
-      binding.frameContainer.apply {
-          rcvMenu.layoutManager = LinearLayoutManager(requireContext())
-          var adapter = TalkMenuAdapter(requireContext(), getMenus())
-          adapter.notifyDataSetChanged()
-          rcvMenu.adapter = adapter
-      }
-    }
-    private fun getMenus(): ArrayList<MenuHome> {
-        val menus: ArrayList<MenuHome> = ArrayList<MenuHome>()
-        menus.add(MenuHome(R.drawable.menu_hangtag, requireContext().getString(R.string.hashtag)))
-        menus.add(MenuHome(R.drawable.menu_passcode, requireContext().getString(R.string.pass_code)))
-        menus.add(MenuHome(R.drawable.menu_notification, requireContext().getString(R.string.notification)))
-        menus.add(MenuHome(R.drawable.menu_atlas, requireContext().getString(R.string.atlas)))
-        menus.add(MenuHome(R.drawable.menu_backup, requireContext().getString(R.string.backup_restore)))
-        menus.add(MenuHome(R.drawable.setting_share, requireContext().getString(R.string.setting)))
-        menus.add(MenuHome(R.drawable.ic_logout, "Đăng xuất"))
-        return menus
-    }
-    private fun initBottomNavigation() {
-        binding.fgHome.apply {
-            /** Custom viewpager */
-            pagerMain.adapter = object : FragmentStateAdapter(requireActivity()) {
-                override fun getItemCount(): Int {
-                    return 4
-                }
-
-                override fun createFragment(position: Int): Fragment {
-                    return when (position) {
-                        0 -> TalkChatFragment()
-                        1 -> TalkStudyFragment()
-                        2 -> TalkProfileFragment()
-                        3 -> TalkNetWorkFragment()
-                        else -> throw IllegalArgumentException("Invalid position: $position")
-                    }
-                }
+    private fun onClickView() {
+        binding.apply {
+            btnChat.setOnClickListener {
+             findNavController().navigate(R.id.action_talkHomeFragment_to_talkChatHomeFragment)
             }
-            /** config onClick tab */
-            btTabMess.setOnClickListener { setCurrentTab(pagerMain, 0) }
-            btTabStudy.setOnClickListener { setCurrentTab(pagerMain, 1) }
-            btTabProfile.setOnClickListener { setCurrentTab(pagerMain, 2) }
-            btTabNetwork.setOnClickListener { setCurrentTab(pagerMain, 3) }
-            /** config tab view bottom */
-            pagerMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    setColorImageView(imgTabMess, imgTabStudy, imgTabProfile, imgTabNetwork)
-                    setColorTextView(viewTabMess, viewTabStudy, viewTabProfile, viewTabNetwork)
-                    when (position) {
-                        0 -> {
-                            setColorTextViewSelect(viewTabMess)
-                            setColorImageViewSelect(imgTabMess)
-                        }
-                        1 -> {
-                            setColorTextViewSelect(viewTabStudy)
-                            setColorImageViewSelect(imgTabStudy)
-                        }
-                        2 -> {
-                            setColorTextViewSelect(viewTabProfile)
-                            setColorImageViewSelect(imgTabProfile)
-                        }
-                        else -> {
-                            setColorTextViewSelect(viewTabNetwork)
-                            setColorImageViewSelect(imgTabNetwork)
-                        }
-                    }
-                }
-            })
-            setColorTextViewSelect(viewTabMess)
-            setColorImageViewSelect(imgTabMess)
+            btnAthen.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment)
+            }
+            numberBtn.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignNumberFragment)
+            }
+            btnCharac.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment)
+            }
+            btnTest.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment)
+            }
+            btnProvide.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment)
+            }
         }
     }
-    private fun setCurrentTab(viewPager: ViewPager2, i: Int) {
-        viewPager.currentItem = i
-    }
+//    private fun getMenus(): ArrayList<MenuHome> {
+//        val menus: ArrayList<MenuHome> = ArrayList<MenuHome>()
+//        menus.add(MenuHome(R.drawable.menu_hangtag, requireContext().getString(R.string.hashtag)))
+//        menus.add(MenuHome(R.drawable.menu_passcode, requireContext().getString(R.string.pass_code)))
+//        menus.add(MenuHome(R.drawable.menu_notification, requireContext().getString(R.string.notification)))
+//        menus.add(MenuHome(R.drawable.menu_atlas, requireContext().getString(R.string.atlas)))
+//        menus.add(MenuHome(R.drawable.menu_backup, requireContext().getString(R.string.backup_restore)))
+//        menus.add(MenuHome(R.drawable.setting_share, requireContext().getString(R.string.setting)))
+//        menus.add(MenuHome(R.drawable.ic_logout, "Đăng xuất"))
+//        return menus
+//    }
 
-
-    private fun setColorTextView(vararg views: TextView) {
-        for (view in views) {
-            view.setTextColor(Color.parseColor("#000000"))
-        }
-    }
-
-    private fun setColorTextViewSelect(vararg views: TextView) {
-        for (view in views) {
-            view.setTextColor(Color.parseColor("#9ACFFF"))
-        }
-    }
-
-    private fun setColorImageView(vararg views: ImageView) {
-        for (view in views) {
-            Utils.setColorFilter(view, Color.parseColor("#000000"))
-        }
-    }
-
-    private fun setColorImageViewSelect(vararg views: ImageView) {
-        for (view in views) {
-            Utils.setColorFilter(view, "#9ACFFF")
-        }
-    }
 
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
+import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,9 +23,9 @@ class TalkTestViewModel @Inject constructor(private val repository: TalkReposito
 
     private var hostResponse: GetAllQuestion? = null
 
-    fun getAllQuestionByTopicId(topicId:Int) = viewModelScope.launch {
+    fun getAllQuestionByTopicId(questionSize: QuestionSize) = viewModelScope.launch {
         try {
-            val response = repository.getAllQuestionByTopicId(topicId)
+            val response = repository.getAllQuestionByTopicID(questionSize)
             _questions.value = handleGetAllQuestion(response)
         } catch (e: Exception) {
             Log.e("GETALLQUESTION_API_ERROR", e.message.toString())

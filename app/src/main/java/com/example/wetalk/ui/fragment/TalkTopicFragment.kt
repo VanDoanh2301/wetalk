@@ -53,9 +53,14 @@ class TalkTopicFragment : Fragment() {
                     is Resource.Success -> {
                         topics = it.data!!.data
                         Log.d("Topic", topics.toString())
-                        adapter.notifyData(topics!!)
-                        binding.rcvView.layoutManager = LinearLayoutManager(requireContext())
-                        binding.rcvView.adapter = adapter
+                        try {
+                            adapter.notifyData(topics!!)
+                            binding.rcvView.layoutManager = LinearLayoutManager(requireContext())
+                            binding.rcvView.adapter = adapter
+                        } catch (e: Exception) {
+                            Toast.makeText(requireContext(), "Topic is Null", Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                     is Resource.Loading -> {
 

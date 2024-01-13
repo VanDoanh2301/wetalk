@@ -47,8 +47,8 @@ class TalkLoginFragment : Fragment() {
             requireActivity().finish()
         }
         binding.btnSignIn.setOnClickListener {
-
-            onLogin()
+            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment)
+//            onLogin()
         }
         initLogin();
         innitActionView();

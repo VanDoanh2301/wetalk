@@ -1,5 +1,6 @@
 package com.example.wetalk.ui.customview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -26,6 +27,7 @@ import com.example.wetalk.WeTalkApp
 import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.fragment.BaseFragment
+import com.example.wetalk.ui.fragment.TalkPlayFragment
 import com.example.wetalk.util.Task
 import com.example.wetalk.util.Utils
 import com.xujiaji.happybubble.Auto
@@ -74,20 +76,19 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
 
         cvFrame!!.setOnClickListener {
             if (isPreview) {
-//                BaseFragment.add(
-//                    context, TalkPlayFragment.newInstance()
-//                        .setPath(item.isVideo?.let { if (it) item.devicePath else item.path } ?: "", item.isVideo?.let { if (it) 2 else 1 } ?: 0)
-//                )
+
             } else {
                 cvFrame!!.setCardBackgroundColor(Color.parseColor("#13B6CC"))
                 showPaintMenu(this@TalkImageViewItem, object : Task<Int> {
                     override fun callback(result: Int) {
                         when (result) {
-                            0 -> full()
-                            1 -> zoomIn()
-                            2 -> zoomOut()
-                            3 -> transLeft()
-                            4 -> transRight()
+                            4 -> {
+//                                BaseFragment.add(
+//                                    context, TalkPlayFragment.newInstance()
+//                                        .setPath(item.isVideo?.let { if (it) item.devicePath else item.path } ?: "", item.isVideo?.let { if (it) 2 else 1 } ?: 0)
+//                                )
+
+                            }
                             5 -> share()
                             6 -> deleteImage()
                             else -> cvFrame!!.setCardBackgroundColor(Color.TRANSPARENT)
@@ -114,65 +115,15 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
 
     /** set Frame */
     private fun set() {
-        cvFrame!!.layoutParams.width = (w?.times(item!!.w))!!.toInt()
-        (cvFrame!!.layoutParams as MarginLayoutParams).leftMargin = (w!! * item!!.transX).toInt()
+        cvFrame!!.layoutParams.width = (w?.times(item!!.w))!!.toInt() + 500
+        (cvFrame!!.layoutParams as MarginLayoutParams).leftMargin = width
         cvFrame!!.requestLayout()
     }
 
-    /** transRight */
-    private fun transRight() {
-        val t = item!!.transX ?: 0
-        if (t > 90) {
-            return
-        } else {
-            item!!.transX = t + 1
-        }
-        set()
-    }
-    /** transLeft */
-    private fun transLeft() {
-        val t = item!!.transX ?: 0
-        if (t < -90) {
-            return
-        } else {
-            item!!.transX = t - 1
-        }
-        set()
-    }
-    /** Zoom In */
-    private fun zoomIn() {
-        val w = item!!.w ?: 0
-        item!!.w = w + 2
-        if (item!!.w ?: 0 > 100) {
-            item!!.w = 100
-        }
-        set()
-    }
 
-    /** Zoom out */
-    private fun zoomOut() {
-        val w = item!!.w ?: 0
-        item!!.w = w - 2
-        if (item.w ?: 0 < 16) {
-            item!!.w = 16
-        }
-        set()
-    }
-
-    /** Zoom Full */
-    private fun full() {
-        if (item!!.w ?: 0 < 50) {
-            item!!.w = 50
-        } else if (item!!.w == 50) {
-            item!!.w = 100
-        } else {
-            item!!.w = 25
-        }
-        item!!.transX = 0
-        set()
-    }
 
     /** show paint menu example zoom, delete, share,..*/
+    @SuppressLint("MissingInflatedId")
     private fun showPaintMenu(v: View, type: Task<Int>) {
         val popup = LayoutInflater.from(context).inflate(R.layout.talk_popup_menu_paint_view, null)
         val bubbleLayout = BubbleLayout(context)
@@ -190,18 +141,6 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
             .setOffsetX<BubbleDialog>(0)
             .setOffsetY<BubbleDialog>(0)
         bubbleDialog.show()
-        popup.findViewById<View>(R.id.bt_full_image).setOnClickListener {
-            type.callback(0)
-        }
-        popup.findViewById<View>(R.id.bt_zoom_in).setOnClickListener {
-            type.callback(1)
-        }
-        popup.findViewById<View>(R.id.bt_zoom_out).setOnClickListener {
-            type.callback(2)
-        }
-        popup.findViewById<View>(R.id.bt_start).setOnClickListener {
-            type.callback(3)
-        }
         popup.findViewById<View>(R.id.bt_end).setOnClickListener {
             type.callback(4)
         }

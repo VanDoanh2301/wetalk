@@ -21,6 +21,7 @@ import com.example.wetalk.data.local.QuestionType
 import com.example.wetalk.data.local.Test
 import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.data.model.objectmodel.Question
+import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.databinding.FragmentTalkTestBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.MenuPracticeAdapter
@@ -61,39 +62,45 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         super.onViewCreated(view, savedInstanceState)
 
         id = arguments?.getInt("id", -1)!!
-
+        val questionSize = QuestionSize(0, 10, id)
         lifecycleScope.launchWhenStarted {
-            viewModel.getAllQuestionByTopicId(id)
+            viewModel.getAllQuestionByTopicId(questionSize)
             viewModel.questions.collect {
                 when(it) {
                     is Resource.Success -> {
-                       val questions = it.data!!.data
-                        for (q in questions) {
-                            val questionType = QuestionType(
-                                question = q.content,
-                                answer_a = q.answers[0].content,
-                                answer_b = q.answers[1].content,
-                                answer_c = q.answers[2].content,
-                                answer_d = q.answers[3].content,
-                                answer_correct = q.answers.find { it.correct }?.content ?: "",
-                                explain = q.explanation,
-                                image = q.imageLocation,
-                                video = q.videoLocation
-                            )
-                            Log.d("Quest", questionType.toString())
-                            val testQuest = TestQuest(
-                                question = questionType,
-                                answer = ""
-                            )
-                            testQuests.add(testQuest)
-                            test = Test(
-                                total = testQuests.size,
-                                correct = 0,
-                                check = 0,
-                                completed = 0
-                            )
-                            initPagerHome();
+                        try {
+                            val questions = it.data!!.data
+                            for (q in questions) {
+                                val questionType = QuestionType(
+                                    question = q.content,
+                                    answer_a = q.answers[0].content,
+                                    answer_b = q.answers[1].content,
+                                    answer_c = q.answers[2].content,
+                                    answer_d = q.answers[3].content,
+                                    answer_correct = q.answers.find { it.correct }?.content ?: "",
+                                    explain = q.explanation,
+                                    image = q.imageLocation,
+                                    video = q.videoLocation
+                                )
+                                Log.d("Quest", questionType.toString())
+                                val testQuest = TestQuest(
+                                    question = questionType,
+                                    answer = ""
+                                )
+                                testQuests.add(testQuest)
+                                test = Test(
+                                    total = testQuests.size,
+                                    correct = 0,
+                                    check = 0,
+                                    completed = 0
+                                )
+                                initPagerHome();
+                                updateTestCurrentIndex()
+                            }
+                        } catch (e : Exception) {
+                            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
                         }
+
                     }
                     is Resource.Loading -> {
 
@@ -105,6 +112,7 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
             }
 
         }
+
 
     }
 
@@ -168,9 +176,16 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         override fun onPageScrollStateChanged(arg0: Int) {}
     }
 
-    fun updateTestCurrentIndex(questionDetail: TestQuest?, index: Int) {
-        (activity as MainActivity).runOnUiThread { if (menuTestHardAdapter != null) menuTestHardAdapter.notifyItemChanged(index) }
+    fun updateTestCurrentIndex() {
+        var index = 0
+        childFragmentManager.setFragmentResultListener("requestKeyFromChild", this) { key, bundle ->
+            val question:TestQuest? = bundle.getParcelable("question")
+            index = bundle.getInt("index")
+            if (question != null) {
+                testQuests[index] = question
+            }
 
+        }
         var countCorrect = 0
         var countChecked = 0
         for (i in testQuests.indices) {

@@ -24,9 +24,6 @@ import com.example.wetalk.util.Utils
 import com.rey.material.drawable.RippleDrawable
 import com.example.wetalk.util.OnUpdateListener
 
-
-
-
 class PracticeFragment : Fragment() {
     private var _binding: TalkItemTestBinding? = null
     private val binding get() = _binding!!
@@ -287,7 +284,7 @@ class PracticeFragment : Fragment() {
         }
     }
 
-    fun checkResult(action: Boolean) {
+    private fun checkResult(action: Boolean) {
         binding.apply {
             if (choose1 || choose2 || choose3 || choose4) {
                 var questionAns = ""
@@ -466,7 +463,6 @@ class PracticeFragment : Fragment() {
                     if (question.question.answer_correct == question.question.answer_b
 
                     ) {
-
                         textOption2.setTextColor(requireContext().getColor(R.color.white))
                         textOption2.setBackgroundResource(R.drawable.border_textview_done)
                         tnIndex2.setTextColor(requireContext().getColor(R.color.white))
@@ -475,7 +471,6 @@ class PracticeFragment : Fragment() {
                     if (question.question.answer_correct == question.question.answer_c
 
                     ) {
-
                         textOption3.setTextColor(requireContext().getColor(R.color.white))
                         textOption3.setBackgroundResource(R.drawable.border_textview_done)
                         tnIndex3.setTextColor(requireContext().getColor(R.color.white))
@@ -512,8 +507,11 @@ class PracticeFragment : Fragment() {
                     }
                 }
                 if (action) {
-                    val talkTestFragment = parentFragment as? TalkTestFragment
-                    talkTestFragment?.updateTestCurrentIndex(question, question_index)
+                    val bundle = Bundle().apply {
+                        putParcelable("question", question)
+                        putInt("index", question_index)
+                    }
+                    parentFragmentManager.setFragmentResult("requestKeyFromChild", bundle)
                 }
             } else {
                 if (question.question.explain != null && question.question
@@ -577,12 +575,9 @@ class PracticeFragment : Fragment() {
                     }
                 } else if (question.answer != null && question.answer.isNotEmpty()
                 ) {
-
-
                     if (question.question.answer_correct == question.question.answer_a
 
                     ) {
-
                         textOption1.setTextColor(requireContext().getColor(R.color.white))
                         textOption1.setBackgroundResource(R.drawable.border_textview_done)
                         tnIndex1.setTextColor(requireContext().getColor(R.color.white))
@@ -684,7 +679,7 @@ class PracticeFragment : Fragment() {
         }
     }
 
-    fun disableClick() {
+    private fun disableClick() {
         binding.apply {
             if (isFinish == false) {
                 return

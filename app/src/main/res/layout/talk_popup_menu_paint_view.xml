@@ -16,49 +16,13 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/bt_full_image"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_bt_button"
-                android:padding="6dp"
-                android:src="@drawable/ic_full_image"
-                android:tint="#fafafa" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/bt_zoom_in"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_bt_button"
-                android:padding="6dp"
-                android:src="@drawable/ic_zoom_in"
-                android:tint="#fafafa" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/bt_zoom_out"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_bt_button"
-                android:padding="6dp"
-                android:src="@drawable/ic_zoom_out"
-                android:tint="#fafafa" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/bt_start"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_bt_button"
-                android:padding="6dp"
-                android:src="@drawable/ic_pen_undo"
-                android:tint="#fafafa" />
-
-            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/bt_end"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:background="@drawable/bg_bt_button"
                 android:padding="6dp"
-                android:src="@drawable/ic_pen_redo"
-                android:tint="#fafafa" />
+                android:src="@drawable/ic_play"
+                 />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/bt_share"
