@@ -1,23 +1,15 @@
 package com.example.wetalk.ui.fragment
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.example.wetalk.databinding.FragmentTalkSignLanguageBinding
 import com.example.wetalk.ui.adapter.StudyAdapter
-import com.example.wetalk.util.DialogUtil
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.wetalk.util.DialogVideo
 import com.google.firebase.storage.FirebaseStorage
 
 
@@ -84,7 +76,7 @@ class TalkSignLanguageFragment : Fragment() {
         getVideoURL(letter) { videoUrl ->
             progressDialog.dismiss()
 
-            DialogUtil.Builder(requireContext())
+            DialogVideo.Builder(requireContext())
                 .title("Chữ $letter")
                 .urlVideo(videoUrl)
                 .show()

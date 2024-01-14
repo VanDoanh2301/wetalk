@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.example.wetalk.R
 import com.example.wetalk.util.SharedPreferencesUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -33,14 +36,15 @@ class TalkSplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (SharedPreferencesUtils.getString("isLogin") != null) {
-            val bundle = bundleOf(
-                "isUser" to true
-            )
-            findNavController().navigate(R.id.talkHomeFragment, bundle)
-        } else {
-            findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
-        }
+        lifecycleScope.launch {
+            delay(4000L)
 
+            if (SharedPreferencesUtils.getString("isLogin") != null) {
+                val bundle = bundleOf("isUser" to true)
+                findNavController().navigate(R.id.talkHomeFragment, bundle)
+            } else {
+                findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
+            }
+        }
     }
 }

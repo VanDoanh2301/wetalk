@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
 import com.example.wetalk.data.local.ImageHome
 import com.example.wetalk.data.model.objectmodel.User
+import com.example.wetalk.data.model.objectmodel.UserRequest
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
@@ -36,7 +37,7 @@ class TalkHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var isUser = false
     private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user: User
+    private lateinit var user: UserRequest
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter

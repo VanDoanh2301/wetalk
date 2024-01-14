@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,10 +30,9 @@ import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
 import com.example.wetalk.util.DialogClose
-import com.example.wetalk.util.DialogUtil
+import com.example.wetalk.util.DialogVideo
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
-import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.Task
 import com.example.wetalk.util.Utils
 import com.example.wetalk.util.helper.FileHelper
@@ -44,9 +42,7 @@ import com.example.wetalk.util.helper.permission_utils.PermissionUtil
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -189,7 +185,7 @@ class TalkVocabularyUpFragment : Fragment() {
         getVideoURL(letter) { videoUrl ->
             progressDialog.dismiss()
 
-            DialogUtil.Builder(requireContext())
+            DialogVideo.Builder(requireContext())
                 .title("Chữ $letter")
                 .urlVideo(videoUrl)
                 .show()

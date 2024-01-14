@@ -112,6 +112,8 @@
                             android:gravity="center_vertical"
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_b2"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:fontFamily="@font/roboto_medium"
                             android:textColor="@color/black"
                             android:textSize="16sp"
@@ -127,6 +129,33 @@
 
                     </com.rey.material.widget.RelativeLayout>
 
+                    <com.rey.material.widget.RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="16dp"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/txt_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="49dp"
+                            android:text="Quê quán"
+                            android:paddingStart="2dp"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+                            android:layout_toLeftOf="@+id/img_b6"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            />
+                        <com.rey.material.widget.ImageView
+                            android:id="@+id/img_b6"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_edit_diary_white"
+                            android:layout_alignParentRight="true"
+                            />
+
+                    </com.rey.material.widget.RelativeLayout>
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_marginTop="16dp"
@@ -198,6 +227,7 @@
             android:elevation="1dp"
             app:cardBackgroundColor="@color/blue_sea">
             <com.rey.material.widget.Button
+                android:id="@+id/bt_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"

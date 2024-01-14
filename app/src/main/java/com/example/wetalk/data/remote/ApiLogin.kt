@@ -1,6 +1,8 @@
 package com.example.wetalk.data.remote
 
+import com.example.wetalk.data.model.objectmodel.GetInforUser
 import com.example.wetalk.data.model.objectmodel.User
+import com.example.wetalk.data.model.objectmodel.UserRequest
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
 import com.example.wetalk.data.model.responsemodel.LoginResponse
@@ -12,6 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 
 
@@ -31,5 +34,8 @@ interface ApiLogin {
             : Response<String>
 
     @GET("users/getUserInfor")
-    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<User>
+    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<UserRequest>
+
+    @PUT("users")
+    suspend fun updateUser(@Body userRequest: UserRequest) : Response<GetInforUser>
 }

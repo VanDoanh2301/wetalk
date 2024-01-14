@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.User
+import com.example.wetalk.data.model.objectmodel.UserRequest
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
+import com.example.wetalk.util.DialogCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +32,7 @@ class TalkProfileHomeFragment : Fragment() {
     private var _binding: FragmentTalkProfileHomeBinding ? = null
     private val binding get() =  _binding!!
     private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user:User
+    private lateinit var user:UserRequest
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,8 +52,31 @@ class TalkProfileHomeFragment : Fragment() {
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                     user = it.data!!
-                        binding.txtName.text = user.name
+                        try {
+                            user = it.data!!
+                            binding.txtName.text = user.name
+                            if (user.age ==null ||  user.phoneNumber ==null || user.gender== null) {
+                                DialogCenter.Builder(requireContext())
+                                    .title("Gợi ý")
+                                    .cancelable(true)
+                                    .canceledOnTouchOutside(true)
+                                    .content("Cập nhật thông tin cá nhân của bạn")
+                                    .doneText("Cập nhật")
+                                    .onPositive {
+
+                                    }
+                                    .onDone {
+                                        findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
+                                    }
+                                    .show()
+                            }
+                            binding.txtDate.text = user.age
+                            binding.txtPhone.text = user.phoneNumber
+                            binding.txtGenner.text = user.gender
+                        } catch (e :Exception) {
+
+                        }
+
                     }
                     is Resource.Error -> {
                       Log.d("User", it.message.toString())
