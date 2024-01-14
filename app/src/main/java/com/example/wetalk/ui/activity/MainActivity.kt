@@ -3,6 +3,7 @@ package com.example.wetalk.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.wetalk.R
 import com.example.wetalk.ui.fragment.TalkHomeFragment
@@ -33,8 +34,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.talkHomeFragment -> {
                     finish()
                 }
+                R.id.testResultFragment -> {
+                    navController.navigate(R.id.action_testResultFragment_to_talkTopicFragment)
+                }
+                else -> {
+                super.onBackPressed()
             }
-            super.onBackPressed()
+            }
+
         }
 
     }

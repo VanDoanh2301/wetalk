@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -39,7 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
+class TalkTestFragment : Fragment() {
     private var _binding: FragmentTalkTestBinding? = null
     private val binding get() = _binding!!
     private var currentIndex = 0
@@ -70,6 +72,7 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         binding.mainContent.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
         lifecycleScope.launchWhenStarted {
             viewModel.getAllQuestionByTopicId(questionSize)
             viewModel.questions.collect {
@@ -183,6 +186,9 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
     }
 
     private fun initPagerHome() {
+        binding.mainContent.rightTitle.setOnClickListener {
+            finishTest()
+        }
         viewPager = binding.mainContent.viewpager
         val adapter = ViewPagerPracticeAdapter(
             (activity as MainActivity).supportFragmentManager,
@@ -222,7 +228,7 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
     var viewPagerPageChangeListener: OnPageChangeListener = object : OnPageChangeListener {
         override fun onPageSelected(position: Int) {
             if (currentIndex != position) {
-//                showSpotLight()
+
             }
             currentIndex = position
             menuTestHardAdapter.setIndexSelection(position)
@@ -263,77 +269,24 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         }
         test.check = countChecked
         test.correct = countCorrect
-
-
-
-        if (test.completed == 0) {
-            if (countChecked == testQuests.size) {
-                test.completed = 1
-                binding.mainContent.rightTitle.text = "Kết Quả"
-                DialogClose.Builder(requireContext())
-                    .title("Kết quả")
-                    .cancelable(true)
-                    .canceledOnTouchOutside(true)
-                    .content("Kết thúc kiểm tra")
-                    .doneText("View Result")
-                    .onDone { finishTest() }
-                    .show()
-            } else if (index == testQuests.size - 1) {
-                binding.mainContent.rightTitle.text = "Kết Thúc"
-                if (countChecked < testQuests.size) {
-                    DialogClose.Builder(requireContext())
-                        .title("Kết quả")
-                        .content("Kết thúc kiểm tra")
-                        .doneText("Đi đến phần review")
-                        .onDone {
-                            for (i in testQuests.indices) {
-                                val detail = testQuests.get(i)
-                                if (detail.answer == null || detail.answer.equals("")
-                                ) {
-                                    val currentIndexTemp: Int = i
-                                    viewPager!!.post {
-                                        currentIndex = currentIndexTemp
-                                        binding.mainContent.bottomTitle.text =
-                                            "Question " + (currentIndex + 1) + " / " + testQuests.size
-                                        viewPager!!.setCurrentItem(currentIndex, false)
-                                    }
-                                    break
-                                }
-                            }
-                        }
-                        .show()
-                }
-            } else if ((index + 1) % 10 == 0 && index > 0) {
-                DialogClose.Builder(requireContext())
-                    .title("Review question")
-                    .cancelable(true)
-                    .canceledOnTouchOutside(true)
-                    .content("Would you like to review the overview of the questions you have done from questions " + (index - 8) + " to " + (index + 1) + "?")
-                    .doneText("Review the questions (" + (index - 8) + " to " + (index + 1) + ")")
-                    .onDone {
-                    }
-                    .show()
-            } else {
-                binding.mainContent.rightTitle.text = "Kết Thúc"
-            }
-        }
     }
 
-    private fun initData() {
-        setFragmentResultListener("requestKeyFromChild") { key, bundle ->
-            val question = bundle.getParcelable<TestQuest>("question")
-            val index = bundle.getInt("index")
 
-            Log.d("IndexQ", question.toString())
-        }
-    }
 
     private fun finishTest() {
+       val bundle = bundleOf(
+           "test" to test,
+           "testQuest" to testQuests
+       )
+        findNavController().navigate(R.id.action_talkTestFragment_to_testResultFragment, bundle)
+
 
     }
 
-    override fun updateData(result: TestQuest, index: Int) {
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 

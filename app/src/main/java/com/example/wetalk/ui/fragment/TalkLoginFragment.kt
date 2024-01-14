@@ -64,7 +64,6 @@ class TalkLoginFragment : Fragment() {
             val bundle = bundleOf(
                 "isUser" to false
             )
-            findNavController().popBackStack(R.id.talkHomeFragment, false)
             findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
 
         }

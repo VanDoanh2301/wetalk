@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +19,7 @@
             android:layout_marginTop="-20dp"
              />
 
-        <RelativeLayout
+        <com.rey.material.widget.RelativeLayout
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -44,14 +44,14 @@
                 android:id="@+id/rightTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_toLeftOf="@+id/btn_list"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="2dp"
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="KẾT THÚC"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
                 style="@style/ripple_btn_tab_widget_light"
                 android:textColor="@color/white"
                  />
@@ -62,13 +62,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentRight="true">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_list_question"
-                    app:tint="@color/white" />
+
 
             </com.rey.material.widget.FrameLayout>
 
@@ -96,7 +90,7 @@
                      />
             </RelativeLayout>
 
-        </RelativeLayout>
+        </com.rey.material.widget.RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rltTimeLimit"
@@ -183,4 +177,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</com.rey.material.widget.RelativeLayout>

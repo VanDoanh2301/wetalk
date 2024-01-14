@@ -142,7 +142,14 @@
         android:id="@+id/talkTestFragment"
         android:name="com.example.wetalk.ui.fragment.TalkTestFragment"
         android:label="fragment_talk_test"
-        tools:layout="@layout/fragment_talk_test" />
+        tools:layout="@layout/fragment_talk_test" >
+        <action
+            android:id="@+id/action_talkTestFragment_to_testResultFragment"
+            app:destination="@id/testResultFragment"
+            app:popUpTo="@+id/testResultFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
     <fragment
         android:id="@+id/talkSignLanguageFragment"
         android:name="com.example.wetalk.ui.fragment.TalkSignLanguageFragment"
@@ -167,6 +174,7 @@
             android:id="@+id/action_talkProfileHomeFragment_to_talkProfileEditFragment"
             app:destination="@id/talkProfileEditFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/talkTopicFragment"
         android:name="com.example.wetalk.ui.fragment.TalkTopicFragment"
@@ -174,6 +182,20 @@
         tools:layout="@layout/fragment_talk_topic" >
         <action
             android:id="@+id/action_talkTopicFragment_to_talkTestFragment"
-            app:destination="@id/talkTestFragment" />
+            app:destination="@id/talkTestFragment"
+
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/testResultFragment"
+        android:name="com.example.wetalk.ui.fragment.TestResultFragment"
+        android:label="fragment_test_result"
+        tools:layout="@layout/fragment_test_result" >
+        <action
+            android:id="@+id/action_testResultFragment_to_talkTopicFragment"
+            app:destination="@id/talkTopicFragment"
+            app:popUpTo="@+id/talkTopicFragment"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 </navigation>

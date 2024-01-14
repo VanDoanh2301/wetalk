@@ -46,6 +46,10 @@ class TalkTopicFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = TalkTopicAdapter(requireContext())
+
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.getAllTopic()
             viewModel.topic.collect {
