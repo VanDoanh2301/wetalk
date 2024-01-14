@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -47,8 +48,7 @@ class TalkLoginFragment : Fragment() {
             requireActivity().finish()
         }
         binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment)
-//            onLogin()
+            onLogin()
         }
         initLogin();
         innitActionView();
@@ -59,6 +59,14 @@ class TalkLoginFragment : Fragment() {
     private fun innitActionView() {
         binding.btnSignup.setOnClickListener {
             findNavController().navigate(R.id.action_talkLoginFragment_to_talkRegisterFragment)
+        }
+        binding.button.setOnClickListener {
+            val bundle = bundleOf(
+                "isUser" to false
+            )
+            findNavController().popBackStack(R.id.talkHomeFragment, false)
+            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
+
         }
     }
 
@@ -73,7 +81,11 @@ class TalkLoginFragment : Fragment() {
                     is Resource.Success -> {
                         SharedPreferencesUtils.setString("isLogin", it.data!!.accessToken);
                         binding.loginProgressBar.visibility = View.VISIBLE
-                        findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment)
+                        val bundle = bundleOf(
+                            "isUser" to true
+                        )
+                        findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
+                        findNavController().popBackStack(R.id.talkHomeFragment, false)
 
                     }
                     is Resource.Error -> {

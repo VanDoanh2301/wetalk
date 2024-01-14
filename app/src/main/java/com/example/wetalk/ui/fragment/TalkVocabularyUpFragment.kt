@@ -1,10 +1,12 @@
 package com.example.wetalk.ui.fragment
 
 import android.Manifest
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +30,8 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
+import com.example.wetalk.util.DialogClose
+import com.example.wetalk.util.DialogUtil
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
@@ -37,8 +41,11 @@ import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -80,6 +87,8 @@ class TalkVocabularyUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         talkBodyEditView = binding.bodyView
+
+
         keyboardHeightProvider = KeyboardHeightProvider(requireActivity());
         videoLocal = VideoLocal(
             -1, System.currentTimeMillis(), "",
@@ -89,24 +98,47 @@ class TalkVocabularyUpFragment : Fragment() {
             viewModel.videoLocal.collect {
                 // Update UI with the videoLocal data
                 talkBodyEditView.preview((activity as MainActivity), it ?: videoLocal)
+                videoLocal = it
             }
 
         }
         lifecycleScope.launchWhenResumed {
             viewModel.talkImageItems.collect { talkImageItems ->
-                talkBodyEditView.addImage(talkImageItems)
+                if (talkImageItems == null) {
+
+                    talkBodyEditView.visibility = View.GONE
+                } else {
+                    talkBodyEditView.visibility = View.VISIBLE
+                    talkBodyEditView.addImage(talkImageItems)
+                }
+
             }
         }
 
-        viewModel.uploadResult.observe(viewLifecycleOwner
-        ){
+        viewModel.uploadResult.observe(
+            viewLifecycleOwner
+        ) {
             when (it) {
                 is Resource.Loading -> {
 
                 }
+
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "Đăng video thành công", Toast.LENGTH_SHORT).show()
+                    val progressDialog = ProgressDialog(requireContext())
+                    progressDialog.setTitle("Đang tải video lên")
+                    progressDialog.setMessage("Xin chờ...")
+                    progressDialog.show()
+                    lifecycleScope.launch {
+                        delay(3000)
+                        Toast.makeText(
+                            requireContext(),
+                            "Đăng video thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        progressDialog.dismiss()
+                    }
                 }
+
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
@@ -116,21 +148,82 @@ class TalkVocabularyUpFragment : Fragment() {
             val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(i, 1111)
         }
+//        openDialog()
         onRecord()
         onCallBack()
         onFolder();
         onBack();
         onUploadVideo();
+        openStarVideo()
 
+    }
+    private fun openStarVideo() {
+        binding.btnStar.setOnClickListener {
+            if (!binding.tvName.text.equals("Hastag")) {
+                showVideoDialog(binding.tvName.text.toString())
+            } else {
+                Toast.makeText(requireContext(), "Vui lòng chọn Hastag để xem video mẫu", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    }
+    private fun getVideoURL(letter: String, callback: (String) -> Unit) {
+        val storage = FirebaseStorage.getInstance()
+        val videoRef = storage.reference.child("videos/${letter}.mp4")
+
+        videoRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                callback(uri.toString())
+            }
+            .addOnFailureListener {
+                Log.e("FirebaseStorage", "Error downloading video: ${it.message}")
+            }
+    }
+    private fun showVideoDialog(letter: String) {
+        val progressDialog = ProgressDialog(requireContext())
+        progressDialog.setTitle("Đang tải")
+        progressDialog.setMessage("Xin chờ...")
+        progressDialog.show()
+
+        // Use a callback to get the video URL asynchronously
+        getVideoURL(letter) { videoUrl ->
+            progressDialog.dismiss()
+
+            DialogUtil.Builder(requireContext())
+                .title("Chữ $letter")
+                .urlVideo(videoUrl)
+                .show()
+        }
+    }
+    private fun openDialog() {
+        DialogClose.Builder(requireContext())
+            .title("Gợi ý")
+            .cancelable(true)
+            .canceledOnTouchOutside(true)
+            .content("Ấn Hastag để chọn chủ đề bạn muốn cung cấp và bạn có thể xem video mẫu để thực hiện")
+            .doneText("Oke")
+            .onDone {
+
+            }
+            .show()
     }
 
     private fun onUploadVideo() {
         binding.cvSave.setOnClickListener {
-            val file = File(devicePath)
-            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-            val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            try {
+                val file = File(devicePath)
+                val requestFile =
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                viewModel.uploadVideo(filePart)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Vui lòng chọn video cung cấp của bạn",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
-            viewModel.uploadVideo(filePart)
         }
     }
 
@@ -231,7 +324,8 @@ class TalkVocabularyUpFragment : Fragment() {
                 }
                 viewModel.addImageItems(talkImageItems)
                 devicePath = RealPathUtil.getRealPath(requireContext(), uri)
-            } catch (e : Exception) {}
+            } catch (e: Exception) {
+            }
         }
 //        talkBodyEditView.addImage(talkImageItems)
 
@@ -250,17 +344,14 @@ class TalkVocabularyUpFragment : Fragment() {
             requireContext()
         )
         val recyclerView = RecyclerView(requireContext())
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
-        val dataList = ArrayList<String>()
-        dataList.add("Danh từ")
-        dataList.add("Động từ")
-        dataList.add("Tính từ")
-        dataList.add("Trạng từ")
+        recyclerView.layoutManager = GridLayoutManager(context, 5)
+        var dataList = ArrayList<String>()
+        dataList = charactersList
 
         val talkDialogTag = object : TalkDialogTag(requireContext()) {
             override fun OnClickItemTag(position: Int) {
                 val item = dataList[position]
-                binding.tvName.text = "# $item"
+                binding.tvName.text = "$item"
                 videoLocal.videoTag = binding.tvName.text.toString()
                 alertDialog.dismiss()
             }
@@ -271,6 +362,23 @@ class TalkVocabularyUpFragment : Fragment() {
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()
         alertDialog.show()
+    }
+    private val charactersList: ArrayList<String> by lazy {
+        val result = ArrayList<String>()
+
+        for (baseChar in 'A'..'Z') {
+            result.add(baseChar.toString())  // Add the base character without diacritic
+        }
+        result.add("\u1EA5")
+        result.add("\u00E0")
+        result.add("\u00E3")
+        result.add("\u1EA1")
+
+        for (digit in 0..9) {
+            result.add(digit.toString())
+        }
+
+        result
     }
 
     override fun onPause() {

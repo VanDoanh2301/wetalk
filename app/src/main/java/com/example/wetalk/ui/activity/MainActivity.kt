@@ -3,7 +3,9 @@ package com.example.wetalk.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
 import com.example.wetalk.R
+import com.example.wetalk.ui.fragment.TalkHomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,7 +25,17 @@ class MainActivity : AppCompatActivity() {
             val tag = backEntry.name
             supportFragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         } else {
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            val currentDestination = navController.currentDestination
+            when(currentDestination!!.id) {
+                R.id.talkHomeFragment -> {
+                    finish()
+                }
+            }
             super.onBackPressed()
         }
+
     }
 }

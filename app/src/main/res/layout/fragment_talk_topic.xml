@@ -18,6 +18,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               app:contentInsetStart="0dp"
+              android:background="#3262DC"
               >
               <androidx.appcompat.widget.AppCompatImageView
                   android:id="@+id/bt_back"

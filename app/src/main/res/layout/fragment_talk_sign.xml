@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentInsetStart="0dp"
+            android:background="#3262DC"
             >
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/bt_back"
@@ -23,6 +24,15 @@
                 android:background="@drawable/bg_bt_button"
                 android:padding="16dp"
                 android:src="@drawable/arrow_left" />
+
+            <com.rey.material.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bảng ký tự"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
 
         </androidx.appcompat.widget.Toolbar>
 

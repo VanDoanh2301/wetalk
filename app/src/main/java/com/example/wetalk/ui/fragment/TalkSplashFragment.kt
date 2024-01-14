@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -33,7 +34,10 @@ class TalkSplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (SharedPreferencesUtils.getString("isLogin") != null) {
-            findNavController().navigate(R.id.talkHomeFragment)
+            val bundle = bundleOf(
+                "isUser" to true
+            )
+            findNavController().navigate(R.id.talkHomeFragment, bundle)
         } else {
             findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
         }

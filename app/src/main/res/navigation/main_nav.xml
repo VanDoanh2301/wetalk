@@ -70,9 +70,6 @@
             android:id="@+id/action_talkHomeFragment_to_talkSignLanguageFragment"
             app:destination="@id/talkSignLanguageFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkChatHomeFragment"
-            app:destination="@id/talkChatHomeFragment" />
-        <action
             android:id="@+id/action_talkHomeFragment_to_talkSearchUserFragment"
             app:destination="@id/talkSearchUserFragment" />
         <action
@@ -84,12 +81,19 @@
         <action
             android:id="@+id/action_talkHomeFragment_to_talkTopicFragment"
             app:destination="@id/talkTopicFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkChatFragment"
+            app:destination="@id/talkChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkChatFragment"
         android:name="com.example.wetalk.ui.fragment.TalkChatFragment"
         android:label="fragment_talk_chat"
-        tools:layout="@layout/fragment_talk_chat" />
+        tools:layout="@layout/fragment_talk_chat" >
+        <action
+            android:id="@+id/action_talkChatFragment_to_talkChatHomeFragment"
+            app:destination="@id/talkChatHomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/talkStudyFragment"
         android:name="com.example.wetalk.ui.fragment.TalkStudyFragment"

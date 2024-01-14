@@ -94,7 +94,11 @@ class TalkOtpFragment : Fragment() {
             timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     timeoutSeconds--
-                    activity!!.runOnUiThread { binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds" }
+                    if (binding != null) {
+                        activity!!.runOnUiThread {
+                            binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds"
+                        }
+                    }
                     if (timeoutSeconds <= 0) {
                         timeoutSeconds = 60L
                         binding.loginProgressBar.visibility = View.GONE

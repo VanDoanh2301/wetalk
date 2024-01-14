@@ -59,6 +59,8 @@ class TalkProfileHomeFragment : Fragment() {
             }
         }
 
-
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 }

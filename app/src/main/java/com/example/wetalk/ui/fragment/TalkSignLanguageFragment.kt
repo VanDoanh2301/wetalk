@@ -39,7 +39,9 @@ class TalkSignLanguageFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         adapter = StudyAdapter(requireContext(), dataList = generateAlphabet())
         adapter.notifyDataSetChanged()
         binding.rcvView.layoutManager = GridLayoutManager(requireContext(), 4)

@@ -83,10 +83,10 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
                     override fun callback(result: Int) {
                         when (result) {
                             4 -> {
-//                                BaseFragment.add(
-//                                    context, TalkPlayFragment.newInstance()
-//                                        .setPath(item.isVideo?.let { if (it) item.devicePath else item.path } ?: "", item.isVideo?.let { if (it) 2 else 1 } ?: 0)
-//                                )
+                                BaseFragment.add(
+                                    context, TalkPlayFragment.newInstance()
+                                        .setPath(item.isVideo?.let { if (it) item.devicePath else item.path } ?: "", item.isVideo?.let { if (it) 2 else 1 } ?: 0)
+                                )
 
                             }
                             5 -> share()
@@ -143,6 +143,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
         bubbleDialog.show()
         popup.findViewById<View>(R.id.bt_end).setOnClickListener {
             type.callback(4)
+            bubbleDialog.dismiss()
         }
         popup.findViewById<View>(R.id.bt_share).setOnClickListener {
             type.callback(5)

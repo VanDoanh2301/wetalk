@@ -9,15 +9,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="#3262DC"
             android:id="@+id/main_toolbar">
             <com.rey.material.widget.ImageView
                 android:id="@+id/btn_menu"
                 android:layout_width="?actionBarSize"
                 android:layout_height="?actionBarSize"
                 android:clickable="true"
+
                 style="@style/ripple_btn_tab_widget_light"
                 android:padding="18dp"
-                android:src="@drawable/ic_menu"
+                android:src="@drawable/arrow_left"
                 app:tint="@color/white"
                 tools:ignore="SpeakableTextPresentCheck" />
             <com.rey.material.widget.ImageView

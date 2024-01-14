@@ -9,8 +9,6 @@
     <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -49,17 +47,16 @@
                         android:layout_marginBottom="8dp"
                         android:adjustViewBounds="true"
                         android:padding="1dp"
+                        android:visibility="gone"
                         android:scaleType="fitCenter"
                         />
                     <ImageView
                         android:id="@+id/imgQuestion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
+                        android:visibility="gone"
                         android:layout_marginBottom="8dp"
                         android:adjustViewBounds="true"
-                        android:padding="1dp"
                         android:scaleType="fitCenter" />
 
                 </RelativeLayout>
@@ -115,7 +112,7 @@
             style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tn_index2"
@@ -157,7 +154,7 @@
             style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tn_index3"
@@ -199,7 +196,7 @@
             style="@style/ripple_btn_tab_widget_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tn_index4"

@@ -1,8 +1,11 @@
 package com.example.wetalk.ui.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.repository.TalkRepository
@@ -43,4 +46,7 @@ class TalkTestViewModel @Inject constructor(private val repository: TalkReposito
         }
         return Resource.Error((hostResponse ?: response.message()).toString())
     }
+
+
+
 }

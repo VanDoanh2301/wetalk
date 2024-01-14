@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,17 +40,18 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
-    private var _binding: FragmentTalkTestBinding? =null
+    private var _binding: FragmentTalkTestBinding? = null
     private val binding get() = _binding!!
     private var currentIndex = 0
     private var practiceQuests: ArrayList<PracticeQuest>? = null
     private var id = 0
-    private lateinit var test:Test
-    private var questions:ArrayList<Question> ? =null
+    private lateinit var test: Test
+    private var questions: ArrayList<Question>? = null
     private var testQuests: ArrayList<TestQuest> = ArrayList()
-    private val viewModel : TalkTestViewModel by viewModels()
+    private val viewModel: TalkTestViewModel by viewModels()
     private var viewPager: ViewPager? = null
     private lateinit var menuTestHardAdapter: MenuPracticeAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,15 +60,20 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         _binding = FragmentTalkTestBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         id = arguments?.getInt("id", -1)!!
         val questionSize = QuestionSize(0, 10, id)
+        binding.mainContent.btnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.getAllQuestionByTopicId(questionSize)
             viewModel.questions.collect {
-                when(it) {
+                when (it) {
                     is Resource.Success -> {
                         try {
                             val questions = it.data!!.data
@@ -95,16 +102,58 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
                                     completed = 0
                                 )
                                 initPagerHome();
-                                updateTestCurrentIndex()
+
                             }
-                        } catch (e : Exception) {
-                            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                        } catch (e: Exception) {
+                            val questionType = QuestionType(
+                                question = "Đây là chữ gì ?",
+                                answer_a = "A",
+                                answer_b = "C",
+                                answer_c = "D",
+                                answer_d = "F",
+                                answer_correct = "A",
+                                explain = "",
+                                image = "",
+                                video = "https://firebasestorage.googleapis.com/v0/b/wetalk-12b8f.appspot.com/o/videos%2FA.mp4?alt=media&token=c977e65b-36ca-4cf1-95c7-ae33ee315fcd"
+                            )
+                            val testQuest = TestQuest(
+                                question = questionType,
+                                answer = ""
+                            )
+
+                            val question_1 = QuestionType(
+                                question = "Đây là chữ gì ?",
+                                answer_a = "O",
+                                answer_b = "A",
+                                answer_c = "Dấu huyền",
+                                answer_d = "Dấu chấm",
+                                answer_correct = "A",
+                                explain = "",
+                                image = "https://png.pngtree.com/thumb_back/fw800/background/20220916/pngtree-the-use-of-sign-language-by-individuals-who-are-deaf-and-mute-the-letter-a-in-english-photo-image_48619804.jpg",
+                                video = ""
+                            )
+                            val test_1 = TestQuest(
+                                question = question_1,
+                                answer = ""
+                            )
+                            testQuests.add(test_1)
+                            testQuests.add(testQuest)
+                            test = Test(
+                                total = testQuests.size,
+                                correct = 0,
+                                check = 0,
+                                completed = 0
+                            )
+                            initPagerHome();
+
                         }
 
                     }
+
                     is Resource.Loading -> {
 
                     }
+
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
@@ -116,13 +165,30 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as MainActivity).supportFragmentManager.setFragmentResultListener(
+            "requestKeyFromChild",
+            this
+        )
+        { requestKey, bundle ->
+
+            val result = bundle.getInt("index")
+            val question = bundle.getParcelable<TestQuest>("question")!!
+            updateTestCurrentIndex(question, result)
+
+
+        }
+
+    }
 
     private fun initPagerHome() {
         viewPager = binding.mainContent.viewpager
         val adapter = ViewPagerPracticeAdapter(
             (activity as MainActivity).supportFragmentManager,
             0,
-            testQuests!!)
+            testQuests!!
+        )
         binding.mainContent.viewpager.addOnPageChangeListener(viewPagerPageChangeListener)
         binding.mainContent.viewpager.adapter = adapter
         menuTestHardAdapter = MenuPracticeAdapter(requireContext(), testQuests!!)
@@ -138,17 +204,19 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
             if (currentIndex < testQuests!!.size - 1) {
                 currentIndex++
                 binding.mainContent.viewpager.postDelayed(Runnable {
-                    binding.mainContent.viewpager.setCurrentItem(currentIndex, true) }, 0)
+                    binding.mainContent.viewpager.setCurrentItem(currentIndex, true)
+                }, 0)
             }
         })
         binding.mainContent.iconPrevious.setOnClickListener(View.OnClickListener {
             if (currentIndex > 0) {
                 currentIndex--
                 binding.mainContent.viewpager.postDelayed(Runnable {
-                    binding.mainContent.viewpager.setCurrentItem(currentIndex, true) }, 0)
+                    binding.mainContent.viewpager.setCurrentItem(currentIndex, true)
+                }, 0)
             }
         })
-        binding.mainContent.bottomTitle.text = "Question " + 1 + " / " + testQuests.size
+        binding.mainContent.bottomTitle.text = "Câu hỏi " + 1 + " / " + testQuests.size
     }
 
     var viewPagerPageChangeListener: OnPageChangeListener = object : OnPageChangeListener {
@@ -158,14 +226,15 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
             }
             currentIndex = position
             menuTestHardAdapter.setIndexSelection(position)
-            binding.mainContent.bottomTitle.text = "QuestionType " + (position + 1) + " / " + practiceQuests!!.size
+            binding.mainContent.bottomTitle.text =
+                "Câu hỏi " + (position + 1) + " / " + testQuests!!.size
             menuTestHardAdapter.setCurrent_selected(position)
             if (currentIndex == 0) {
                 binding.mainContent.iconPrevious.setColorFilter(Color.parseColor("#BEBEBE"))
             } else {
                 binding.mainContent.iconPrevious.setColorFilter(Color.parseColor("#ffffff"))
             }
-            if (currentIndex == practiceQuests!!.size - 1) {
+            if (currentIndex == testQuests!!.size - 1) {
                 binding.mainContent.iconNext.setColorFilter(Color.parseColor("#BEBEBE"))
             } else {
                 binding.mainContent.iconNext.setColorFilter(Color.parseColor("#ffffff"))
@@ -176,16 +245,9 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         override fun onPageScrollStateChanged(arg0: Int) {}
     }
 
-    fun updateTestCurrentIndex() {
-        var index = 0
-        childFragmentManager.setFragmentResultListener("requestKeyFromChild", this) { key, bundle ->
-            val question:TestQuest? = bundle.getParcelable("question")
-            index = bundle.getInt("index")
-            if (question != null) {
-                testQuests[index] = question
-            }
+    fun updateTestCurrentIndex(testQuest: TestQuest, index: Int) {
+        testQuests[index] = testQuest
 
-        }
         var countCorrect = 0
         var countChecked = 0
         for (i in testQuests.indices) {
@@ -201,6 +263,8 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
         }
         test.check = countChecked
         test.correct = countCorrect
+
+
 
         if (test.completed == 0) {
             if (countChecked == testQuests.size) {
@@ -254,10 +318,23 @@ class TalkTestFragment : Fragment(), OnUpdateListener<TestQuest> {
             }
         }
     }
+
+    private fun initData() {
+        setFragmentResultListener("requestKeyFromChild") { key, bundle ->
+            val question = bundle.getParcelable<TestQuest>("question")
+            val index = bundle.getInt("index")
+
+            Log.d("IndexQ", question.toString())
+        }
+    }
+
     private fun finishTest() {
 
     }
+
     override fun updateData(result: TestQuest, index: Int) {
-        Log.d("Dataaa",result.toString())
+
     }
+
+
 }

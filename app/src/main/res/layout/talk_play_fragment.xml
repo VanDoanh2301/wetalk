@@ -35,31 +35,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize">
 
-        <VideoView
+        <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/img_recent_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
 
-        <FrameLayout
-            android:id="@+id/play_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_play"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_play"
-                android:tint="#fafafa" />
-        </FrameLayout>
     </com.rey.material.widget.FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageView

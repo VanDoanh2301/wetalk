@@ -1,29 +1,34 @@
 package com.example.wetalk.ui.fragment
 
+
 import android.animation.Animator
-import android.graphics.Point
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.daimajia.androidanimations.library.BaseViewAnimator
 import com.daimajia.androidanimations.library.YoYo
 import com.example.wetalk.R
-import com.example.wetalk.data.local.PracticeQuest
 import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.databinding.TalkItemTestBinding
+import com.example.wetalk.ui.viewmodels.TalkTestViewModel
 import com.example.wetalk.util.BounceInCustomAnimator
 import com.example.wetalk.util.Utils
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.rey.material.drawable.RippleDrawable
-import com.example.wetalk.util.OnUpdateListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PracticeFragment : Fragment() {
     private var _binding: TalkItemTestBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +41,8 @@ class PracticeFragment : Fragment() {
     private var isFinish = false
     private var total_question = 0
     private var isActive = false
+    private var exoPlayer: SimpleExoPlayer? = null
+    private val viewModel: TalkTestViewModel by viewModels()
 
     companion object {
         fun init(
@@ -54,6 +61,7 @@ class PracticeFragment : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,6 +77,25 @@ class PracticeFragment : Fragment() {
         question_index = requireArguments().getInt("question_index")
         total_question = requireArguments().getInt("total_question")
 
+        exoPlayer = SimpleExoPlayer.Builder(requireContext()).build();
+        binding.vdQuestion.player = exoPlayer
+        if (question.question.video != null) {
+            binding.vdQuestion.visibility = View.VISIBLE
+            val mediaItem = MediaItem.fromUri(question.question.video)
+            exoPlayer?.setMediaItem(mediaItem)
+            exoPlayer?.prepare()
+            exoPlayer?.play()
+        } else {
+            binding.vdQuestion.visibility = View.GONE
+        }
+        if (question.question.image != null) {
+            binding.imgQuestion.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(question.question.image)
+                .into(binding.imgQuestion)
+        } else {
+            binding.imgQuestion.visibility = View.GONE
+        }
 
         initView()
         onResult();
@@ -76,7 +103,10 @@ class PracticeFragment : Fragment() {
 
     private fun initView() {
         binding.apply {
-            if(question.question.question.equals(""))  {
+            if (question.question.video != null) {
+
+            }
+            if (question.question.question.equals("")) {
                 textViewTitle.text = "Đây là kí hiệu gì ?"
             } else {
                 textViewTitle.text = question.question.question
@@ -100,7 +130,8 @@ class PracticeFragment : Fragment() {
             ) {
                 imgQuestion.visibility = View.VISIBLE
                 Glide.with(requireContext())
-                    .load(Uri.parse(question.question.image)
+                    .load(
+                        Uri.parse(question.question.image)
                     )
                     .into(imgQuestion)
             } else {
@@ -511,7 +542,9 @@ class PracticeFragment : Fragment() {
                         putParcelable("question", question)
                         putInt("index", question_index)
                     }
-                    parentFragmentManager.setFragmentResult("requestKeyFromChild", bundle)
+                    setFragmentResult("requestKeyFromChild", bundle)
+
+
                 }
             } else {
                 if (question.question.explain != null && question.question

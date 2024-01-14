@@ -8,7 +8,7 @@
     <com.rey.material.widget.ImageView
         android:id="@+id/img_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="220dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,7 +18,7 @@
     <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="160dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -88,7 +88,7 @@
         android:id="@+id/txt_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="56dp"
         android:text="ĐĂNG KÝ THÀNH CÔNG"
         android:gravity="center"
         android:textColor="#6672FF"
@@ -102,10 +102,11 @@
         android:id="@+id/login_let_me_in_btn"
         android:layout_width="58dp"
         android:layout_height="58dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="82dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="?actionBarSize"
         app:srcCompat="@drawable/btn_arraw1" />
 
 

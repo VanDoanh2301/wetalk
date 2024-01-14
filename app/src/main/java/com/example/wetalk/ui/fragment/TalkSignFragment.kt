@@ -36,6 +36,9 @@ class TalkSignFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         initListSign();
     }
 

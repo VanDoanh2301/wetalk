@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rey.material.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#E6EAF3"
     tools:context=".ui.fragment.TalkVocabularyUpFragment">
 
-    <RelativeLayout
+    <com.rey.material.widget.RelativeLayout
         android:id="@+id/activitylayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <com.rey.material.widget.RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00000000">
@@ -24,11 +24,13 @@
                 android:id="@+id/action_view"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize">
+
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:contentInsetStart="0dp"
-                    >
+                    android:background="#3262DC"
+                    app:contentInsetStart="0dp">
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/bt_back"
                         android:layout_width="?actionBarSize"
@@ -36,6 +38,14 @@
                         android:background="@drawable/bg_bt_button"
                         android:padding="16dp"
                         android:src="@drawable/arrow_left" />
+
+                    <com.rey.material.widget.TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Cung cấp video"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cd_save"
                         android:layout_width="61dp"
@@ -44,8 +54,8 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="16dp"
                         app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="4dp"
-                        >
+                        app:cardCornerRadius="4dp">
+
                         <TextView
                             android:id="@+id/cv_save"
                             android:layout_width="match_parent"
@@ -53,9 +63,8 @@
                             android:fontFamily="@font/avertabold"
                             android:gravity="center"
                             android:text="Lưu"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            />
+                            android:textColor="@color/blue_sea"
+                            android:textSize="14sp" />
                     </androidx.cardview.widget.CardView>
 
                 </androidx.appcompat.widget.Toolbar>
@@ -68,179 +77,215 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/action_view">
 
-                <LinearLayout
+                <com.rey.material.widget.LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/ln_diary"
+                    <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:orientation="vertical">
-
-
-                        <RelativeLayout
-                            android:id="@+id/top"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                >
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/bt_date"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="30dp"
-                                    app:cardBackgroundColor="@color/white"
-                                    app:cardCornerRadius="10dp"
-                                    app:cardElevation="0dp">
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:id="@+id/img_date"
-                                        android:layout_width="16dp"
-                                        android:layout_height="16dp"
-                                        android:layout_gravity="center_vertical|right"
-                                        android:layout_marginRight="8dp"
-                                        android:src="@drawable/ic_chevron_down"
-                                        android:tint="@color/black" />
-
-                                    <TextView
-                                        android:id="@+id/tv_date"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginLeft="8dp"
-                                        android:layout_marginRight="32dp"
-                                        android:fontFamily="@font/roboto_regular"
-                                        android:gravity="center_vertical"
-                                        android:text="Friday, 27/7/2021"
-                                        android:textColor="@color/black"
-                                        android:textSize="14sp" />
-
-                                </androidx.cardview.widget.CardView>
-                            </RelativeLayout>
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/img_open"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="5dp"
-                                android:src="@drawable/ic_img_open_custom" />
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/img_record"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="5dp"
-                                android:layout_toLeftOf="@+id/img_open"
-                                android:src="@drawable/ic_record_video_custom" />
-                        </RelativeLayout>
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/edt_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:backgroundTint="@android:color/transparent"
-                            android:fontFamily="@font/roboto_medium"
-                            android:hint="@string/add_title"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/img_add"
-                                android:layout_width="54dp"
-                                android:layout_height="54dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="5dp"
-                                android:visibility="gone"
-                                android:src="@drawable/ic_img_add" />
-
-
-                            <com.example.wetalk.ui.customview.TalkBodyEditView
-                                android:id="@+id/body_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center_horizontal"
-                                />
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:id="@+id/img_open_tag"
-                            android:layout_width="160dp"
+                        android:layout_marginTop="16dp"
+                        >
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/bt_date"
+                            android:layout_width="wrap_content"
                             android:layout_height="46dp"
-                            android:background="@drawable/bg_black"
-                            android:layout_marginTop="46dp"
-                            android:padding="8dp"
-                            >
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="10dp"
+                            android:layout_marginStart="16dp"
+                            app:cardElevation="0dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/img_icon"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_bottom_menu_tag"
-                                app:tint="@color/black"
-                                />
+                                android:id="@+id/img_date"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/ic_chevron_down"
+                                android:tint="@color/black" />
 
                             <TextView
+                                android:id="@+id/tv_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="32dp"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center_vertical"
+                                android:text="Friday, 27/7/2021"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/img_open_tag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toRightOf="@id/bt_date"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/bg_item_preview"
+                            android:backgroundTint="@color/white"
+                            android:padding="4dp"
+                            android:orientation="horizontal">
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="8dp"
+                                app:srcCompat="@drawable/ic_draw_tag"/>
+                            <com.rey.material.widget.TextView
                                 android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="16dp"
-                                android:layout_toRightOf="@+id/img_icon"
-                                android:fontFamily="@font/roboto_regular"
+                                android:text="Hastag"
+                               android:layout_gravity="center"
                                 android:gravity="center_vertical"
-                                android:text="Hatags"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                                android:textSize="16sp" />
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:textColor="#3262DC"
+                                />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dip"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginLeft="32dp"
-                                android:layout_marginRight="32dp"
-                                android:background="#33FFFFFF" />
-                            <TextView
-                                android:id="@+id/tv_time_notify"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="16dp"
-                                android:fontFamily="@font/avertasemibold"
-                                android:gravity="center_vertical"
-                                android:text="@string/Moods"
-                                android:visibility="gone"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                                android:textSize="16sp" />
+                        </com.rey.material.widget.LinearLayout>
 
-                        </RelativeLayout>
-                    </LinearLayout>
+                    </com.rey.material.widget.RelativeLayout>
 
-                    <View
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp" />
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/white"
+                        android:elevation="4dp"
+                        app:cardBackgroundColor="#ffffff"
+                        app:cardCornerRadius="10dp">
+
+                        <com.rey.material.widget.LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <com.rey.material.widget.TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="16dp"
+                                android:text="Video cung cấp của bạn "
+                                android:textColor="#3262DC"
+                                android:textSize="16sp" />
+
+                            <com.rey.material.widget.RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                >
+
+                                <com.rey.material.widget.ImageView
+                                    android:id="@+id/img_none"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+
+                                    android:src="@drawable/img_up" />
+
+                                <com.example.wetalk.ui.customview.TalkBodyEditView
+                                    android:id="@+id/body_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:orientation="vertical" />
+                            </com.rey.material.widget.RelativeLayout>
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="16dp"
+                                android:adjustViewBounds="true"
+                                app:srcCompat="@drawable/img_line" />
+
+                            <com.rey.material.widget.LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:weightSum="2">
+
+                                <com.rey.material.widget.LinearLayout
+                                    android:id="@+id/img_record"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginStart="8dp"
+                                    android:orientation="horizontal">
+
+                                    <com.rey.material.widget.ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:adjustViewBounds="true"
+                                        app:srcCompat="@drawable/img_camera"
+                                        />
+                                    <com.rey.material.widget.TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Quay video"
+                                        android:textColor="#3262DC"
+                                        android:textSize="16sp"
+                                        android:paddingStart="16dp"
+                                        />
+
+                                </com.rey.material.widget.LinearLayout>
+                                <com.rey.material.widget.LinearLayout
+                                    android:id="@+id/img_open"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginStart="8dp"
+                                    android:orientation="horizontal">
+
+                                    <com.rey.material.widget.ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:adjustViewBounds="true"
+                                        app:srcCompat="@drawable/img_storage"
+                                        />
+                                    <com.rey.material.widget.TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Ảnh/Video"
+                                        android:textColor="#3262DC"
+                                        android:textSize="16sp"
+                                        android:paddingStart="16dp"
+                                        />
+
+                                </com.rey.material.widget.LinearLayout>
+
+                            </com.rey.material.widget.LinearLayout>
+
+
+                        </com.rey.material.widget.LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <com.rey.material.widget.Button
+                        android:id="@+id/btn_star"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_custom_button_1"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Xem video hướng dẫn"
+                        android:textColor="#3262DC"
+
+                        />
+                </com.rey.material.widget.LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
+        </com.rey.material.widget.RelativeLayout>
 
-        </RelativeLayout>
+    </com.rey.material.widget.RelativeLayout>
 
-    </RelativeLayout>
-
-</FrameLayout>
+</com.rey.material.widget.FrameLayout>

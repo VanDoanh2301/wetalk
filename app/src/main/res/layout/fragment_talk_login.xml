@@ -7,19 +7,18 @@
 
     <com.rey.material.widget.ImageView
         android:id="@+id/img_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/top_background1"
-        />
+        app:srcCompat="@drawable/top_background1" />
     <com.rey.material.widget.TextView
         android:id="@+id/txt_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome \nBack"
+        android:text="Chào Mừng\nBạn"
         android:textSize="40sp"
         android:textStyle="bold"
         android:textColor="#6672FF"
@@ -47,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_view"
         />
-    <androidx.appcompat.widget.AppCompatEditText
+    <EditText
         android:id="@+id/edt_password"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -62,7 +61,7 @@
         android:textSize="18sp"
         android:ems="10"
         android:layout_marginTop="16dp"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_email"
@@ -70,14 +69,14 @@
 
     <com.rey.material.widget.ImageView
         android:id="@+id/btn_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_password"
-        app:srcCompat="@drawable/btn_arraw1"
-        />
+        app:srcCompat="@drawable/btn_arraw1" />
+
     <com.rey.material.widget.LinearLayout
         android:id="@+id/lnl_select"
         android:layout_width="match_parent"
@@ -100,7 +99,7 @@
             android:padding="16dp"
             android:layout_marginEnd="16dp"
             android:textStyle="bold"
-            android:text="Đăng nhập nhanh"
+            android:text="Vào Nhanh"
             android:textColor="#3b608c"
             />
         <androidx.appcompat.widget.AppCompatButton

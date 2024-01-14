@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +22,8 @@
                 android:layout_height="50dp"
                 android:background="@drawable/bg_bt_button"
                 android:padding="6dp"
-                android:src="@drawable/ic_play"
+                android:src="@drawable/play_cricle"
+                app:tint="@color/white"
                  />
 
             <androidx.appcompat.widget.AppCompatImageView

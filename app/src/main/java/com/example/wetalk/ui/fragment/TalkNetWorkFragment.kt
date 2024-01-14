@@ -24,5 +24,4 @@ class TalkNetWorkFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_talk_net_work, container, false)
     }
 
-
 }
