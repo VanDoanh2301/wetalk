@@ -12,10 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.local.ImageHome
-import com.example.wetalk.data.model.objectmodel.User
-import com.example.wetalk.data.model.objectmodel.UserRequest
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
@@ -37,7 +38,7 @@ class TalkHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var isUser = false
     private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user: UserRequest
+    private lateinit var user: UserInforRequest
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
@@ -100,9 +101,11 @@ class TalkHomeFragment : Fragment() {
                     is Resource.Success -> {
                         user = it.data!!
                         binding.textView2.text = user.name
+                        Glide.with(requireContext()).load(user.avatarLocation).apply(RequestOptions.circleCropTransform())
+                            .into(binding.imgAvata)
                     }
                     is Resource.Error -> {
-                        Log.d("User", it.message.toString())
+                        Log.d("UserRegisterRequest", it.message.toString())
                     }
                 }
             }

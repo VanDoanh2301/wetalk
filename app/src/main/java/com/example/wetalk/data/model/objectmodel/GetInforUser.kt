@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class GetInforUser(
     @SerializedName("message") val message: String?,
     @SerializedName("code") val code: Int?,
-    @SerializedName("data") val data: ArrayList<UserRequest>
+    @SerializedName("data") val data: ArrayList<UserUpdate>
 ) : Parcelable

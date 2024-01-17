@@ -1,8 +1,10 @@
 package com.example.wetalk.data.remote
 
+import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetInforUser
-import com.example.wetalk.data.model.objectmodel.User
-import com.example.wetalk.data.model.objectmodel.UserRequest
+import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
 import com.example.wetalk.data.model.responsemodel.LoginResponse
@@ -20,7 +22,7 @@ import retrofit2.http.Part
 
 interface ApiLogin {
     @POST("api/register/generateOtp")
-    suspend fun generateOtp(@Body user: User?): Response<HostResponse>
+    suspend fun generateOtp(@Body userRegisterRequest: UserRegisterRequest?): Response<HostResponse>
 
     @POST("api/register/validateOtp")
     suspend  fun validateOtp(@Body registerPost: RegisterPost): Response<HostResponse>
@@ -34,8 +36,12 @@ interface ApiLogin {
             : Response<String>
 
     @GET("users/getUserInfor")
-    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<UserRequest>
+    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<UserInforRequest>
 
     @PUT("users")
-    suspend fun updateUser(@Body userRequest: UserRequest) : Response<GetInforUser>
+    suspend fun updateUser(@Header("Authorization")  authorization: String ,
+                           @Body userRequest: UserUpdate) : Response<GetInforUser>
+    @POST("users/uploadAvatar")
+    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetInforUser>
+
 }

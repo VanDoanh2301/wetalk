@@ -1,16 +1,13 @@
-package com.example.providervideo.adapter.test
+package com.example.wetalk.ui.adapter
 
 
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.local.ChatroomModel
 
@@ -45,7 +42,7 @@ class RecentChatRecyclerAdapter(private val context: Context, private var chatMo
             usernameText = itemView.findViewById<TextView>(R.id.user_name_text)
             lastMessageText = itemView.findViewById<TextView>(R.id.last_message_text)
             lastMessageTime = itemView.findViewById<TextView>(R.id.last_message_time_text)
-            profilePic = itemView.findViewById<ImageView>(R.id.profile_pic_image_view)
+            profilePic = itemView.findViewById<ImageView>(R.id.img_avata)
         }
     }
 }

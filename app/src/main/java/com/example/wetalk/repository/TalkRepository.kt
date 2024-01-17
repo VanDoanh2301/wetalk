@@ -1,11 +1,13 @@
 package com.example.wetalk.repository
 
+import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetInforUser
 import com.example.wetalk.data.model.objectmodel.QuestionSize
-import com.example.wetalk.data.model.objectmodel.User
-import com.example.wetalk.data.model.objectmodel.UserRequest
+import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
 import com.example.wetalk.data.model.responsemodel.LoginResponse
@@ -27,8 +29,8 @@ class TalkRepository @Inject constructor(
     suspend fun userLogin(post: LoginPost): Response<LoginResponse> {
         return mLogin.login(post)
     }
-    suspend fun generateOtp(user: User): Response<HostResponse> {
-        return mLogin.generateOtp(user)
+    suspend fun generateOtp(userRegisterRequest: UserRegisterRequest): Response<HostResponse> {
+        return mLogin.generateOtp(userRegisterRequest)
     }
     suspend fun validateOtp(registerPost: RegisterPost): Response<HostResponse> {
         return mLogin.validateOtp(registerPost)
@@ -43,14 +45,17 @@ class TalkRepository @Inject constructor(
     suspend fun getAllQuestionByTopicId(topicId:Int) : Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicID(topicId)
     }
-    suspend fun getUserInfor(authorization: String) : Response<UserRequest> {
+    suspend fun getUserInfor(authorization: String) : Response<UserInforRequest> {
         return mLogin.geUserInfor(authorization)
     }
-    suspend fun updateUser(userRequest: UserRequest) : Response<GetInforUser> {
-        return mLogin.updateUser(userRequest)
+    suspend fun updateUser(authorization: String,userRequest: UserUpdate) : Response<GetInforUser> {
+        return mLogin.updateUser(authorization,userRequest)
     }
     suspend fun getAllQuestionByTopicID(questionSize: QuestionSize) : Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicId(questionSize)
+    }
+    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetInforUser> {
+        return mLogin.updateAvatar(authorization, avatarRequest)
     }
 
 }

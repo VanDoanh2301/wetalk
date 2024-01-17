@@ -4,9 +4,10 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetInforUser
-import com.example.wetalk.data.model.objectmodel.User
-import com.example.wetalk.data.model.objectmodel.UserRequest
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil.Companion.hasInternetConnection
 import com.example.wetalk.util.Resource
@@ -21,15 +22,18 @@ import javax.inject.Inject
 @HiltViewModel
 class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkRepository,
                                                    @ApplicationContext private val context: Context) :ViewModel(){
-    private val _getInforUser: MutableStateFlow<Resource<UserRequest>> =
+    private val _getInforUser: MutableStateFlow<Resource<UserInforRequest>> =
         MutableStateFlow(Resource.Loading())
-    val getInforUser: StateFlow<Resource<UserRequest>>
+    val getInforUser: StateFlow<Resource<UserInforRequest>>
         get() = _getInforUser
 
     private val _updateUser : MutableStateFlow<Resource<GetInforUser>> = MutableStateFlow(Resource.Loading())
     val updateUser : StateFlow<Resource<GetInforUser>> get() = _updateUser
 
-    private var user: UserRequest? = null
+    private val _updateAvatar : MutableStateFlow<Resource<GetInforUser>> = MutableStateFlow(Resource.Loading())
+    val updateAvatar : StateFlow<Resource<GetInforUser>> get() = _updateAvatar
+
+    private var user: UserInforRequest? = null
     private var userInfor: GetInforUser ? =null
 
 
@@ -37,14 +41,44 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
         safeGetAllUsers(authorization)
     }
 
-    fun updateInforUser(userRequest: UserRequest) = viewModelScope.launch {
-        safeUpdateUser(userRequest)
+    fun updateAvatarUser(authorization: String,avatarRequest: AvatarRequest) = viewModelScope.launch {
+        safeUserAvatar(authorization,avatarRequest)
     }
-    private suspend fun safeUpdateUser(userRequest: UserRequest) {
+    private suspend fun safeUserAvatar(authorization: String,avatarRequest: AvatarRequest) {
 
         try {
             if(hasInternetConnection(context)){
-                val response =  repository.updateUser(userRequest)
+                val response =  repository.updateAvata(authorization,avatarRequest)
+                _updateAvatar.value = handleUpdateAvatarResponse(response)
+            } else {
+                _updateAvatar.value = Resource.Error("Mất Kết Nối Internet")
+            }
+        } catch (e: Exception) {
+            Log.e("GETALLUSERS_API_ERROR", e.toString())
+            _getInforUser.value = Resource.Error(e.toString())
+        }
+    }
+
+    private fun handleUpdateAvatarResponse(response: Response<GetInforUser>): Resource<GetInforUser> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(userInfor ?: resultResponse)
+            }
+        } else {
+            Log.e("GETALLUSERS_RETROFIT_ERROR", response.toString())
+        }
+        return Resource.Error((userInfor ?: response.message()).toString())
+    }
+
+
+    fun updateInforUser(authorization: String,userRequest: UserUpdate) = viewModelScope.launch {
+        safeUpdateUser(authorization,userRequest)
+    }
+    private suspend fun safeUpdateUser(authorization: String,userRequest: UserUpdate) {
+
+        try {
+            if(hasInternetConnection(context)){
+                val response =  repository.updateUser(authorization,userRequest)
                 _updateUser.value = handleUpdateUsersResponse(response)
             } else {
                 _updateUser.value = Resource.Error("Mất Kết Nối Internet")
@@ -80,7 +114,7 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
         }
     }
 
-    private fun handleGetAllUsersResponse(response: Response<UserRequest>): Resource<UserRequest> {
+    private fun handleGetAllUsersResponse(response: Response<UserInforRequest>): Resource<UserInforRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(user ?: resultResponse)

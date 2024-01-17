@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.objectmodel.User
+import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil
@@ -28,13 +28,13 @@ class RegisterViewModel @Inject constructor(
         get() = _registerResponseStateFlow
 
 private val hostResponse:HostResponse ? =null
-    fun generateOtp(user: User) = viewModelScope.launch {
-       safeGetAllUsers(user)
+    fun generateOtp(userRegisterRequest: UserRegisterRequest) = viewModelScope.launch {
+       safeGetAllUsers(userRegisterRequest)
     }
-    private suspend fun safeGetAllUsers(user: User) {
+    private suspend fun safeGetAllUsers(userRegisterRequest: UserRegisterRequest) {
         try {
             if(NetworkUtil.hasInternetConnection(context)){
-                val response = repository.generateOtp(user)
+                val response = repository.generateOtp(userRegisterRequest)
                 _registerResponseStateFlow.value = handleGetAllUsersResponse(response)
             } else {
                 _registerResponseStateFlow.value = Resource.Error("Mất Kết Nối Internet")

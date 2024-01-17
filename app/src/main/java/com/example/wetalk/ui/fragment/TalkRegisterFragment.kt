@@ -1,7 +1,6 @@
 package com.example.wetalk.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.WeTalkApp
-import com.example.wetalk.data.model.objectmodel.User
+import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
 import com.example.wetalk.databinding.FragmentTalkRegisterBinding
-import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.viewmodels.RegisterViewModel
 import com.example.wetalk.util.Resource
-import com.example.wetalk.util.Task
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 
 /**
@@ -77,13 +68,13 @@ class TalkRegisterFragment : Fragment() {
                 if (edtPassword.text.toString() != edtConfirm.text.toString()) {
                     edtConfirm.error = "Passwords are not the same";
                 } else {
-                    var user = User(
+                    var userRegisterRequest = UserRegisterRequest(
                         edtName.text.toString(),
                         edtEmail.text.toString(),
                         edtPassword.text.toString(),
                         "USER"
                     );
-                    viewModel.generateOtp(user)
+                    viewModel.generateOtp(userRegisterRequest)
 
                     val bundle = bundleOf("email" to edtEmail.text.toString())
                     findNavController().navigate(R.id.action_talkRegisterFragment_to_talkOtpFragment, bundle)

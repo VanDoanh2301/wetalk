@@ -69,9 +69,10 @@
                     app:layout_constraintBottom_toBottomOf="@id/text_view_2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_1"
-                    app:srcCompat="@drawable/profile">
+                    >
 
-                    <ImageView
+                    <com.rey.material.widget.ImageView
+                        android:id="@+id/img_avata"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
