@@ -59,6 +59,7 @@ class TalkHomeFragment : Fragment() {
         configViewPager()
         slideBar();
         binding.textView2.text = "Người Dùng Khách"
+        //Role
         if (isUser) {
             binding.btnChat.visibility = View.VISIBLE
             binding.btnHistory.visibility = View.VISIBLE
@@ -71,11 +72,12 @@ class TalkHomeFragment : Fragment() {
             binding.imgKey1.visibility = View.VISIBLE
             binding.imgKey2.visibility = View.VISIBLE
         }
+        //Click button
         binding.rltChat.setOnClickListener {
             if (!isUser) {
                 Toast.makeText(requireContext(), "Vui lòng tạo tài khoản", Toast.LENGTH_LONG).show()
             } else {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkChatFragment)
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment)
             }
         }
         binding.rltHis.setOnClickListener {
@@ -91,6 +93,7 @@ class TalkHomeFragment : Fragment() {
 
     }
     private fun initView() {
+        //Job when start lifecycle
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
             viewModel.getUser("Bearer $isAccess")
@@ -111,31 +114,42 @@ class TalkHomeFragment : Fragment() {
             }
         }
     }
+
+    //Change fragment
     private fun onClickView() {
         binding.apply {
+            //Go to chat fragment
             btnChat.setOnClickListener {
-             findNavController().navigate(R.id.action_talkHomeFragment_to_talkChatFragment)
+             findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment)
             }
+            //Go to study authen
             btnAthen.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment)
             }
+            //Go to study number
             numberBtn.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignNumberFragment)
             }
+            //Go to study character
             btnCharac.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment)
             }
+            //Go to test
             btnTest.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment)
             }
+            //Go to up video
             btnProvide.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment)
             }
+            //Go to logout
             btnLogOut.setOnClickListener {
+                //Delete token and pop fragment
                 SharedPreferencesUtils.setString("isLogin", null);
                 findNavController().popBackStack(R.id.talkLoginFragment, false)
                 findNavController().navigate(R.id.talkLoginFragment)
             }
+            //Go to profile
             btnHistory.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
             }
@@ -165,6 +179,7 @@ class TalkHomeFragment : Fragment() {
         timer!!.schedule(object : TimerTask() {
             override fun run() {
                 Handler(Looper.getMainLooper()).post(Runnable {
+                    //Get currentItem
                     var currentItem: Int = binding.vgHome.currentItem
                     val total: Int = images.size - 1
                     if (currentItem < total) {

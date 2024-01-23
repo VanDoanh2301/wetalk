@@ -91,4 +91,14 @@
         <item name="rd_rippleAnimDuration">300</item>
         <item name="rd_rippleColor">#25000000</item>
     </style>
+    <style name="SCBSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#2C3F69</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#A6A6A6</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#1976D2</item>
+    </style>
 </resources>

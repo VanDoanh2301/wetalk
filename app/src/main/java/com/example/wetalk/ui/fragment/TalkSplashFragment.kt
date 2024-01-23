@@ -37,7 +37,7 @@ class TalkSplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            delay(4000L)
+            delay(2000L)
 
             if (SharedPreferencesUtils.getString("isLogin") != null) {
                 val bundle = bundleOf("isUser" to true)

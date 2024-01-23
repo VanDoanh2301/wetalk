@@ -39,7 +39,7 @@
                     android:id="@+id/text_view_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="70dp"
                     android:text="Xin chào"
                     android:textStyle="bold"
@@ -64,8 +64,11 @@
                     android:layout_width="76dp"
                     android:layout_height="76dp"
                     android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="16dp"
                     app:cardCornerRadius="60dp"
+                    android:elevation="8dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="@id/text_view_2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_view_1"
@@ -75,8 +78,9 @@
                         android:id="@+id/img_avata"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/bg1" />
+                        android:adjustViewBounds="true"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_person" />
 
                 </androidx.cardview.widget.CardView>
                 <com.rey.material.widget.LinearLayout

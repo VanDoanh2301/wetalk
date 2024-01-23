@@ -82,17 +82,8 @@
             android:id="@+id/action_talkHomeFragment_to_talkTopicFragment"
             app:destination="@id/talkTopicFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkChatFragment"
-            app:destination="@id/talkChatFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/talkChatFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkChatFragment"
-        android:label="fragment_talk_chat"
-        tools:layout="@layout/fragment_talk_chat" >
-        <action
-            android:id="@+id/action_talkChatFragment_to_talkChatHomeFragment"
-            app:destination="@id/talkChatHomeFragment" />
+            android:id="@+id/action_talkHomeFragment_to_talkMainChatFragment"
+            app:destination="@id/talkMainChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkStudyFragment"
@@ -133,11 +124,6 @@
         android:name="com.example.wetalk.ui.fragment.TalkProfileEditFragment"
         android:label="fragment_talk_profile_edit"
         tools:layout="@layout/fragment_talk_profile_edit" />
-    <fragment
-        android:id="@+id/talkNeworkUpFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkNeworkUpFragment"
-        android:label="fragment_talk_nework_up"
-        tools:layout="@layout/fragment_talk_nework_up" />
     <fragment
         android:id="@+id/talkTestFragment"
         android:name="com.example.wetalk.ui.fragment.TalkTestFragment"
@@ -198,4 +184,37 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+    <fragment
+        android:id="@+id/talkMainChatFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkMainChatFragment"
+        android:label="fragment_talk_main_chat"
+        tools:layout="@layout/fragment_talk_main_chat" >
+        <action
+            android:id="@+id/action_talkMainChatFragment_to_talkChatHomeFragment"
+            app:destination="@id/talkChatHomeFragment" />
+        <action
+            android:id="@+id/action_talkMainChatFragment_to_talkTabChatFragment"
+            app:destination="@id/talkTabChatFragment" />
+        <action
+            android:id="@+id/action_talkMainChatFragment_to_talkTabPhoneBookFragment"
+            app:destination="@id/talkTabPhoneBookFragment" />
+        <action
+            android:id="@+id/action_talkMainChatFragment_to_talkTabProfileFragment"
+            app:destination="@id/talkTabProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkTabChatFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTabChatFragment"
+        android:label="fragment_talk_tab_chat"
+        tools:layout="@layout/fragment_talk_tab_chat" />
+    <fragment
+        android:id="@+id/talkTabPhoneBookFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTabPhoneBookFragment"
+        android:label="fragment_talk_tab_phone_book"
+        tools:layout="@layout/fragment_talk_tab_phone_book" />
+    <fragment
+        android:id="@+id/talkTabProfileFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTabProfileFragment"
+        android:label="fragment_talk_tab_profile"
+        tools:layout="@layout/fragment_talk_tab_profile" />
 </navigation>

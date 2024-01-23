@@ -200,11 +200,11 @@ class TalkProfileEditFragment : Fragment() {
                 val data = result.data
                 if (data != null && data.data != null) {
                     selectedImageUri = data.data
-                    setProfilePic(requireContext(), selectedImageUri!!, binding.profilePicLayout.imgAvata)
+                    setProfilePic(requireContext(), selectedImageUri!!, binding.imgAvata)
                 }
             }
         }
-        binding.profilePicLayout.imgAvata.setOnClickListener { v ->
+        binding.profilePicLayout.setOnClickListener { v ->
             val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
             galleryIntent.type = "image/*"
             imagePickLauncher?.launch(galleryIntent)
