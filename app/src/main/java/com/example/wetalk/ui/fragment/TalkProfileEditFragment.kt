@@ -31,12 +31,14 @@ import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.Task
+import com.google.firebase.storage.FirebaseStorage
 import com.rey.material.widget.ImageView
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.UUID
 
 /**
  * A simple [Fragment] subclass.
@@ -200,7 +202,8 @@ class TalkProfileEditFragment : Fragment() {
                 val data = result.data
                 if (data != null && data.data != null) {
                     selectedImageUri = data.data
-                    setProfilePic(requireContext(), selectedImageUri!!, binding.imgAvata)
+
+                    uploadImageToFirebaseStorage(selectedImageUri!!)
                 }
             }
         }
@@ -213,5 +216,26 @@ class TalkProfileEditFragment : Fragment() {
     private fun setProfilePic(context: Context, imageUri: Uri, imageView: ImageView) {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform())
             .into(imageView)
+    }
+
+    private fun uploadImageToFirebaseStorage(imageUri: Uri) {
+
+        val storageReference = FirebaseStorage.getInstance().reference
+        val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
+
+        imageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Hiển thị hình ảnh bằng Glide
+                    setProfilePic(requireContext(), uri, binding.imgAvata)
+                }.addOnFailureListener { e ->
+                    // Xử lý lỗi khi không lấy được link hình ảnh
+                    Toast.makeText(requireContext(), "Error getting download URL: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                // Xử lý lỗi khi tải lên hình ảnh
+                Toast.makeText(requireContext(), "Upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
