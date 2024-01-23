@@ -7,6 +7,6 @@ import java.util.Objects
 
 data class HostResponse(
     @SerializedName("message") val message: String?,
-    @SerializedName("code") val code: Int?
+    @SerializedName("code") val code: Int?,
 )
 

@@ -6,7 +6,7 @@
     android:background="#F8F8F8"
     >
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <TextView
         android:id="@+id/edt_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -18,7 +18,8 @@
         android:layout_marginTop="16dp"
         android:hint="Tìm kiếm..."
         android:ems="10"
-        android:inputType="textPersonName"
+        android:gravity="center_vertical"
+        android:inputType="none"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/bg_custom_home"

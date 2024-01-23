@@ -149,7 +149,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/avertasemibold"
                         android:gravity="center"
-                        android:text="Danh bạ"
+                        android:text="Bạn bè"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </LinearLayout>

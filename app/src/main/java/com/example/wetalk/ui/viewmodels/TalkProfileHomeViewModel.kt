@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
-import com.example.wetalk.data.model.objectmodel.GetInforUser
+import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.repository.TalkRepository
@@ -27,14 +27,14 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
     val getInforUser: StateFlow<Resource<UserInforRequest>>
         get() = _getInforUser
 
-    private val _updateUser : MutableStateFlow<Resource<GetInforUser>> = MutableStateFlow(Resource.Loading())
-    val updateUser : StateFlow<Resource<GetInforUser>> get() = _updateUser
+    private val _updateUser : MutableStateFlow<Resource<GetAllUserUpdate>> = MutableStateFlow(Resource.Loading())
+    val updateUser : StateFlow<Resource<GetAllUserUpdate>> get() = _updateUser
 
-    private val _updateAvatar : MutableStateFlow<Resource<GetInforUser>> = MutableStateFlow(Resource.Loading())
-    val updateAvatar : StateFlow<Resource<GetInforUser>> get() = _updateAvatar
+    private val _updateAvatar : MutableStateFlow<Resource<GetAllUserUpdate>> = MutableStateFlow(Resource.Loading())
+    val updateAvatar : StateFlow<Resource<GetAllUserUpdate>> get() = _updateAvatar
 
     private var user: UserInforRequest? = null
-    private var userInfor: GetInforUser ? =null
+    private var userInfor: GetAllUserUpdate ? =null
 
 
     fun getUser(authorization: String) = viewModelScope.launch() {
@@ -59,7 +59,7 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
         }
     }
 
-    private fun handleUpdateAvatarResponse(response: Response<GetInforUser>): Resource<GetInforUser> {
+    private fun handleUpdateAvatarResponse(response: Response<GetAllUserUpdate>): Resource<GetAllUserUpdate> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(userInfor ?: resultResponse)
@@ -89,7 +89,7 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
         }
     }
 
-    private fun handleUpdateUsersResponse(response: Response<GetInforUser>): Resource<GetInforUser> {
+    private fun handleUpdateUsersResponse(response: Response<GetAllUserUpdate>): Resource<GetAllUserUpdate> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(userInfor ?: resultResponse)

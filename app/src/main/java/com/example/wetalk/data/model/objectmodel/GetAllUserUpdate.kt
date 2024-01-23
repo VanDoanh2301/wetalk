@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class GetInforUser(
+data class GetAllUserUpdate(
     @SerializedName("message") val message: String?,
     @SerializedName("code") val code: Int?,
     @SerializedName("data") val data: ArrayList<UserUpdate>

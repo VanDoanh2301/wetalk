@@ -251,7 +251,7 @@ class TalkTestFragment : Fragment() {
         override fun onPageScrollStateChanged(arg0: Int) {}
     }
 
-    fun updateTestCurrentIndex(testQuest: TestQuest, index: Int) {
+    private fun updateTestCurrentIndex(testQuest: TestQuest, index: Int) {
         testQuests[index] = testQuest
 
         var countCorrect = 0

@@ -6,27 +6,22 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserInforRequest(
+    @SerializedName("id")
+    var id : Int?,
     @SerializedName("name")
     var name: String,
-
     @SerializedName("email")
     val email: String,
-
     @SerializedName("password")
     val password: String,
-
     @SerializedName("phoneNumber")
     var phoneNumber: String,
-
     @SerializedName("address")
     var address: String,
-
     @SerializedName("role")
     val role: String,
-
     @SerializedName("birthDay")
     var age: String,
-
     @SerializedName("gender")
     var gender: String,
     @SerializedName("avatarLocation")

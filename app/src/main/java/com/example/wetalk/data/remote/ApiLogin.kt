@@ -1,9 +1,11 @@
 package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
-import com.example.wetalk.data.model.objectmodel.GetInforUser
+import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
+import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
 import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.objectmodel.UserQueryRequest
 import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
@@ -18,6 +20,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 
 interface ApiLogin {
@@ -40,8 +43,14 @@ interface ApiLogin {
 
     @PUT("users")
     suspend fun updateUser(@Header("Authorization")  authorization: String ,
-                           @Body userRequest: UserUpdate) : Response<GetInforUser>
+                           @Body userRequest: UserUpdate) : Response<GetAllUserUpdate>
     @POST("users/uploadAvatar")
-    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetInforUser>
+    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetAllUserUpdate>
 
+
+    @POST("users/api/search")
+    suspend fun searchUser(@Body userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest>
+
+    @GET("friend-ship/add-friend/{userId}")
+    suspend fun addFriend(@Path("userId") userId:Int) : Response<HostResponse>
 }

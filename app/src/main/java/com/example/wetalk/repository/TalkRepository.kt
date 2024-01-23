@@ -3,10 +3,12 @@ package com.example.wetalk.repository
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
-import com.example.wetalk.data.model.objectmodel.GetInforUser
+import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
+import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.objectmodel.UserQueryRequest
 import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.RegisterPost
@@ -48,14 +50,20 @@ class TalkRepository @Inject constructor(
     suspend fun getUserInfor(authorization: String) : Response<UserInforRequest> {
         return mLogin.geUserInfor(authorization)
     }
-    suspend fun updateUser(authorization: String,userRequest: UserUpdate) : Response<GetInforUser> {
+    suspend fun updateUser(authorization: String,userRequest: UserUpdate) : Response<GetAllUserUpdate> {
         return mLogin.updateUser(authorization,userRequest)
     }
     suspend fun getAllQuestionByTopicID(questionSize: QuestionSize) : Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicId(questionSize)
     }
-    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetInforUser> {
+    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetAllUserUpdate> {
         return mLogin.updateAvatar(authorization, avatarRequest)
+    }
+    suspend fun seacherUser(userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest> {
+        return mLogin.searchUser(userQueryRequest)
+    }
+    suspend fun addFriend(userId:Int) : Response<HostResponse> {
+        return mLogin.addFriend(userId)
     }
 
 }
