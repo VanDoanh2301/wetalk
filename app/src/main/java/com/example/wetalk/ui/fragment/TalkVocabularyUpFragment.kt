@@ -141,8 +141,9 @@ class TalkVocabularyUpFragment : Fragment() {
             }
         }
         binding.imgRecord.setOnClickListener {
-            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            startActivityForResult(i, 1111)
+//            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+//            startActivityForResult(i, 1111)
+            BaseFragment.add((activity as MainActivity), TalkCameraOpenCvFragment.newInstance())
         }
 //        openDialog()
         onRecord()

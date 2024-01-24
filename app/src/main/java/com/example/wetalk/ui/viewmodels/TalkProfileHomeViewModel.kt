@@ -2,6 +2,8 @@ package com.example.wetalk.ui.viewmodels
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
@@ -9,6 +11,8 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserUpdate
 import com.example.wetalk.repository.TalkRepository
+import com.example.wetalk.util.LogUtils
+import com.example.wetalk.util.NetworkUtil
 import com.example.wetalk.util.NetworkUtil.Companion.hasInternetConnection
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,39 +20,52 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkRepository,
-                                                   @ApplicationContext private val context: Context) :ViewModel(){
+class TalkProfileHomeViewModel @Inject constructor(
+    private val repository: TalkRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
     private val _getInforUser: MutableStateFlow<Resource<UserInforRequest>> =
         MutableStateFlow(Resource.Loading())
-    val getInforUser: StateFlow<Resource<UserInforRequest>>
-        get() = _getInforUser
+    val getInforUser: StateFlow<Resource<UserInforRequest>> get() = _getInforUser
 
-    private val _updateUser : MutableStateFlow<Resource<GetAllUserUpdate>> = MutableStateFlow(Resource.Loading())
-    val updateUser : StateFlow<Resource<GetAllUserUpdate>> get() = _updateUser
+    private val _updateUser: MutableStateFlow<Resource<GetAllUserUpdate>> =
+        MutableStateFlow(Resource.Loading())
+    val updateUser: StateFlow<Resource<GetAllUserUpdate>> get() = _updateUser
 
-    private val _updateAvatar : MutableStateFlow<Resource<GetAllUserUpdate>> = MutableStateFlow(Resource.Loading())
-    val updateAvatar : StateFlow<Resource<GetAllUserUpdate>> get() = _updateAvatar
+    private val _updateAvatar: MutableStateFlow<Resource<GetAllUserUpdate>> =
+        MutableStateFlow(Resource.Loading())
+    val updateAvatar: StateFlow<Resource<GetAllUserUpdate>> get() = _updateAvatar
+
+
+    private val _uploadResult: MutableLiveData<Resource<String>> =
+        MutableLiveData(Resource.Loading())
+    val uploadResult: LiveData<Resource<String>> get() = _uploadResult
+
 
     private var user: UserInforRequest? = null
-    private var userInfor: GetAllUserUpdate ? =null
+    private var userInfor: GetAllUserUpdate? = null
+    private var res: String? = null
 
 
     fun getUser(authorization: String) = viewModelScope.launch() {
         safeGetAllUsers(authorization)
     }
 
-    fun updateAvatarUser(authorization: String,avatarRequest: AvatarRequest) = viewModelScope.launch {
-        safeUserAvatar(authorization,avatarRequest)
-    }
-    private suspend fun safeUserAvatar(authorization: String,avatarRequest: AvatarRequest) {
+    fun updateAvatarUser(authorization: String, avatarRequest: AvatarRequest) =
+        viewModelScope.launch {
+            safeUserAvatar(authorization, avatarRequest)
+        }
+
+    private suspend fun safeUserAvatar(authorization: String, avatarRequest: AvatarRequest) {
 
         try {
-            if(hasInternetConnection(context)){
-                val response =  repository.updateAvata(authorization,avatarRequest)
+            if (hasInternetConnection(context)) {
+                val response = repository.updateAvata(authorization, avatarRequest)
                 _updateAvatar.value = handleUpdateAvatarResponse(response)
             } else {
                 _updateAvatar.value = Resource.Error("Mất Kết Nối Internet")
@@ -71,14 +88,15 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
     }
 
 
-    fun updateInforUser(authorization: String,userRequest: UserUpdate) = viewModelScope.launch {
-        safeUpdateUser(authorization,userRequest)
+    fun updateInforUser(authorization: String, userRequest: UserUpdate) = viewModelScope.launch {
+        safeUpdateUser(authorization, userRequest)
     }
-    private suspend fun safeUpdateUser(authorization: String,userRequest: UserUpdate) {
+
+    private suspend fun safeUpdateUser(authorization: String, userRequest: UserUpdate) {
 
         try {
-            if(hasInternetConnection(context)){
-                val response =  repository.updateUser(authorization,userRequest)
+            if (hasInternetConnection(context)) {
+                val response = repository.updateUser(authorization, userRequest)
                 _updateUser.value = handleUpdateUsersResponse(response)
             } else {
                 _updateUser.value = Resource.Error("Mất Kết Nối Internet")
@@ -102,7 +120,7 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
 
     private suspend fun safeGetAllUsers(authorization: String) {
         try {
-            if(hasInternetConnection(context)){
+            if (hasInternetConnection(context)) {
                 val response = repository.getUserInfor(authorization)
                 _getInforUser.value = handleGetAllUsersResponse(response)
             } else {
@@ -126,4 +144,48 @@ class TalkProfileHomeViewModel @Inject constructor(private val repository: TalkR
     }
 
 
+    fun uploadVideo(
+        file: MultipartBody.Part)
+    {
+        viewModelScope.launch {
+            updateVideo(file)
+        }
+
+    }
+
+    private suspend fun updateVideo(
+        file: MultipartBody.Part
+    ) {
+
+        _uploadResult.value = Resource.Loading()
+        try {
+            if (NetworkUtil.hasInternetConnection(context)) {
+                val response = repository.uploadVideo(file)
+                _uploadResult.value = handleUploadResponse(response)
+            } else {
+                _uploadResult.value = Resource.Error("Mất Kết Nối Internet")
+            }
+        } catch (e: Exception) {
+            LogUtils.d("LOGIN_API_ERROR: ${e.message}")
+            _uploadResult.value = Resource.Error("${e.message.toString()}")
+        }
+    }
+
+    private fun handleUploadResponse(response: Response<String>): Resource<String> {
+        if (response.isSuccessful) {
+            LogUtils.d("LOGIN_RETROFIT_SUCCESS: OK")
+            response.body()?.let { resultResponse ->
+                return Resource.Success(res ?: resultResponse)
+            }
+        } else {
+            var res = response.body().toString()
+            if (response.code() == 401) res = "Error"
+            else if (response.code() == 400) res = "Invalid request body"
+            else if (response.code() == 500) res = "Internal server error"
+            return Resource.Error(res)
+
+            LogUtils.d("LOGIN_RETROFIT_ERROR: $response")
+        }
+        return Resource.Error((res ?: response.message()).toString())
+    }
 }

@@ -32,6 +32,8 @@ class TalkVocabularyViewModel @Inject constructor(
        MutableLiveData(Resource.Loading())
     val uploadResult: LiveData<Resource<String>>
         get() = _uploadResult
+
+
     private val _videoLocal = MutableStateFlow(
         VideoLocal(
             -1,

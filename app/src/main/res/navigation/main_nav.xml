@@ -113,6 +113,9 @@
         <action
             android:id="@+id/action_talkVocabularyUpFragment_to_talkSelectVideoFragment"
             app:destination="@id/talkSelectVideoFragment" />
+        <action
+            android:id="@+id/action_talkVocabularyUpFragment_to_talkCameraOpenCvFragment"
+            app:destination="@id/talkCameraOpenCvFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkSelectVideoFragment"
@@ -217,4 +220,9 @@
         android:name="com.example.wetalk.ui.fragment.TalkTabProfileFragment"
         android:label="fragment_talk_tab_profile"
         tools:layout="@layout/fragment_talk_tab_profile" />
+    <fragment
+        android:id="@+id/talkCameraOpenCvFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkCameraOpenCvFragment"
+        android:label="fragment_talk_camera_open_cv"
+        tools:layout="@layout/fragment_talk_camera_open_cv" />
 </navigation>
