@@ -461,6 +461,7 @@
 
                         </com.rey.material.widget.LinearLayout>
                         <com.rey.material.widget.LinearLayout
+                            android:id="@+id/btn_hand"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -485,7 +486,7 @@
                             <com.rey.material.widget.TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Lịch sử"
+                                android:text="Luyện Tay"
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:textSize="14sp"

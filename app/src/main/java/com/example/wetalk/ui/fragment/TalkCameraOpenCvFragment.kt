@@ -1,14 +1,18 @@
 package com.example.wetalk.ui.fragment
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +20,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.sign_lang_ml.Classifier
 import com.example.wetalk.R
+import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.ui.activity.MainActivity
+import com.example.wetalk.util.RealPathUtil
+import com.example.wetalk.util.Task
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
@@ -47,7 +54,10 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
     private var probTextView: TextView? = null
     private var resultTextView: TextView? = null
     private val dialog: AlertDialog? = null
-
+    private val paths = ArrayList<String>()
+    private var devicePath: String? = null
+    private var uri: Uri? = null
+    private var task : Task<Uri> ? = null
     private val isDebug = false
     private val isEdge = false
     private val isSave = false
@@ -56,6 +66,10 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
     private var counter = 0
 
 
+    fun setTask(task: Task<Uri>)  : TalkCameraOpenCvFragment {
+        this.task = task
+        return this
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -111,6 +125,12 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
             Gravity.BOTTOM + Gravity.CENTER_HORIZONTAL
         )
         layout.addView(probTextView)
+        val btnRecord  = view.findViewById<Button>(R.id.recordButton)
+        btnRecord.setOnClickListener {
+
+            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            startActivityForResult(i, 1111)
+        }
     }
     companion object {
         // TODO: Rename and change types and number of parameters
@@ -225,6 +245,18 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
         super.onDestroy()
         if (openCvCameraView != null) {
             openCvCameraView!!.disableView()
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        paths.clear()
+        if (requestCode == 1111) {
+            try {
+                uri = data!!.data
+                task!!.callback(uri!!)
+                requireActivity().onBackPressed()
+            } catch (e: Exception) {
+            }
         }
     }
 }

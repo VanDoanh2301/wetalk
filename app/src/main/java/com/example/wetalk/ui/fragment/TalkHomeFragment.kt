@@ -1,5 +1,7 @@
 package com.example.wetalk.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,12 +45,14 @@ class TalkHomeFragment : Fragment() {
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         _binding = FragmentTalkHomeBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -154,6 +159,10 @@ class TalkHomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
             }
 
+            btnHand.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
+            }
+
         }
     }
     private fun configViewPager() {
@@ -191,6 +200,24 @@ class TalkHomeFragment : Fragment() {
                 })
             }
         }, 200, 3000)
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    // Người dùng từ chối cấp quyền, bạn có thể thông báo hoặc xử lý khác tùy ý
+                    Toast.makeText(requireContext(), "Quyền camera bị từ chối", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else -> {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
+        }
     }
 
 }

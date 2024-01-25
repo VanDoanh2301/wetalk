@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_talkHomeFragment_to_talkMainChatFragment"
             app:destination="@id/talkMainChatFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkTrainHandFragment"
+            app:destination="@id/talkTrainHandFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkStudyFragment"
@@ -225,4 +228,9 @@
         android:name="com.example.wetalk.ui.fragment.TalkCameraOpenCvFragment"
         android:label="fragment_talk_camera_open_cv"
         tools:layout="@layout/fragment_talk_camera_open_cv" />
+    <fragment
+        android:id="@+id/talkTrainHandFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTrainHandFragment"
+        android:label="fragment_talk_train_hand"
+        tools:layout="@layout/fragment_talk_train_hand" />
 </navigation>

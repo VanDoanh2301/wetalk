@@ -143,7 +143,27 @@ class TalkVocabularyUpFragment : Fragment() {
         binding.imgRecord.setOnClickListener {
 //            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
 //            startActivityForResult(i, 1111)
-            BaseFragment.add((activity as MainActivity), TalkCameraOpenCvFragment.newInstance())
+            BaseFragment.add((activity as MainActivity), TalkCameraOpenCvFragment.newInstance().setTask(object : Task<Uri> {
+                override fun callback(result: Uri) {
+                    uri = result
+                    paths.add(result.toString())
+                    talkImageItems = ArrayList<StorageImageItem>()
+                    for (devicePath in paths) {
+                        talkImageItems.add(
+                            StorageImageItem(
+                                true,
+                                devicePath,
+                                devicePath,
+                                if (paths.size > 2) 25 else 45,
+                                0
+                            )
+                        )
+                    }
+                    viewModel.addImageItems(talkImageItems)
+                    devicePath = RealPathUtil.getRealPath(requireContext(), uri)
+                }
+
+            }))
         }
 //        openDialog()
         onRecord()

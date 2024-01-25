@@ -78,8 +78,9 @@ class TalkTestFragment : Fragment() {
             viewModel.questions.collect {
                 when (it) {
                     is Resource.Success -> {
-                        try {
-                            val questions = it.data!!.data
+
+                        val questions = it.data!!.data
+                        if (questions.size > 0) {
                             for (q in questions) {
                                 val questionType = QuestionType(
                                     question = q.content,
@@ -107,7 +108,7 @@ class TalkTestFragment : Fragment() {
                                 initPagerHome();
 
                             }
-                        } catch (e: Exception) {
+                        } else {
                             val questionType = QuestionType(
                                 question = "Đây là chữ gì ?",
                                 answer_a = "A",
@@ -150,7 +151,6 @@ class TalkTestFragment : Fragment() {
                             initPagerHome();
 
                         }
-
                     }
 
                     is Resource.Loading -> {
