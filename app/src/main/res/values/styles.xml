@@ -1,0 +1,104 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="color_text_item_setting">@color/color_text_item_setting</item>
+    </style>
+
+
+    <style name="Translucent" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
+    <style name="AdsDialog" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowMinWidthMajor">95%</item>
+        <item name="android:windowMinWidthMinor">95%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+    <declare-styleable name="Lock9View">
+        <attr name="lock9_nodeSrc" format="color|reference" />
+        <attr name="lock9_nodeOnSrc" format="color|reference" />
+        <attr name="lock9_nodeSize" format="dimension" />
+        <attr name="lock9_nodeAreaExpand" format="dimension" />
+        <attr name="lock9_nodeOnAnim" format="reference" />
+        <attr name="lock9_lineColor" format="color" />
+        <attr name="lock9_lineWidth" format="dimension" />
+        <attr name="lock9_padding" format="dimension" />
+        <attr name="lock9_spacing" format="dimension" />
+        <attr name="lock9_autoLink" format="boolean" />
+        <attr name="lock9_enableVibrate" format="boolean" />
+        <attr name="lock9_vibrateTime" format="integer" />
+    </declare-styleable>
+
+    <style name="PauseDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
+    </style>
+
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_out</item>
+    </style>
+
+    <style name="CustomTabWidgetText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/avertasemibold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="ripple_btn_tab_widget_light" parent="@style/Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">#25000000</item>
+        <item name="rd_cornerRadius">20dp</item>
+        <item name="rd_enable">true</item>
+        <item name="rd_rippleAnimDuration">300</item>
+        <item name="rd_rippleColor">#25000000</item>
+    </style>
+    <style name="ripple_btn_tab_widget_normal" parent="@style/Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">#25000000</item>
+        <item name="rd_cornerRadius">0dp</item>
+        <item name="rd_enable">true</item>
+        <item name="rd_rippleAnimDuration">300</item>
+        <item name="rd_rippleColor">#25000000</item>
+    </style>
+
+    <style name="ripple_btn_tab_widget_normal_10" parent="@style/Material.Drawable.Ripple.Touch.MatchView.Light">
+        <item name="rd_backgroundColor">#25000000</item>
+        <item name="rd_cornerRadius">10dp</item>
+        <item name="rd_enable">true</item>
+        <item name="rd_rippleAnimDuration">300</item>
+        <item name="rd_rippleColor">#25000000</item>
+    </style>
+    <style name="SCBSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#2C3F69</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#A6A6A6</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#1976D2</item>
+    </style>
+</resources>

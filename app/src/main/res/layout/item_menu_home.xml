@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="?selectableItemBackground">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/menu_mood" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/img_icon"
+        android:fontFamily="@font/avertasemibold"
+        android:gravity="center_vertical"
+        android:text="@string/Moods"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="#33FFFFFF" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/arrow_right"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_arrow_left"
+        android:tint="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_switch_passcode"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_switch_off" />
+
+    <TextView
+        android:id="@+id/tv_time_notify"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/img_switch_passcode"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/avertasemibold"
+        android:gravity="center_vertical"
+        android:text="@string/Moods"
+        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="16sp" />
+
+</RelativeLayout>

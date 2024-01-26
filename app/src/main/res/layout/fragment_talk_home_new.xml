@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/pager_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="74dp"
+                android:background="@color/white" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:layout_alignParentBottom="true"
+                android:background="#00000000">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="104dp"
+                    android:layout_alignParentBottom="true">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="74dp"
+                        android:layout_alignParentBottom="true"
+                        app:cardElevation="8dp" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/bottom_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:id="@+id/bt_tab_mess"
+                        android:layout_width="0dp"
+                        android:layout_height="74dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_tab_mess"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="9dp"
+                            android:src="@drawable/ic_message"
+                            />
+
+                        <TextView
+                            android:id="@+id/view_tab_mess"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/avertasemibold"
+                            android:gravity="center"
+                            android:text="Tin nhắn"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/bt_tab_study"
+                        android:layout_width="0dp"
+                        android:layout_height="74dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_tab_study"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="9dp"
+                            android:src="@drawable/ic_up_video"
+                            />
+
+                        <TextView
+                            android:id="@+id/view_tab_study"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/avertasemibold"
+                            android:gravity="center"
+                            android:text="Học tập"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/bt_tab_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="74dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_tab_profile"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="9dp"
+                            android:src="@drawable/home_tab_you_custom"
+                            />
+                        <TextView
+                            android:id="@+id/view_tab_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/avertasemibold"
+                            android:gravity="center"
+                            android:text="Cá nhân"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/bt_tab_network"
+                        android:layout_width="0dp"
+                        android:layout_height="74dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_tab_network"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="9dp"
+                            android:src="@drawable/ic_design"
+                            />
+                        <TextView
+                            android:id="@+id/view_tab_network"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/avertasemibold"
+                            android:gravity="center"
+                            android:text="Khám phá"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8">
+
+    <com.rey.material.widget.RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container_ads">
+
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#3262DC"
+            android:minHeight="?attr/actionBarSize">
+
+            <com.rey.material.widget.ImageView
+                android:id="@+id/img_home"
+                style="@style/ripple_btn_tab_widget_normal"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentLeft="true"
+                android:padding="16dp"
+                android:src="@drawable/arrow_left"
+
+                />
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/txt_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:text="KẾT QUẢ"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+             />
+
+
+
+        </com.rey.material.widget.RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_below="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.rey.material.widget.RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:visibility="gone"
+                    android:layout_below="@+id/viewQuestion"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp">
+
+                    <com.rey.material.widget.TextView
+                        android:id="@+id/btn_review"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_button_round"
+
+                        android:gravity="center"
+                        android:text="Review"
+                        android:textColor="#009955"
+                        />
+
+                    <com.rey.material.widget.TextView
+                        android:id="@+id/btn_try_again"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_button"
+                        android:gravity="center"
+                        android:text="Try Again"
+                        android:textColor="@color/white"
+                       />
+
+                </com.rey.material.widget.LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/view_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="16dp"
+                    android:clickable="true"
+                    android:outlineAmbientShadowColor="@color/white"
+                    android:outlineSpotShadowColor="@color/white"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="8dp">
+
+                    <com.rey.material.widget.LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:orientation="vertical">
+
+                        <com.rey.material.widget.RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="24dp">
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/progress"
+                                android:layout_width="170dp"
+                                android:layout_height="170dp"
+                                android:layout_gravity="center_horizontal"
+                                android:indeterminate="false"
+                                app:indicatorColor="#009955"
+                                app:indicatorDirectionCircular="clockwise"
+                                app:indicatorInset="5dp"
+                                app:indicatorSize="160dp"
+                                app:trackColor="#ED6F71"
+                                app:trackThickness="20dp"
+                                tools:progress="25" />
+
+                            <com.rey.material.widget.LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:orientation="vertical">
+
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/tv_percent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentRight="true"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="03"
+                                    app:fontFamily="@font/roboto_medium"
+                                    />
+
+                                <com.rey.material.widget.TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Correct"
+                                    android:fontFamily="@font/roboto_medium"
+                                  />
+
+                            </com.rey.material.widget.LinearLayout>
+
+                        </com.rey.material.widget.RelativeLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Try Again"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            />
+
+                        <com.rey.material.widget.TextView
+                            android:id="@+id/tv_detail_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="24dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:text="Keep practicing and improve your skills and you can pass the exam"
+                          />
+                    </com.rey.material.widget.LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view_progress"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="16dp"
+                    android:clickable="true"
+                    android:id="@+id/viewQuestion"
+                    android:outlineAmbientShadowColor="@color/white"
+                    android:outlineSpotShadowColor="@color/white"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="8dp">
+
+                    <com.rey.material.widget.LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.rey.material.widget.LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <com.rey.material.widget.LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="66dp"
+                                android:layout_margin="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/background_result_done"
+                                android:orientation="vertical">
+
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/tv_correct"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_weight="1.3"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="03"
+                                    android:textColor="#009955"
+                                  />
+
+                                <com.rey.material.widget.TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Correct"
+                                    android:textColor="#009955"
+                                    />
+
+                            </com.rey.material.widget.LinearLayout>
+
+                            <com.rey.material.widget.LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="66dp"
+                                android:layout_margin="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/background_result_failed"
+                                android:orientation="vertical">
+
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/tv_incorrect"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_weight="1.3"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="12"
+                                    android:textColor="#FF7878"
+                                  />
+
+                                <com.rey.material.widget.TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Incorrect"
+                                    android:textColor="#FF7878"
+                                  />
+
+                            </com.rey.material.widget.LinearLayout>
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <com.rey.material.widget.LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/background_result_total"
+                            android:orientation="horizontal">
+
+                            <com.rey.material.widget.LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="66dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/tv_total_question"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:textColor="@color/black"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_weight="1.3"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="15"
+                                  />
+
+                                <com.rey.material.widget.TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:textColor="@color/black"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Total Question"
+                                    />
+                            </com.rey.material.widget.LinearLayout>
+
+                        </com.rey.material.widget.LinearLayout>
+
+                    </com.rey.material.widget.LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </com.rey.material.widget.RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </com.rey.material.widget.RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent"
+        android:paddingTop="5dp"
+        android:visibility="visible"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+</com.rey.material.widget.RelativeLayout>

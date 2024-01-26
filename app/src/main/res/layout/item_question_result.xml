@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rltView"
+    style="@style/ripple_btn_tab_widget_light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:minHeight="60dp">
+
+    <RelativeLayout
+        android:id="@+id/rltIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp">
+
+        <TextView
+            android:id="@+id/tvNumberQuest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/b2_grid_item_question_bg"
+            android:gravity="center"
+            android:textColor="#393939"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toRightOf="@+id/rltIcon"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:minHeight="52dp"
+        android:layout_marginLeft="14dp"
+        android:paddingRight="2dp"
+        android:textStyle="normal"
+       />
+
+    <RelativeLayout
+        android:id="@+id/rltAnswer"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@+id/tvtTitle"
+        android:background="@drawable/b2_grid_item_question_bg_selected_1"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="1"
+            android:textStyle="bold"
+          />
+
+    </RelativeLayout>
+
+</com.rey.material.widget.RelativeLayout>
