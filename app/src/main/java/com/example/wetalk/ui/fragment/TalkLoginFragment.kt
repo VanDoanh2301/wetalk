@@ -12,13 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.model.postmodel.LoginPost
+import com.example.wetalk.data.model.postmodel.LoginDTO
 import com.example.wetalk.databinding.FragmentTalkLoginBinding
 import com.example.wetalk.ui.viewmodels.LoginViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.observeOn
 
 /**
  * A simple [Fragment] subclass.
@@ -99,11 +98,12 @@ class TalkLoginFragment : Fragment() {
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            val userLoginPost = LoginPost(email, password)
-            viewModel.login(userLoginPost)
+            val userLoginDTO = LoginDTO(email, password)
+            viewModel.login(userLoginDTO)
         } else {
             Toast.makeText(requireContext(), "Email Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show()
         }
+        binding.loginProgressBar.visibility = View.VISIBLE
 
     }
 

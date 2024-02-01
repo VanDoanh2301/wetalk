@@ -20,14 +20,41 @@
                 android:layout_height="match_parent"
                  />
 
-            <com.rey.material.widget.Button
-                android:id="@+id/recordButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Record"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                >
+                <com.rey.material.widget.Button
+                    android:id="@+id/bt_back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_row_main"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Trang chủ"
+                    />
+                <com.rey.material.widget.Button
+                    android:id="@+id/recordButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/background_row_top"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Quay Video"
+                    />
+
+            </LinearLayout>
+
         </com.rey.material.widget.RelativeLayout>
 
 

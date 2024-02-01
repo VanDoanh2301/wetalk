@@ -113,7 +113,7 @@ class TalkHomeFragment : Fragment() {
                             .into(binding.imgAvata)
                     }
                     is Resource.Error -> {
-                        Log.d("UserRegisterRequest", it.message.toString())
+                        Log.d("UserRegisterDTO", it.message.toString())
                     }
                 }
             }

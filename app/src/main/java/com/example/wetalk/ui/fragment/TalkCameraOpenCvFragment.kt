@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -24,6 +23,7 @@ import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Task
+import com.rey.material.widget.Button
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
@@ -95,8 +95,20 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layout = view.findViewById<FrameLayout>(R.id.fragmentLayout)
+        initUI(view)
 
+        val btnRecord  = view.findViewById<Button>(R.id.recordButton)
+        btnRecord.setOnClickListener {
+            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            startActivityForResult(i, 1111)
+        }
+        val btnBack = view.findViewById<Button>(R.id.btn_back)
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+    private fun initUI(view:View) {
+        val layout = view.findViewById<FrameLayout>(R.id.fragmentLayout)
         openCvCameraView = view.findViewById<JavaCameraView>(R.id.my_camera_view)// Assuming 0 is the camera index
         openCvCameraView!!.visibility = SurfaceView.VISIBLE
         openCvCameraView!!.setCvCameraViewListener(this)
@@ -125,12 +137,6 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
             Gravity.BOTTOM + Gravity.CENTER_HORIZONTAL
         )
         layout.addView(probTextView)
-        val btnRecord  = view.findViewById<Button>(R.id.recordButton)
-        btnRecord.setOnClickListener {
-
-            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            startActivityForResult(i, 1111)
-        }
     }
     companion object {
         // TODO: Rename and change types and number of parameters

@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_1"
+        android:title="Cập nhật bản thân"/>
+    <item
+        android:id="@+id/menu_item_2"
+        android:title="Thay đổi mật khẩu"/>
+
+    <item
+        android:id="@+id/menu_item_3"
+        android:title="Cài đặt"/>
+    <!-- Thêm các item khác nếu cần -->
+</menu>

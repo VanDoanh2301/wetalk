@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
 import com.example.wetalk.ui.activity.MainActivity
 import com.rey.material.widget.Button
+import com.rey.material.widget.ImageView
 
 /**
  * A simple [Fragment] subclass.
@@ -32,7 +33,7 @@ class TalkDoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.login_let_me_in_btn).setOnClickListener {
+        view.findViewById<ImageView>(R.id.login_let_me_in_btn).setOnClickListener {
 //            (activity as MainActivity).supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             findNavController().navigate(R.id.talkLoginFragment)
         }

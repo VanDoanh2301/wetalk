@@ -1,18 +1,15 @@
 package com.example.wetalk.ui.fragment
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,12 +19,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
+import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
 import com.example.wetalk.util.DialogCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
-import com.rey.material.widget.ImageView
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -41,10 +39,11 @@ import java.util.Locale
  */
 @AndroidEntryPoint
 class TalkProfileHomeFragment : Fragment() {
-    private var _binding: FragmentTalkProfileHomeBinding ? = null
-    private val binding get() =  _binding!!
-    private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user:UserInforRequest
+    private var _binding: FragmentTalkProfileHomeBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: TalkProfileHomeViewModel by viewModels()
+    private lateinit var user: UserInforRequest
+    private lateinit var changePasswordRequest:UserPasswordDTO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +59,92 @@ class TalkProfileHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.tvNext.setOnClickListener {
-            findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
+
+
+        initUI()
+        onClickView()
+
+    }
+
+    private fun onClickView() {
+        binding.btBack.setOnClickListener {
+            requireActivity().onBackPressed()
         }
+        binding.tvNext.setOnClickListener {
+
+        }
+        binding.openMenu.setOnClickListener { view ->
+            showPopupMenu(view)
+        }
+    }
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.menu_profile) // Thay thế your_menu_resource bằng ID của menu của bạn
+        popupMenu.setOnMenuItemClickListener { item ->
+            // Xử lý khi một item được chọn
+            when (item.itemId) {
+                R.id.menu_item_1 -> {
+                    findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
+                    true
+                }
+
+                R.id.menu_item_2 -> {
+                    showChangePasswordDialog();
+                    true
+                }
+
+
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
+    private fun showChangePasswordDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Thay đổi mật khẩu")
+
+        // Inflate layout cho dialog
+        val view: View = layoutInflater.inflate(R.layout.change_password_dialog, null)
+        builder.setView(view)
+        val edtPassOld = view.findViewById<TextInputEditText>(R.id.ed_pass_old)
+        val edtPassNew = view.findViewById<TextInputEditText>(R.id.ed_pass_new)
+        val edtPassConfim = view.findViewById<TextInputEditText>(R.id.ed_pass_confim)
+
+        val oldPassword = edtPassOld.text.toString()
+        val newPassword = edtPassNew.text.toString()
+        val confirmPassword = edtPassConfim.text.toString()
+
+        // Kiểm tra nếu giá trị trong "Confirm Password" giống với giá trị trong "New Password"
+        if (confirmPassword == newPassword) {
+            // Nếu giống nhau, bạn có thể thực hiện các hành động tương ứng ở đây
+           changePasswordRequest = UserPasswordDTO(oldPassword, newPassword)
+        } else {
+            // Nếu không giống nhau, hiển thị thông báo hoặc thực hiện hành động phù hợp
+            edtPassConfim.error = "Mật khẩu xác nhận không khớp"
+        }
+        builder.setPositiveButton("Đồng ý",
+            DialogInterface.OnClickListener { dialog, which ->
+                // Xử lý khi người dùng nhấn nút Đồng ý
+                val isToken = SharedPreferencesUtils.getString("isLogin")
+                viewModel.changePassword("Bearer $isToken", changePasswordRequest)
+
+            })
+        builder.setNegativeButton("Hủy bỏ",
+            DialogInterface.OnClickListener { dialog, which ->
+                // Xử lý khi người dùng nhấn nút Hủy bỏ
+                dialog.dismiss()
+            })
+
+
+        val dialog: AlertDialog = builder.create()
+
+        dialog.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initUI() {
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
             viewModel.getUser("Bearer $isAccess")
@@ -70,17 +152,19 @@ class TalkProfileHomeFragment : Fragment() {
                 when (it) {
                     is Resource.Loading -> {
                     }
+
                     is Resource.Success -> {
                         try {
                             user = it.data!!
                             binding.txtName.text = user.name
-                            if (user.age ==null ||  user.phoneNumber ==null || user.gender== null) {
+                            if (user.age == null || user.phoneNumber == null || user.gender == null) {
                                 DialogCenter.Builder(requireContext())
                                     .title("Gợi ý")
                                     .cancelable(true)
                                     .canceledOnTouchOutside(true)
                                     .content("Cập nhật thông tin cá nhân của bạn")
                                     .doneText("Cập nhật")
+                                    .positiveText("Huỷ")
                                     .onPositive {
 
                                     }
@@ -89,30 +173,32 @@ class TalkProfileHomeFragment : Fragment() {
                                     }
                                     .show()
                             }
-                            val dateTime = OffsetDateTime.parse(user.age, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                            val dateTime = OffsetDateTime.parse(
+                                user.age,
+                                DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                            )
+                            val formatter =
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
 
                             val dateString: String = formatter.format(dateTime.toLocalDate())
                             binding.txtDate.text = dateString
                             binding.txtDate.text = dateString
                             binding.txtPhone.text = user.phoneNumber
                             binding.txtGenner.text = user.gender
-                            Glide.with(requireContext()).load(user.avatarLocation).apply(RequestOptions.circleCropTransform())
+                            Glide.with(requireContext()).load(user.avatarLocation)
+                                .apply(RequestOptions.circleCropTransform())
                                 .into(binding.imgAvata)
-                        } catch (e :Exception) {
-                             Log.d("EXCEPTION", e.message.toString())
+                        } catch (e: Exception) {
+                            Log.d("EXCEPTION", e.message.toString())
                         }
 
                     }
+
                     is Resource.Error -> {
-                      Log.d("UserRegisterRequest", it.message.toString())
+                        Log.d("UserRegisterDTO", it.message.toString())
                     }
                 }
             }
-        }
-
-        binding.btBack.setOnClickListener {
-            requireActivity().onBackPressed()
         }
     }
 

@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.model.objectmodel.UserRegisterRequest
+import com.example.wetalk.data.model.postmodel.UserRegisterDTO
 import com.example.wetalk.databinding.FragmentTalkRegisterBinding
 import com.example.wetalk.ui.viewmodels.RegisterViewModel
 import com.example.wetalk.util.Resource
@@ -52,9 +53,17 @@ class TalkRegisterFragment : Fragment() {
                         is Resource.Loading -> {
                         }
                         is Resource.Success -> {
+                            if (it.data!!.code != 404) {
+                                val bundle = bundleOf("email" to binding.edtEmail.text.toString())
+                                findNavController().navigate(R.id.action_talkRegisterFragment_to_talkOtpFragment, bundle)
+                            } else {
+                                Toast.makeText(requireContext(), "Email đã tồn tại", Toast.LENGTH_LONG).show()
+                                binding.rlProgress.visibility = View.GONE
+                            }
 
                         }
                         is Resource.Error -> {
+
 
                         }
                     }
@@ -68,16 +77,17 @@ class TalkRegisterFragment : Fragment() {
                 if (edtPassword.text.toString() != edtConfirm.text.toString()) {
                     edtConfirm.error = "Passwords are not the same";
                 } else {
-                    var userRegisterRequest = UserRegisterRequest(
+                    var userRegisterDTO = UserRegisterDTO(
                         edtName.text.toString(),
                         edtEmail.text.toString(),
                         edtPassword.text.toString(),
                         "USER"
                     );
-                    viewModel.generateOtp(userRegisterRequest)
+                    viewModel.generateOtp(userRegisterDTO)
 
-                    val bundle = bundleOf("email" to edtEmail.text.toString())
-                    findNavController().navigate(R.id.action_talkRegisterFragment_to_talkOtpFragment, bundle)
+                    binding.rlProgress.visibility = View.VISIBLE
+
+
                 }
             }
 

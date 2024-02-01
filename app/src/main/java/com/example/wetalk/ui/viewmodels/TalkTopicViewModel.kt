@@ -4,9 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
-import com.example.wetalk.data.model.postmodel.LoginPost
-import com.example.wetalk.data.model.responsemodel.HostResponse
-import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

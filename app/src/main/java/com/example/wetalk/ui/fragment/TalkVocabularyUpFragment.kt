@@ -43,6 +43,7 @@ import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -120,18 +121,21 @@ class TalkVocabularyUpFragment : Fragment() {
                 }
 
                 is Resource.Success -> {
+                    val urlStr = it.data.toString()
                     val progressDialog = ProgressDialog(requireContext())
                     progressDialog.setTitle("Đang tải video lên")
                     progressDialog.setMessage("Xin chờ...")
                     progressDialog.show()
                     lifecycleScope.launch {
                         delay(3000)
+                        progressDialog.dismiss()
+                        Log.d("Url_STR", urlStr)
                         Toast.makeText(
                             requireContext(),
                             "Đăng video thành công",
                             Toast.LENGTH_SHORT
                         ).show()
-                        progressDialog.dismiss()
+
                     }
                 }
 
@@ -141,29 +145,30 @@ class TalkVocabularyUpFragment : Fragment() {
             }
         }
         binding.imgRecord.setOnClickListener {
-//            val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-//            startActivityForResult(i, 1111)
-            BaseFragment.add((activity as MainActivity), TalkCameraOpenCvFragment.newInstance().setTask(object : Task<Uri> {
-                override fun callback(result: Uri) {
-                    uri = result
-                    paths.add(result.toString())
-                    talkImageItems = ArrayList<StorageImageItem>()
-                    for (devicePath in paths) {
-                        talkImageItems.add(
-                            StorageImageItem(
-                                true,
-                                devicePath,
-                                devicePath,
-                                if (paths.size > 2) 25 else 45,
-                                0
+            BaseFragment.add(
+                (activity as MainActivity),
+                TalkCameraOpenCvFragment.newInstance().setTask(object : Task<Uri> {
+                    override fun callback(result: Uri) {
+                        uri = result
+                        paths.add(result.toString())
+                        talkImageItems = ArrayList<StorageImageItem>()
+                        for (devicePath in paths) {
+                            talkImageItems.add(
+                                StorageImageItem(
+                                    true,
+                                    devicePath,
+                                    devicePath,
+                                    if (paths.size > 2) 25 else 45,
+                                    0
+                                )
                             )
-                        )
+                        }
+                        viewModel.addImageItems(talkImageItems)
+                        devicePath = RealPathUtil.getRealPath(requireContext(), uri)
                     }
-                    viewModel.addImageItems(talkImageItems)
-                    devicePath = RealPathUtil.getRealPath(requireContext(), uri)
-                }
 
-            }))
+                })
+            )
         }
 //        openDialog()
         onRecord()
@@ -174,16 +179,22 @@ class TalkVocabularyUpFragment : Fragment() {
         openStarVideo()
 
     }
+
     private fun openStarVideo() {
         binding.btnStar.setOnClickListener {
             if (!binding.tvName.text.equals("Hastag")) {
                 showVideoDialog(binding.tvName.text.toString())
             } else {
-                Toast.makeText(requireContext(), "Vui lòng chọn Hastag để xem video mẫu", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Vui lòng chọn Hastag để xem video mẫu",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
     }
+
     private fun getVideoURL(letter: String, callback: (String) -> Unit) {
         val storage = FirebaseStorage.getInstance()
         val videoRef = storage.reference.child("videos/${letter}.mp4")
@@ -196,6 +207,7 @@ class TalkVocabularyUpFragment : Fragment() {
                 Log.e("FirebaseStorage", "Error downloading video: ${it.message}")
             }
     }
+
     private fun showVideoDialog(letter: String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Đang tải")
@@ -212,6 +224,7 @@ class TalkVocabularyUpFragment : Fragment() {
                 .show()
         }
     }
+
     private fun openDialog() {
         DialogClose.Builder(requireContext())
             .title("Gợi ý")
@@ -226,22 +239,36 @@ class TalkVocabularyUpFragment : Fragment() {
     }
 
     private fun onUploadVideo() {
+
         binding.cvSave.setOnClickListener {
             try {
+                // Kiểm tra xem đường dẫn tệp có tồn tại hay không
+                if (devicePath.isNullOrEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Vui lòng chọn video cung cấp của bạn",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                // Tạo Multipart Request
                 val file = File(devicePath)
-                val requestFile =
-                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+                // Tải Lên Tệp
                 viewModel.uploadVideo(filePart)
+
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Vui lòng chọn video cung cấp của bạn",
+                    "Đã xảy ra lỗi khi xử lý tệp",
                     Toast.LENGTH_LONG
                 ).show()
             }
-
         }
+
     }
 
     private fun onBack() {
@@ -380,6 +407,7 @@ class TalkVocabularyUpFragment : Fragment() {
         alertDialog = builder.create()
         alertDialog.show()
     }
+
     private val charactersList: ArrayList<String> by lazy {
         val result = ArrayList<String>()
 

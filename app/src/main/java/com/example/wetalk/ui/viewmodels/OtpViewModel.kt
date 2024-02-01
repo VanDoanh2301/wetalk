@@ -3,7 +3,7 @@ package com.example.wetalk.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.postmodel.RegisterPost
+import com.example.wetalk.data.model.postmodel.UserOtpDTO
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
@@ -30,15 +30,15 @@ class OtpViewModel @Inject constructor(
     private var res: HostResponse? = null
 
 
-    fun validateOtp(registerPost: RegisterPost) = viewModelScope.launch {
-       onValidateOtp(registerPost)
+    fun validateOtp(userOtpDTO: UserOtpDTO) = viewModelScope.launch {
+       onValidateOtp(userOtpDTO)
     }
 
-    private suspend fun onValidateOtp(registerPost: RegisterPost) {
+    private suspend fun onValidateOtp(userOtpDTO: UserOtpDTO) {
         _otpResponseStateFlow.value = Resource.Loading()
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
-                val response = mRepository.validateOtp(registerPost)
+                val response = mRepository.validateOtp(userOtpDTO)
                 _otpResponseStateFlow.value = handleValidOtpResponse(response)
             } else {
                 _otpResponseStateFlow.value = Resource.Error("Mất Kết Nối Internet")

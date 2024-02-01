@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.model.postmodel.RegisterPost
+import com.example.wetalk.data.model.postmodel.UserOtpDTO
 import com.example.wetalk.databinding.FragmentTalkOtpBinding
 import com.example.wetalk.ui.viewmodels.OtpViewModel
 import com.example.wetalk.util.Resource
@@ -32,6 +32,7 @@ class TalkOtpFragment : Fragment() {
     private val viewModel: OtpViewModel by viewModels()
     private lateinit var email:String
     private var timeoutSeconds = 60L
+    private  lateinit var  timer:Timer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +58,9 @@ class TalkOtpFragment : Fragment() {
                 Toast.makeText(requireContext(), "Kiểm tra email của bạn để lấy mã OTP", Toast.LENGTH_SHORT).show()
             } else {
 
-                var registerPost =
-                    RegisterPost(email, Integer.parseInt(binding.loginOtp.text.toString()))
-                viewModel.validateOtp(registerPost)
+                var userOtpDTO =
+                    UserOtpDTO(email, Integer.parseInt(binding.loginOtp.text.toString()))
+                viewModel.validateOtp(userOtpDTO)
             }
         }
     }
@@ -86,29 +87,41 @@ class TalkOtpFragment : Fragment() {
     }
 
 
-    /** Create Timer */
     private fun startResendTimer() {
-        binding.resendOtpTextview.isEnabled = false
-        try{
-            val timer = Timer()
+        binding?.resendOtpTextview?.isEnabled = false
+
+        try {
+            timer = Timer()
             timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     timeoutSeconds--
-                    if (binding != null) {
-                        activity!!.runOnUiThread {
+
+                    activity?.runOnUiThread {
+                        if (binding != null && isAdded) {
                             binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds"
                         }
                     }
+
                     if (timeoutSeconds <= 0) {
                         timeoutSeconds = 60L
-                        binding.loginProgressBar.visibility = View.GONE
+                        binding?.loginProgressBar?.visibility = View.GONE
                         timer.cancel()
                     }
                 }
             }, 0, 1000)
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
+    }
 
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 }

@@ -83,6 +83,8 @@ class TalkTrainHandFragment : Fragment(), CameraBridgeViewBase.CvCameraViewListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         initUI(view)
         initHelp()
 
@@ -102,6 +104,7 @@ class TalkTrainHandFragment : Fragment(), CameraBridgeViewBase.CvCameraViewListe
             view.findViewById<JavaCameraView>(R.id.my_camera_view)// Assuming 0 is the camera index
         openCvCameraView!!.visibility = SurfaceView.VISIBLE
         openCvCameraView!!.setCvCameraViewListener(this)
+        openCvCameraView!!.setCameraIndex(1)
         resultTextView = view.findViewById(R.id.tv_random)
         scoreTextView = view.findViewById(R.id.tv_score)
         val s = "Điểm: $score"
