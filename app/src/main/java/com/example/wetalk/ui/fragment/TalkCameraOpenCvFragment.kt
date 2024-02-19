@@ -61,7 +61,6 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
     private val isDebug = false
     private val isEdge = false
     private val isSave = false
-
     private var text = ""
     private var counter = 0
 
@@ -102,7 +101,7 @@ class TalkCameraOpenCvFragment : Fragment(), CvCameraViewListener2 {
             val i: Intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(i, 1111)
         }
-        val btnBack = view.findViewById<Button>(R.id.btn_back)
+        val btnBack = view.findViewById<Button>(R.id.bt_back)
         btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }

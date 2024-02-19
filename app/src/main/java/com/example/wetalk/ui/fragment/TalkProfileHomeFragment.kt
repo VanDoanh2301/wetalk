@@ -152,7 +152,6 @@ class TalkProfileHomeFragment : Fragment() {
                 when (it) {
                     is Resource.Loading -> {
                     }
-
                     is Resource.Success -> {
                         try {
                             user = it.data!!
@@ -184,7 +183,12 @@ class TalkProfileHomeFragment : Fragment() {
                             binding.txtDate.text = dateString
                             binding.txtDate.text = dateString
                             binding.txtPhone.text = user.phoneNumber
-                            binding.txtGenner.text = user.gender
+                            if (user.gender.equals("MALE")) {
+                                binding.txtGenner.text = "Nam"
+                            } else {
+                                binding.txtGenner.text = "Nữ"
+                            }
+
                             Glide.with(requireContext()).load(user.avatarLocation)
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(binding.imgAvata)

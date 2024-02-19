@@ -12,8 +12,6 @@ data class UserInforRequest(
     var name: String,
     @SerializedName("email")
     val email: String,
-    @SerializedName("password")
-    val password: String,
     @SerializedName("phoneNumber")
     var phoneNumber: String,
     @SerializedName("address")

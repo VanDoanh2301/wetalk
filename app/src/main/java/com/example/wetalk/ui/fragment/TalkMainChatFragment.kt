@@ -2,6 +2,7 @@ package com.example.wetalk.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkMainChatBinding
 import com.example.wetalk.util.Utils
 
@@ -22,6 +24,15 @@ import com.example.wetalk.util.Utils
 class TalkMainChatFragment : Fragment() {
     private var _binding: FragmentTalkMainChatBinding ? =null
     private val binding get() = _binding!!
+    private lateinit var user: UserInforRequest
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            user = bundle.getParcelable("userData") ?: throw IllegalArgumentException("User data not found in arguments")
+        }
+        Log.d("TAG", user.toString())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +44,7 @@ class TalkMainChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         initBottomNavigation()
         binding.btnMenu.setOnClickListener {
@@ -51,7 +63,7 @@ class TalkMainChatFragment : Fragment() {
                     return when (position) {
                         0 -> TalkTabChatFragment()
                         1 -> TalkTabPhoneBookFragment()
-                        2 -> TalkTabProfileFragment()
+                        2 -> TalkTabProfileFragment(user)
                         else -> throw IllegalArgumentException("Invalid position: $position")
                     }
                 }
@@ -114,4 +126,5 @@ class TalkMainChatFragment : Fragment() {
             Utils.setColorFilter(view, "#9ACFFF")
         }
     }
+
 }

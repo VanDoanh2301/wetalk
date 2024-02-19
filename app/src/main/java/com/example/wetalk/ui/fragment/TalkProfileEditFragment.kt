@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -22,8 +23,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.wetalk.R
 
 import com.example.wetalk.WeTalkApp
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
@@ -96,6 +99,7 @@ class TalkProfileEditFragment : Fragment() {
         initData()
         initAge()
         initAvatar()
+        initGender()
         binding.btSave.setOnClickListener {
             updateUser()
             updateAvatar()
@@ -143,7 +147,11 @@ class TalkProfileEditFragment : Fragment() {
             userUpdateDTO.phoneNumber = binding.txtPhone.text.toString()
         }
         if (binding.txtGender.text != null) {
-            userUpdateDTO.gender = binding.txtGender.text.toString()
+            if (binding.txtGender.text.toString().equals("Nam")) {
+                userUpdateDTO.gender = "MALE"
+            } else {
+                userUpdateDTO.gender = "FEMALE"
+            }
         }
         if (binding.txtAddress.text != null) {
             userUpdateDTO.address = binding.txtAddress.text.toString()
@@ -223,6 +231,12 @@ class TalkProfileEditFragment : Fragment() {
                             }
 
                             binding.txtPhone.setText(user.phoneNumber ?: "")
+                            if (user.gender.equals("MALE")) {
+                                binding.txtGender.setText("Nam")
+                            } else {
+                                binding.txtGender.setText("Nữ")
+                            }
+
                             binding.txtGender.setText(user.gender ?: "")
                             binding.txtAddress.setText(user.address ?: "")
                             binding.txtPhone.hint =
@@ -230,6 +244,9 @@ class TalkProfileEditFragment : Fragment() {
                             binding.txtGender.hint = if (user.gender == null) "Giới tính" else ""
                             binding.txtAddress.hint = if (user.address == null) "Quê quán" else ""
 
+                            Glide.with(requireContext()).load(user.avatarLocation)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(binding.imgAvata)
                         } catch (e: Exception) {
 
                         }
@@ -274,11 +291,30 @@ class TalkProfileEditFragment : Fragment() {
                 }
             }
         }
-
         binding.profilePicLayout.setOnClickListener { v ->
-
             launchGalleryIntent()
+        }
+    }
+    private fun initGender() {
+        binding.txtGender.setOnClickListener {
+            val popupMenu = PopupMenu(requireContext(), it)
+            popupMenu.inflate(R.menu.menu_gender) // Thay thế your_menu_resource bằng ID của menu của bạn
+            popupMenu.setOnMenuItemClickListener { item ->
+                // Xử lý khi một item được chọn
+                when (item.itemId) {
+                    R.id.menu_item_1 -> {
+                        binding.txtGender.setText("Nam")
+                        true
+                    }
+                    R.id.menu_item_2 -> {
+                        binding.txtGender.setText("Nữ")
+                        true
+                    }
 
+                    else -> false
+                }
+            }
+            popupMenu.show()
         }
     }
 

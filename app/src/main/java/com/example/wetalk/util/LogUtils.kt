@@ -5,7 +5,6 @@ package com.example.wetalk.util
 import android.util.Log
 import androidx.databinding.ktx.BuildConfig
 
-
 object LogUtils {
     private var DEBUG = true
 

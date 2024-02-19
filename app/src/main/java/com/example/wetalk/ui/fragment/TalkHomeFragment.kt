@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,8 @@ import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -46,6 +49,7 @@ class TalkHomeFragment : Fragment() {
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,10 +111,16 @@ class TalkHomeFragment : Fragment() {
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        user = it.data!!
-                        binding.textView2.text = user.name
-                        Glide.with(requireContext()).load(user.avatarLocation).apply(RequestOptions.circleCropTransform())
-                            .into(binding.imgAvata)
+                        val newUser = it.data!!
+                        MainScope().launch {
+                            user = newUser
+                            binding.textView2.text = user?.name
+                            Glide.with(requireContext())
+                                .load(user?.avatarLocation)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(binding.imgAvata)
+                        }
+
                     }
                     is Resource.Error -> {
                         Log.d("UserRegisterDTO", it.message.toString())
@@ -125,7 +135,9 @@ class TalkHomeFragment : Fragment() {
         binding.apply {
             //Go to chat fragment
             btnChat.setOnClickListener {
-             findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment)
+                    val bundle = bundleOf(
+                        "userData" to user)
+                    findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment, bundle)
             }
             //Go to study authen
             btnAthen.setOnClickListener {
@@ -158,7 +170,6 @@ class TalkHomeFragment : Fragment() {
             btnHistory.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
             }
-
             btnHand.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
             }

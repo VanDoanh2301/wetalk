@@ -452,8 +452,6 @@ class PracticeFragment : Fragment() {
                     }
                 } else if (question.answer != null && question.answer.isNotEmpty()
                 ) {
-
-
                     if (question.answer == question.question.answer_a) {
 
                         textOption1.setTextColor(requireContext().getColor(R.color.white))
