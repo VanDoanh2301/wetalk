@@ -1,6 +1,7 @@
 package com.example.wetalk.ui.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -40,11 +41,11 @@ import java.util.TimerTask
  */
 @AndroidEntryPoint
 class TalkHomeFragment : Fragment() {
-    private var _binding:FragmentTalkHomeBinding? =null
+    private var _binding: FragmentTalkHomeBinding? = null
     private val binding get() = _binding!!
     private var isUser = false
-    private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user: UserInforRequest
+    private val viewModel: TalkProfileHomeViewModel by viewModels()
+    private var user: UserInforRequest? = null
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
@@ -101,6 +102,7 @@ class TalkHomeFragment : Fragment() {
         onClickView()
 
     }
+
     private fun initView() {
         //Job when start lifecycle
         lifecycleScope.launchWhenStarted {
@@ -110,18 +112,31 @@ class TalkHomeFragment : Fragment() {
                 when (it) {
                     is Resource.Loading -> {
                     }
+
                     is Resource.Success -> {
                         val newUser = it.data!!
-                        MainScope().launch {
-                            user = newUser
-                            binding.textView2.text = user?.name
-                            Glide.with(requireContext())
-                                .load(user?.avatarLocation)
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(binding.imgAvata)
+                        user = newUser
+                        binding.textView2.text = user?.name
+                        Glide.with(requireContext())
+                            .load(user?.avatarLocation)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(binding.imgAvata)
+
+                        //Add user to firebase realtime for call video
+                        viewModel.addUserFirebase(
+                            user!!.name
+                        )
+                        { isDone, reason ->
+                            if (!isDone) {
+                                Log.d("HomeFragment", reason.toString())
+                            } else {
+                                Log.d("HomeFragment", "Add user success")
+                            }
                         }
 
+
                     }
+
                     is Resource.Error -> {
                         Log.d("UserRegisterDTO", it.message.toString())
                     }
@@ -135,9 +150,13 @@ class TalkHomeFragment : Fragment() {
         binding.apply {
             //Go to chat fragment
             btnChat.setOnClickListener {
-                    val bundle = bundleOf(
-                        "userData" to user)
-                    findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment, bundle)
+                val bundle = bundleOf(
+                    "userData" to user
+                )
+                findNavController().navigate(
+                    R.id.action_talkHomeFragment_to_talkMainChatFragment,
+                    bundle
+                )
             }
             //Go to study authen
             btnAthen.setOnClickListener {
@@ -176,6 +195,7 @@ class TalkHomeFragment : Fragment() {
 
         }
     }
+
     private fun configViewPager() {
         images = getListImage()
         adapterImage = ImageAdapter(requireContext(), images)
@@ -183,6 +203,7 @@ class TalkHomeFragment : Fragment() {
         binding.circleBar.setViewPager(binding.vgHome)
         adapterImage.registerDataSetObserver(binding.circleBar.dataSetObserver)
     }
+
     private fun getListImage(): List<ImageHome> {
         val images: MutableList<ImageHome> = ArrayList()
         images.add(ImageHome(R.drawable.logo, "Cùng nhau học tâp ngôn ngữ kí hiệu"))
@@ -191,6 +212,7 @@ class TalkHomeFragment : Fragment() {
         images.add(ImageHome(R.drawable.logo, "Chat và call video cho bạn bè"))
         return images
     }
+
     private fun slideBar() {
         images = getListImage()
         if (timer == null) {
@@ -212,6 +234,7 @@ class TalkHomeFragment : Fragment() {
             }
         }, 200, 3000)
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -222,9 +245,11 @@ class TalkHomeFragment : Fragment() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                     // Người dùng từ chối cấp quyền, bạn có thể thông báo hoặc xử lý khác tùy ý
-                    Toast.makeText(requireContext(), "Quyền camera bị từ chối", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Quyền camera bị từ chối", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }

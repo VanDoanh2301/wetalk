@@ -13,7 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkMainChatBinding
-import com.example.wetalk.util.Utils
+import com.example.wetalk.util.FileConfigUtils
 
 
 /**
@@ -61,7 +61,7 @@ class TalkMainChatFragment : Fragment() {
 
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-                        0 -> TalkTabChatFragment()
+                        0 -> TalkTabChatFragment(user)
                         1 -> TalkTabPhoneBookFragment()
                         2 -> TalkTabProfileFragment(user)
                         else -> throw IllegalArgumentException("Invalid position: $position")
@@ -117,13 +117,13 @@ class TalkMainChatFragment : Fragment() {
 
     private fun setColorImageView(vararg views: ImageView) {
         for (view in views) {
-            Utils.setColorFilter(view, Color.parseColor("#000000"))
+            FileConfigUtils.setColorFilter(view, Color.parseColor("#000000"))
         }
     }
 
     private fun setColorImageViewSelect(vararg views: ImageView) {
         for (view in views) {
-            Utils.setColorFilter(view, "#9ACFFF")
+            FileConfigUtils.setColorFilter(view, "#9ACFFF")
         }
     }
 

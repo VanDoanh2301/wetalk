@@ -82,6 +82,7 @@ class TalkLoginFragment : Fragment() {
                         val bundle = bundleOf(
                             "isUser" to true
                         )
+
                         findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
                         findNavController().popBackStack(R.id.talkHomeFragment, false)
 
@@ -100,6 +101,7 @@ class TalkLoginFragment : Fragment() {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             val userLoginDTO = LoginDTO(email, password)
             viewModel.login(userLoginDTO)
+
         } else {
             Toast.makeText(requireContext(), "Email Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show()
         }

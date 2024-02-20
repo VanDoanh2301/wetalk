@@ -233,4 +233,9 @@
         android:name="com.example.wetalk.ui.fragment.TalkTrainHandFragment"
         android:label="fragment_talk_train_hand"
         tools:layout="@layout/fragment_talk_train_hand" />
+    <fragment
+        android:id="@+id/callActionFragment"
+        android:name="com.example.wetalk.ui.fragment.CallActionFragment"
+        android:label="fragment_call_action"
+        tools:layout="@layout/fragment_call_action" />
 </navigation>

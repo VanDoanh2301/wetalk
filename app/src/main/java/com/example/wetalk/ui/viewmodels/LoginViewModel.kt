@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.postmodel.LoginDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
+import com.example.wetalk.repository.FireBaseRepository
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil.Companion.hasInternetConnection
@@ -21,6 +22,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val mRepository: TalkRepository,
     @ApplicationContext private val context: Context
+
+
 ) : ViewModel() {
     private val _loginResponseStateFlow: MutableStateFlow<Resource<LoginResponse>> =
         MutableStateFlow(Resource.Loading())
@@ -71,6 +74,8 @@ class LoginViewModel @Inject constructor(
         }
         return Resource.Error((loginResponse ?: response.message()).toString())
     }
+
+
 
 
 

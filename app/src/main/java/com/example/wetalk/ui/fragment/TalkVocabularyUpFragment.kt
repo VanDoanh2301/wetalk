@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,7 @@ import com.example.wetalk.util.DialogVideo
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.Task
-import com.example.wetalk.util.Utils
+import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
@@ -43,7 +42,6 @@ import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -286,7 +284,7 @@ class TalkVocabularyUpFragment : Fragment() {
                 )
                 .onAllGranted(object : Func() {
                     override fun call() {
-                        Utils.hideKeyboard(activity)
+                        FileConfigUtils.hideKeyboard(activity)
                         menuCallback.clearCursor()
                         menuCallback.scrollBottom()
                         BaseFragment.add(

@@ -28,7 +28,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-object Utils {
+object FileConfigUtils {
     fun dpToPx(dp: Float): Float {
         return dp * (WeTalkApp.get().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
