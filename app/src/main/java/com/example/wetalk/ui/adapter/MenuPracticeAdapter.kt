@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetalk.R
-import com.example.wetalk.data.local.PracticeQuest
 import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.databinding.ItemQuestionResultBinding
-import com.example.wetalk.util.Utils
+import com.example.wetalk.util.FileConfigUtils
 
 
 class MenuPracticeAdapter(var context: Context, var data:ArrayList<TestQuest>) :
@@ -83,7 +82,7 @@ class MenuPracticeAdapter(var context: Context, var data:ArrayList<TestQuest>) :
                 } else {
                     rltView.setBackgroundResource(R.drawable.right_item_selected_none)
                     tvtTitle.setTextColor(
-                        Utils.getColorFromAttr(
+                        FileConfigUtils.getColorFromAttr(
                             context,
                             R.color.white
                         )

@@ -17,35 +17,6 @@ import java.util.Calendar
 
 @HiltAndroidApp
 class WeTalkApp : Application(), Application.ActivityLifecycleCallbacks, LifecycleObserver {
-
-    companion object {
-        const val TEST_DEVICE_ID = "37D8EC79FC153EF8A739BF97D9E035B6"
-        private lateinit var app: WeTalkApp
-        private var w: Int = 0
-
-        fun get(): WeTalkApp {
-            return app
-        }
-
-        fun W(): Int {
-            return w
-        }
-
-        fun showDatePicker(activity: AppCompatActivity, timeCallback: Task<Long>) {
-            val calendar = Calendar.getInstance()
-
-            val datePickerDialog = DatePickerDialog(activity, { _: DatePicker?, i: Int, i1: Int, i2: Int ->
-                calendar.set(Calendar.YEAR, i)
-                calendar.set(Calendar.MONTH, i1)
-                calendar.set(Calendar.DAY_OF_MONTH, i2)
-                timeCallback.callback(calendar.timeInMillis)
-            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
-
-            val datePicker = datePickerDialog.datePicker
-            datePickerDialog.show()
-        }
-    }
-
     private var currentActivity: Activity? = null
 
     override fun attachBaseContext(base: Context?) {
@@ -78,7 +49,36 @@ class WeTalkApp : Application(), Application.ActivityLifecycleCallbacks, Lifecyc
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
-    override fun onActivityDestroyed(activity: Activity) {}
+    override fun onActivityDestroyed(activity: Activity) {
+
+    }
+    companion object {
+        const val TEST_DEVICE_ID = "37D8EC79FC153EF8A739BF97D9E035B6"
+        private lateinit var app: WeTalkApp
+        private var w: Int = 0
+
+        fun get(): WeTalkApp {
+            return app
+        }
+
+        fun W(): Int {
+            return w
+        }
+
+        fun showDatePicker(activity: AppCompatActivity, timeCallback: Task<Long>) {
+            val calendar = Calendar.getInstance()
+
+            val datePickerDialog = DatePickerDialog(activity, { _: DatePicker?, i: Int, i1: Int, i2: Int ->
+                calendar.set(Calendar.YEAR, i)
+                calendar.set(Calendar.MONTH, i1)
+                calendar.set(Calendar.DAY_OF_MONTH, i2)
+                timeCallback.callback(calendar.timeInMillis)
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
+
+            val datePicker = datePickerDialog.datePicker
+            datePickerDialog.show()
+        }
+    }
 
 
 }

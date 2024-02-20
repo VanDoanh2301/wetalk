@@ -94,5 +94,4 @@ class TalkRepository @Inject constructor(
         return mLogin.addFriend(userId)
     }
 
-
 }

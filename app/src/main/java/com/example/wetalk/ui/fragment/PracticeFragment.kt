@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,7 @@ import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.databinding.TalkItemTestBinding
 import com.example.wetalk.ui.viewmodels.TalkTestViewModel
 import com.example.wetalk.util.BounceInCustomAnimator
-import com.example.wetalk.util.Utils
+import com.example.wetalk.util.FileConfigUtils
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.rey.material.drawable.RippleDrawable
@@ -333,14 +332,14 @@ class PracticeFragment : Fragment() {
             }
 
             textOption1.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
             )
             textOption1.setBackgroundResource(R.drawable.border_textview)
             textOption1.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
@@ -348,14 +347,14 @@ class PracticeFragment : Fragment() {
             textOption1.setBackgroundResource(R.drawable.border_textview)
 
             textOption2.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
             )
             textOption2.setBackgroundResource(R.drawable.border_textview)
             textOption2.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
@@ -363,14 +362,14 @@ class PracticeFragment : Fragment() {
             textOption2.setBackgroundResource(R.drawable.border_textview)
 
             textOption3.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
             )
             textOption3.setBackgroundResource(R.drawable.border_textview)
             textOption3.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
@@ -378,14 +377,14 @@ class PracticeFragment : Fragment() {
             textOption3.setBackgroundResource(R.drawable.border_textview)
 
             textOption4.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )
             )
             textOption4.setBackgroundResource(R.drawable.border_textview)
             textOption4.setTextColor(
-                Utils.getColorFromAttr(
+                FileConfigUtils.getColorFromAttr(
                     requireContext(),
                     R.attr.color_text_item_setting
                 )

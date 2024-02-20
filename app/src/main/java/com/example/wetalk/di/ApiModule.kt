@@ -1,6 +1,7 @@
 package com.example.wetalk.di
 
 import androidx.databinding.ktx.BuildConfig
+import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiLogin
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
@@ -25,6 +26,7 @@ object ApiModule {
     private const val BASE_URL_1 = "http://wetalk.ibme.edu.vn:8080/"
     private const val BASE_URL_2 = "http://wetalk.ibme.edu.vn:8090/"
     private const val BASE_URL_3 = "http://wetalk.ibme.edu.vn:8060/"
+    private const val BASE_URL_4 = "http://wetalk.ibme.edu.vn:8050/"
 
     @Provides
     @ViewModelScoped
@@ -57,14 +59,14 @@ object ApiModule {
             .build()
     }
 
-    @Provides
-    @ViewModelScoped
-    fun provideGson(): Gson {
-        return GsonBuilder()
-            .setDateFormat("HH:mm:ss")
-            .setLenient()
-            .create()
-    }
+//    @Provides
+//    @ViewModelScoped
+//    fun provideGson(): Gson {
+//        return GsonBuilder()
+//            .setDateFormat("HH:mm:ss")
+//            .setLenient()
+//            .create()
+//    }
 
     /** Build api host 8090 */
     @Provides
@@ -118,6 +120,11 @@ object ApiModule {
     @ViewModelScoped
     fun provideStudy(@ApiThree retrofit: Retrofit): ApiTopicStudy {
         return retrofit.create(ApiTopicStudy::class.java)
+    }
+    @Provides
+    @ViewModelScoped
+    fun provideChat(@ApiFour retrofit: Retrofit): ApiChat {
+        return retrofit.create(ApiChat::class.java)
     }
 }
 

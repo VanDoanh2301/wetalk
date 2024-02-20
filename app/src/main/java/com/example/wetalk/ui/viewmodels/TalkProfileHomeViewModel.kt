@@ -12,6 +12,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.data.model.postmodel.UserUpdateDTO
+import com.example.wetalk.repository.FireBaseRepository
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil
@@ -29,7 +30,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TalkProfileHomeViewModel @Inject constructor(
     private val repository: TalkRepository,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val mFireBaseRepository: FireBaseRepository
 ) : ViewModel() {
     private val _getInforUser: MutableStateFlow<Resource<UserInforRequest>> =
         MutableStateFlow(Resource.Loading())
@@ -215,5 +217,10 @@ class TalkProfileHomeViewModel @Inject constructor(
         } catch (e: Exception) {
 
         }
+    }
+
+    //Create user in firebase for call video
+    fun addUserFirebase(username: String, isDone: (Boolean, String?) -> Unit) {
+        mFireBaseRepository.login(username, isDone)
     }
 }
