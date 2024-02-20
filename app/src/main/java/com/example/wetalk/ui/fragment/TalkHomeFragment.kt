@@ -44,13 +44,11 @@ class TalkHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var isUser = false
     private val viewModel : TalkProfileHomeViewModel by viewModels()
-    private lateinit var user: UserInforRequest
+    private  var user: UserInforRequest? =null
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +59,6 @@ class TalkHomeFragment : Fragment() {
 
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isUser = arguments?.getBoolean("isUser", false) ?: false
@@ -96,10 +93,7 @@ class TalkHomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
             }
         }
-
-
         onClickView()
-
     }
     private fun initView() {
         //Job when start lifecycle
@@ -112,14 +106,12 @@ class TalkHomeFragment : Fragment() {
                     }
                     is Resource.Success -> {
                         val newUser = it.data!!
-                        MainScope().launch {
                             user = newUser
                             binding.textView2.text = user?.name
                             Glide.with(requireContext())
                                 .load(user?.avatarLocation)
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(binding.imgAvata)
-                        }
 
                     }
                     is Resource.Error -> {

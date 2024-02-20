@@ -23,7 +23,6 @@ abstract class BaseFragment : DialogFragment() {
         }
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,9 +31,7 @@ abstract class BaseFragment : DialogFragment() {
         isCreated = true
         return inflater.inflate(layoutId, container, false)
     }
-
     protected abstract val layoutId: Int
-
     companion object {
         fun add(activity: AppCompatActivity?, fragment: Fragment) {
             if (activity != null && activity.supportFragmentManager != null) {
@@ -43,7 +40,6 @@ abstract class BaseFragment : DialogFragment() {
                 }
             }
         }
-
         private fun addFragmentWith(
             activity: AppCompatActivity, fragment: Fragment,
             tag: String

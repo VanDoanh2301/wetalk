@@ -165,7 +165,6 @@ class TalkProfileHomeFragment : Fragment() {
                                     .doneText("Cập nhật")
                                     .positiveText("Huỷ")
                                     .onPositive {
-
                                     }
                                     .onDone {
                                         findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
@@ -195,9 +194,7 @@ class TalkProfileHomeFragment : Fragment() {
                         } catch (e: Exception) {
                             Log.d("EXCEPTION", e.message.toString())
                         }
-
                     }
-
                     is Resource.Error -> {
                         Log.d("UserRegisterDTO", it.message.toString())
                     }
