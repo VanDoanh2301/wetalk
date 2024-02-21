@@ -1,29 +1,29 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
 	package
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:3:7-27
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:3:7-27
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
 	android:versionName
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:5:7-34
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:5:7-34
 	xmlns:android
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:11-69
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:4:7-33
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml:4:7-33
 uses-sdk
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-		ADDED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from F:\AppT\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from F:\Project\NewChat\wetalk\openCVLibrary348\src\main\AndroidManifest.xml

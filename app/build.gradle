@@ -40,10 +40,25 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    lintOptions {
+        abortOnError false
+    }
+    flavorDimensions "tfliteInference"
+    productFlavors {
+        // The TFLite inference is built using the TFLite Java interpreter.
+        interpreter {
+            dimension "tfliteInference"
+        }
+        // Default: The TFLite inference is built using the TFLite Task library (high-level API).
+        taskApi {
+            getIsDefault().set(true)
+            dimension "tfliteInference"
+        }
+    }
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        mlModelBinding true
     }
 
     aaptOptions {
@@ -51,10 +66,15 @@ android {
     }
     sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jniLibs/'] } }
 }
-
+// import DownloadModels task
+project.ext.ASSET_DIR = projectDir.toString() + '/src/main/assets'
+project.ext.TMP_DIR   = project.buildDir.toString() + '/downloads'
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
     implementation project(':openCVLibrary348')
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
+    interpreterImplementation project(":lib_interpreter")
+    taskApiImplementation project(":lib_task_api")
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "Wetalk"
 include ':app'
 include ':openCVLibrary348'
+include ':lib_interpreter', ':lib_task_api'
