@@ -84,7 +84,6 @@ class TalkTrainHandFragment : Fragment(), CameraBridgeViewBase.CvCameraViewListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         initUI(view)
         initHelp()
 
@@ -243,7 +242,6 @@ class TalkTrainHandFragment : Fragment(), CameraBridgeViewBase.CvCameraViewListe
             .addOnFailureListener {
             }
     }
-
     private fun showVideoDialog(letter: String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Đang tải")

@@ -124,7 +124,7 @@ public class MultiBoxTracker {
     return frameToCanvasMatrix;
   }
 
-  public synchronized void draw(final Canvas canvas) {
+  public synchronized void draw(final Canvas canvas, CallTittle callTittle) {
     final boolean rotated = sensorOrientation % 180 == 90;
     final float multiplier =
         Math.min(
@@ -146,7 +146,7 @@ public class MultiBoxTracker {
 
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
-
+      callTittle.getTittle(recognition.title);
       final String labelString =
           !TextUtils.isEmpty(recognition.title)
               ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
@@ -212,8 +212,8 @@ public class MultiBoxTracker {
     int color;
     String title;
   }
-  public
-  interface  callTittle {
+  //Call back get result from model Ai
+  public interface  CallTittle {
     void getTittle(String tittle);
   }
 }

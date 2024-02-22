@@ -73,18 +73,14 @@ import java.util.concurrent.TimeUnit;
 @SuppressLint("ValidFragment")
 public class CameraConnectionFragment extends Fragment {
   private static final Logger LOGGER = new Logger();
-
   /**
    * The camera preview size will be chosen to be the smallest frame by pixel size capable of
    * containing a DESIRED_SIZE x DESIRED_SIZE square.
    */
   private static final int MINIMUM_PREVIEW_SIZE = 320;
-
   /** Conversion from screen rotation to JPEG orientation. */
   private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-
   private static final String FRAGMENT_DIALOG = "dialog";
-
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);
     ORIENTATIONS.append(Surface.ROTATION_90, 0);
@@ -471,7 +467,6 @@ public class CameraConnectionFragment extends Fragment {
     try {
       final SurfaceTexture texture = textureView.getSurfaceTexture();
       assert texture != null;
-
       // We configure the size of default buffer to be the size of camera preview we want.
       texture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
 
