@@ -385,41 +385,7 @@ public class CameraConnectionFragment extends Fragment {
       throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
     }
   }
-//  private void openCamera(final int width, final int height) {
-//    final CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-//    try {
-//      final String[] cameraIds = manager.getCameraIdList();
-//      for (String cameraId : cameraIds) {
-//        final CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-//        final Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
-//        if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
-//          this.cameraId = cameraId; // Set the cameraId to the front-facing camera
-//          break;
-//        }
-//      }
-//
-//      if (this.cameraId == null) {
-//        throw new RuntimeException("Front-facing camera not found.");
-//      }
-//
-//      setUpCameraOutputs();
-//      configureTransform(width, height);
-//
-//      if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
-//        throw new RuntimeException("Time out waiting to lock camera opening.");
-//      }
-//
-//      if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//        return;
-//      }
-//
-//      manager.openCamera(this.cameraId, stateCallback, backgroundHandler);
-//    } catch (final CameraAccessException e) {
-//      LOGGER.e(e, "Exception!");
-//    } catch (final InterruptedException e) {
-//      throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
-//    }
-//  }
+
   /** Closes the current {@link CameraDevice}. */
   private void closeCamera() {
     try {

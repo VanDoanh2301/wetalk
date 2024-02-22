@@ -99,6 +99,18 @@
             android:layout_marginTop="?actionBarSize"
             android:layout_marginBottom="?actionBarSize"
             />
+        <com.rey.material.widget.ImageView
+            android:id="@+id/img_switch_camera"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_above="@+id/lnl_score"
+            android:layout_centerHorizontal="true"
+            android:padding="12dp"
+            style="@style/ripple_btn_tab_widget_normal_10"
+            android:layout_marginBottom="8dp"
+            android:tint="@color/blue_sea"
+            app:srcCompat="@drawable/baseline_switch_camera_24"/>
+            />
     </com.rey.material.widget.RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

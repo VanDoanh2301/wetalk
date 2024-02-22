@@ -17,7 +17,9 @@
 package com.example.wetalk.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -29,6 +31,7 @@ import android.media.Image;
 import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,12 +46,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wetalk.R;
 import com.example.wetalk.ui.fragment.CameraConnectionFragment;
+import com.example.wetalk.util.DialogVideo;
 import com.example.wetalk.util.env.ImageUtils;
 import com.example.wetalk.util.env.Logger;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -74,12 +83,15 @@ public abstract class CameraActivity extends AppCompatActivity
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
+    private Boolean isFont = false;
+    private String cameraId = "";
     protected ImageView bottomSheetArrowImageView;
     protected TextView tvRandom, tvScore;
+    protected com.rey.material.widget.ImageView switchCamera;
     protected int score = 0;
     protected String textTest = "";
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         LOGGER.d("onCreate " + this);
@@ -89,7 +101,23 @@ public abstract class CameraActivity extends AppCompatActivity
 
         tvRandom = findViewById(R.id.tv_random);
         tvScore = findViewById(R.id.tv_score);
+        switchCamera = findViewById(R.id.img_switch_camera);
         tvScore.setText("Điểm: " + score);
+        //Open Dialog support
+        findViewById(R.id.img_help).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showVideoDialog(tvRandom.getText().toString());
+            }
+        });
+        //On Back Home Layout
+        findViewById(R.id.btn_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
         if (hasPermission()) {
             setFragment();
@@ -103,9 +131,11 @@ public abstract class CameraActivity extends AppCompatActivity
         imageConverter.run();
         return rgbBytes;
     }
+
     protected int getLuminanceStride() {
         return yRowStride;
     }
+
     protected byte[] getLuminance() {
         return yuvBytes[0];
     }
@@ -236,7 +266,9 @@ public abstract class CameraActivity extends AppCompatActivity
         handler = new Handler(handlerThread.getLooper());
         textTest = generateRandomLetter();
         tvRandom.setText(textTest);
+
     }
+
     @Override
     public synchronized void onPause() {
         LOGGER.d("onPause " + this);
@@ -355,9 +387,58 @@ public abstract class CameraActivity extends AppCompatActivity
         return null;
     }
 
-    protected void setFragment() {
-        String cameraId = chooseCamera();
+    private String chooseFrontCamera() {
+        final CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            for (final String cameraId : manager.getCameraIdList()) {
+                final CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
 
+                final Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
+                    final StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+
+                    if (map != null) {
+                        // Fallback to camera1 API for internal cameras that don't have full support.
+                        // This should help with legacy situations where using the camera2 API causes
+                        // distorted or otherwise broken previews.
+                        useCamera2API = (facing == CameraCharacteristics.LENS_FACING_EXTERNAL) || isHardwareLevelSupported(
+                                characteristics, CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL);
+                        LOGGER.i("Camera API lv2?: %s", useCamera2API);
+                        return cameraId;
+                    }
+                }
+            }
+        } catch (CameraAccessException e) {
+            LOGGER.e(e, "Not allowed to access camera");
+        }
+
+        return null;
+    }
+
+    protected void setFragment() {
+        cameraId = chooseCamera();
+        setUpCamera();
+        switchCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFont) {
+                    //Chosse camera behind
+                    cameraId = chooseCamera();
+                    setUpCamera();
+                } else {
+                    //Chosse camre front
+                    cameraId = chooseFrontCamera();
+                    setUpCamera();
+                }
+                isFont = !isFont;
+            }
+        });
+
+
+
+    }
+
+    private void setUpCamera() {
         Fragment fragment;
         CameraConnectionFragment camera2Fragment =
                 CameraConnectionFragment.newInstance(
@@ -376,7 +457,6 @@ public abstract class CameraActivity extends AppCompatActivity
         fragment = camera2Fragment;
         getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
-
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
         // Because of the variable row stride it's not possible to know in
         // advance the actual necessary dimensions of the yuv planes.
@@ -413,7 +493,7 @@ public abstract class CameraActivity extends AppCompatActivity
         }
     }
 
-   protected   String generateRandomLetter() {
+    protected String generateRandomLetter() {
         Random random = new Random();
         // Tính toán mã Unicode của ký tự ngẫu nhiên từ 'A' đến 'Z'
         int randomNumber = random.nextInt('Z' - 'A' + 1) + 'A';
@@ -421,12 +501,58 @@ public abstract class CameraActivity extends AppCompatActivity
         char randomChar = (char) randomNumber;
         return String.valueOf(randomChar);
     }
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         setUseNNAPI(isChecked);
     }
 
+    private void getVideoURL(String letter, Callback<String> callback) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference videoRef = storage.getReference().child("videos/" + letter + ".mp4");
 
+        videoRef.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        callback.onSuccess(uri.toString());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle failure
+                    }
+                });
+    }
+
+    private void showVideoDialog(String letter) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Đang tải");
+        progressDialog.setMessage("Xin chờ...");
+        progressDialog.show();
+
+        // Use a callback to get the video URL asynchronously
+        getVideoURL(letter, new Callback<String>() {
+            @Override
+            public void onSuccess(String videoUrl) {
+                progressDialog.dismiss();
+                new DialogVideo.Builder(CameraActivity.this)
+                        .title("Chữ " + letter)
+                        .urlVideo(videoUrl)
+                        .show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
+    public interface Callback<T> {
+        void onSuccess(T result);
+        void onFailure(Exception e);
+    }
     @Override
     public void onClick(View v) {
     }
