@@ -18,7 +18,6 @@ import com.example.wetalk.databinding.FragmentTalkTabChatBinding
 import com.example.wetalk.repository.FireBaseRepository
 import com.example.wetalk.service.MainService
 import com.example.wetalk.service.MainServiceRepository
-import com.example.wetalk.ui.activity.CallActivity
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserStatusAdapter
 import com.example.wetalk.util.getCameraAndMicPermission
@@ -128,19 +127,19 @@ class TalkTabChatFragment(private val user: UserInforRequest) : Fragment(),
     override fun onVideoCallClicked(username: String) {
         //check if permission of mic and camera is taken
 
-        (activity as MainActivity).getCameraAndMicPermission {
-            fireBaseRepository.sendConnectionRequest(username, true) {
-                if (it) {
-                    startActivity(Intent(requireActivity(), CallActivity::class.java).apply {
-                        putExtra("target", username)
-                        putExtra("isVideoCall", true)
-                        putExtra("isCaller", true)
-                    })
-
-                }
-            }
-
-        }
+//        (activity as MainActivity).getCameraAndMicPermission {
+//            fireBaseRepository.sendConnectionRequest(username, true) {
+//                if (it) {
+//                    startActivity(Intent(requireActivity(), CallActivity::class.java).apply {
+//                        putExtra("target", username)
+//                        putExtra("isVideoCall", true)
+//                        putExtra("isCaller", true)
+//                    })
+//
+//                }
+//            }
+//
+//        }
     }
 
     override fun onAudioCallClicked(username: String) {
@@ -161,11 +160,11 @@ class TalkTabChatFragment(private val user: UserInforRequest) : Fragment(),
                     (activity as MainActivity).getCameraAndMicPermission {
                         incomingCallLayout.isVisible = false
                         //create an intent to go to video call activity
-                        startActivity(Intent(requireActivity(), CallActivity::class.java).apply {
-                            putExtra("target", username)
-                            putExtra("isVideoCall", true)
-                            putExtra("isCaller", true)
-                        })
+//                        startActivity(Intent(requireActivity(), CallActivity::class.java).apply {
+//                            putExtra("target", username)
+//                            putExtra("isVideoCall", true)
+//                            putExtra("isCaller", true)
+//                        })
                     }
                 }
             }

@@ -10,7 +10,6 @@ import com.example.wetalk.R
 import com.example.wetalk.WeTalkApp
 import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.util.Task
-import com.example.wetalk.util.helper.permission_utils.PermissionUtil
 import java.io.File
 import java.io.FileOutputStream
 

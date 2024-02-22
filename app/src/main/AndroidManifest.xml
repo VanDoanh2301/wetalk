@@ -50,6 +50,9 @@
             android:name=".ui.activity.CallActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activity.DetectorActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>

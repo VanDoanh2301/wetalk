@@ -23,6 +23,7 @@ import com.example.wetalk.R
 import com.example.wetalk.data.local.ImageHome
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
+import com.example.wetalk.ui.activity.DetectorActivity
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
 import com.example.wetalk.util.Resource
@@ -185,7 +186,8 @@ class TalkHomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
             }
             btnHand.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
+//                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
+                startActivity(Intent(requireActivity(), DetectorActivity::class.java))
             }
 
         }

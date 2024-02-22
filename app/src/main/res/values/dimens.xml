@@ -23,6 +23,8 @@
     <dimen name="radius_5_dp">5dp</dimen>
     <dimen name="elevation_5_dp">5dp</dimen>
     <dimen name="margin_50_dp">50dp</dimen>
+    <dimen name="tfe_bottom_sheet_corner_radius">15dp</dimen>
+    <dimen name="tfe_bottom_sheet_top_padding">8dp</dimen>
     <!-- Definition for the section item -->
     <dimen name="min_width_dialog">300.0dip</dimen>
     <dimen name="layout_bottom_button_round">20.0dip</dimen>
