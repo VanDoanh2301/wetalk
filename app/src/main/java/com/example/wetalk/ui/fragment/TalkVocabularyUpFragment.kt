@@ -106,7 +106,7 @@ class TalkVocabularyUpFragment : Fragment() {
 
         }
         lifecycleScope.launchWhenResumed {
-            viewModel.talkIma         geItems.collect { talkImageItems ->
+            viewModel.talkImageItems.collect { talkImageItems ->
                 if (talkImageItems == null) {
                     talkBodyEditView.visibility = View.GONE
                 } else {
