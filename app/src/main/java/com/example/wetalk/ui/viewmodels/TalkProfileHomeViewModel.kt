@@ -8,11 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
-import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
+import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.data.model.postmodel.UserUpdateDTO
-import com.example.wetalk.repository.FireBaseRepository
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil
@@ -30,31 +29,24 @@ import javax.inject.Inject
 @HiltViewModel
 class TalkProfileHomeViewModel @Inject constructor(
     private val repository: TalkRepository,
-    @ApplicationContext private val context: Context,
-    private val mFireBaseRepository: FireBaseRepository
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val _getInforUser: MutableStateFlow<Resource<UserInforRequest>> =
         MutableStateFlow(Resource.Loading())
     val getInforUser: StateFlow<Resource<UserInforRequest>> get() = _getInforUser
-
-    private val _updateUser: MutableStateFlow<Resource<GetAllUserUpdate>> =
+    private val _updateUser: MutableStateFlow<Resource<GetAllUserRequest>> =
         MutableStateFlow(Resource.Loading())
-    val updateUser: StateFlow<Resource<GetAllUserUpdate>> get() = _updateUser
-
-    private val _updateAvatar: MutableStateFlow<Resource<GetAllUserUpdate>> =
+    val updateUser: StateFlow<Resource<GetAllUserRequest>> get() = _updateUser
+    private val _updateAvatar: MutableStateFlow<Resource<GetAllUserRequest>> =
         MutableStateFlow(Resource.Loading())
-    val updateAvatar: StateFlow<Resource<GetAllUserUpdate>> get() = _updateAvatar
-
-
-
-
+    val updateAvatar: StateFlow<Resource<GetAllUserRequest>> get() = _updateAvatar
     private val _uploadResult: MutableLiveData<Resource<String>> =
         MutableLiveData(Resource.Loading())
     val uploadResult: LiveData<Resource<String>> get() = _uploadResult
 
 
     private var user: UserInforRequest? = null
-    private var userInfor: GetAllUserUpdate? = null
+    private var userInfor: GetAllUserRequest? = null
     private var res: String? = null
 
 
@@ -82,7 +74,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleUpdateAvatarResponse(response: Response<GetAllUserUpdate>): Resource<GetAllUserUpdate> {
+    private fun handleUpdateAvatarResponse(response: Response<GetAllUserRequest>): Resource<GetAllUserRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(userInfor ?: resultResponse)
@@ -113,7 +105,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleUpdateUsersResponse(response: Response<GetAllUserUpdate>): Resource<GetAllUserUpdate> {
+    private fun handleUpdateUsersResponse(response: Response<GetAllUserRequest>): Resource<GetAllUserRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(userInfor ?: resultResponse)
@@ -172,7 +164,7 @@ class TalkProfileHomeViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             Log.d("ERROR_API", e.message.toString())
-            _uploadResult.value = Resource.Error("${e.message.toString()}")
+            _uploadResult.value = Resource.Error(e.message.toString())
         }
     }
 
@@ -219,8 +211,4 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
-    //Create user in firebase for call video
-    fun addUserFirebase(username: String, isDone: (Boolean, String?) -> Unit) {
-        mFireBaseRepository.login(username, isDone)
-    }
 }

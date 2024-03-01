@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.postmodel.LoginDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
-import com.example.wetalk.repository.FireBaseRepository
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil.Companion.hasInternetConnection

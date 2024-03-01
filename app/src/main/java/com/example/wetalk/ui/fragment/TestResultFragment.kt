@@ -1,6 +1,5 @@
 package com.example.wetalk.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.local.Test
+import com.example.wetalk.data.local.TestTopic
 import com.example.wetalk.databinding.FragmentTestResultBinding
 
 
 class TestResultFragment : Fragment() {
     private var _binding: FragmentTestResultBinding? = null
     public val binding get() = _binding!!
-    private lateinit var test: Test
+    private lateinit var test: TestTopic
     private var isSuccess = false
 
     override fun onCreateView(
@@ -38,7 +37,7 @@ class TestResultFragment : Fragment() {
 
     }
     private fun initValue() {
-        test = arguments?.getParcelable<Test>("test")!!
+        test = arguments?.getParcelable<TestTopic>("test")!!
         isSuccess = test.correct >= ((test.total / 2) + 1)
 
     }

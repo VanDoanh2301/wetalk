@@ -1,6 +1,5 @@
 package com.example.wetalk.ui.fragment
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -9,19 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.example.wetalk.R
 import com.example.wetalk.data.local.PracticeQuest
 import com.example.wetalk.data.local.QuestionType
-import com.example.wetalk.data.local.Test
+import com.example.wetalk.data.local.TestTopic
 import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.QuestionSize
@@ -30,8 +27,6 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.MenuPracticeAdapter
 import com.example.wetalk.ui.adapter.ViewPagerPracticeAdapter
 import com.example.wetalk.ui.viewmodels.TalkTestViewModel
-import com.example.wetalk.util.DialogClose
-import com.example.wetalk.util.OnUpdateListener
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,7 +42,7 @@ class TalkTestFragment : Fragment() {
     private var currentIndex = 0
     private var practiceQuests: ArrayList<PracticeQuest>? = null
     private var id = 0
-    private lateinit var test: Test
+    private lateinit var test: TestTopic
     private var questions: ArrayList<Question>? = null
     private var testQuests: ArrayList<TestQuest> = ArrayList()
     private val viewModel: TalkTestViewModel by viewModels()
@@ -99,7 +94,7 @@ class TalkTestFragment : Fragment() {
                                     answer = ""
                                 )
                                 testQuests.add(testQuest)
-                                test = Test(
+                                test = TestTopic(
                                     total = testQuests.size,
                                     correct = 0,
                                     check = 0,
@@ -142,7 +137,7 @@ class TalkTestFragment : Fragment() {
                             )
                             testQuests.add(test_1)
                             testQuests.add(testQuest)
-                            test = Test(
+                            test = TestTopic(
                                 total = testQuests.size,
                                 correct = 0,
                                 check = 0,

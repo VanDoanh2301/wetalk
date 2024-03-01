@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import com.example.wetalk.databinding.FragmentTalkSignBinding
 import com.example.wetalk.ui.adapter.StudyAdapter
-import com.example.wetalk.util.DialogVideo
+import com.example.wetalk.util.DialogOpenVideo
 import com.google.firebase.storage.FirebaseStorage
 
 /**
@@ -78,7 +78,7 @@ class TalkSignFragment : Fragment() {
         getVideoURL(letter) { videoUrl ->
             progressDialog.dismiss()
 
-            DialogVideo.Builder(requireContext())
+            DialogOpenVideo.Builder(requireContext())
                 .title("Dấu $letter")
                 .urlVideo(videoUrl)
                 .show()

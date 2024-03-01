@@ -1,6 +1,6 @@
 package com.example.wetalk.ui.fragment
 
-import TalkTopicAdapter
+import TopicAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
-import com.example.wetalk.data.model.objectmodel.Topic
+import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.databinding.FragmentTalkTopicBinding
 import com.example.wetalk.ui.viewmodels.TalkTopicViewModel
 import com.example.wetalk.util.Resource
@@ -31,8 +31,8 @@ class TalkTopicFragment : Fragment() {
     private var _binding:FragmentTalkTopicBinding ? = null
     private val binding get() = _binding!!
     private val viewModel : TalkTopicViewModel by viewModels()
-    private lateinit var adapter: TalkTopicAdapter
-    private var topics : ArrayList<Topic> ?= null
+    private lateinit var adapter: TopicAdapter
+    private var topicRequests : ArrayList<TopicRequest> ?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +45,7 @@ class TalkTopicFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = TalkTopicAdapter(requireContext())
+        adapter = TopicAdapter(requireContext())
 
         binding.btBack.setOnClickListener {
             requireActivity().onBackPressed()
@@ -55,10 +55,10 @@ class TalkTopicFragment : Fragment() {
             viewModel.topic.collect {
                 when(it) {
                     is Resource.Success -> {
-                        topics = it.data!!.data
-                        Log.d("Topic", topics.toString())
+                        topicRequests = it.data!!.data
+                        Log.d("Topic", topicRequests.toString())
                         try {
-                            adapter.notifyData(topics!!)
+                            adapter.notifyData(topicRequests!!)
                             binding.rcvView.layoutManager = LinearLayoutManager(requireContext())
                             binding.rcvView.adapter = adapter
                         } catch (e: Exception) {
@@ -82,13 +82,13 @@ class TalkTopicFragment : Fragment() {
     }
 
     private fun onClickItem() {
-        adapter.setItemClickListener(object : TalkTopicAdapter.ItemClickListener {
+        adapter.setItemClickListener(object : TopicAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
 
                 val bundle = bundleOf(
-                    "id" to topics!![position].id,
+                    "id" to topicRequests!![position].id,
                 )
-                Log.d("id", topics!![position].id.toString())
+                Log.d("id", topicRequests!![position].id.toString())
                 findNavController().navigate(R.id.action_talkTopicFragment_to_talkTestFragment, bundle)
             }
 

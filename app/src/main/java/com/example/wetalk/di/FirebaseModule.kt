@@ -17,13 +17,6 @@ class FirebaseModule {
     @Provides
     fun provideContext(@ApplicationContext context: Context): Context = context.applicationContext
 
-    //    @Provides
-//    fun provideGson(): Gson {
-//        return GsonBuilder()
-//            .setDateFormat("HH:mm:ss")
-//            .setLenient()
-//            .create()
-//    }
     @Provides
     fun provideGson(): Gson = Gson()
 

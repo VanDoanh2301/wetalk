@@ -5,7 +5,9 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,11 +31,11 @@ import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
 import com.example.wetalk.util.DialogClose
-import com.example.wetalk.util.DialogVideo
+import com.example.wetalk.util.DialogOpenVideo
+import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.Task
-import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
@@ -54,7 +56,6 @@ import java.io.File
  */
 @AndroidEntryPoint
 class TalkVocabularyUpFragment : Fragment() {
-
     private val viewModel: TalkVocabularyViewModel by viewModels()
     private lateinit var keyboardHeightProvider: KeyboardHeightProvider
     private lateinit var videoLocal: VideoLocal
@@ -68,22 +69,29 @@ class TalkVocabularyUpFragment : Fragment() {
     private var uri: Uri? = null
     private lateinit var talkImageItems: ArrayList<StorageImageItem>
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        if (!hasPermission()) {
+            requestPermission()
+        }
         _binding = FragmentTalkVocabularyUpBinding.inflate(inflater, container, false)
-
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
+        onRecord()
+        onCallBack()
+        onFolder();
+        onBack();
+        onUploadVideo();
+        openStarVideo()
+    }
+    private fun init() {
         talkBodyEditView = binding.bodyView
-
-
         keyboardHeightProvider = KeyboardHeightProvider(requireActivity());
         videoLocal = VideoLocal(
             -1, System.currentTimeMillis(), "",
@@ -100,24 +108,19 @@ class TalkVocabularyUpFragment : Fragment() {
         lifecycleScope.launchWhenResumed {
             viewModel.talkImageItems.collect { talkImageItems ->
                 if (talkImageItems == null) {
-
                     talkBodyEditView.visibility = View.GONE
                 } else {
                     talkBodyEditView.visibility = View.VISIBLE
                     talkBodyEditView.addImage(talkImageItems)
                 }
-
             }
         }
-
         viewModel.uploadResult.observe(
             viewLifecycleOwner
         ) {
             when (it) {
                 is Resource.Loading -> {
-
                 }
-
                 is Resource.Success -> {
                     val urlStr = it.data.toString()
                     val progressDialog = ProgressDialog(requireContext())
@@ -127,7 +130,6 @@ class TalkVocabularyUpFragment : Fragment() {
                     lifecycleScope.launch {
                         delay(3000)
                         progressDialog.dismiss()
-                        Log.d("Url_STR", urlStr)
                         Toast.makeText(
                             requireContext(),
                             "Đăng video thành công",
@@ -143,39 +145,16 @@ class TalkVocabularyUpFragment : Fragment() {
             }
         }
         binding.imgRecord.setOnClickListener {
-            BaseFragment.add(
-                (activity as MainActivity),
-                TalkCameraOpenCvFragment.newInstance().setTask(object : Task<Uri> {
-                    override fun callback(result: Uri) {
-                        uri = result
-                        paths.add(result.toString())
-                        talkImageItems = ArrayList<StorageImageItem>()
-                        for (devicePath in paths) {
-                            talkImageItems.add(
-                                StorageImageItem(
-                                    true,
-                                    devicePath,
-                                    devicePath,
-                                    if (paths.size > 2) 25 else 45,
-                                    0
-                                )
-                            )
-                        }
-                        viewModel.addImageItems(talkImageItems)
-                        devicePath = RealPathUtil.getRealPath(requireContext(), uri)
-                    }
-
-                })
-            )
+            if (hasPermission()) {
+                launchCamera()
+            } else {
+                requestPermission()
+            }
         }
-//        openDialog()
-        onRecord()
-        onCallBack()
-        onFolder();
-        onBack();
-        onUploadVideo();
-        openStarVideo()
-
+    }
+    private fun launchCamera() {
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        startActivityForResult(intent, 1111)
     }
 
     private fun openStarVideo() {
@@ -192,7 +171,6 @@ class TalkVocabularyUpFragment : Fragment() {
         }
 
     }
-
     private fun getVideoURL(letter: String, callback: (String) -> Unit) {
         val storage = FirebaseStorage.getInstance()
         val videoRef = storage.reference.child("videos/${letter}.mp4")
@@ -205,7 +183,6 @@ class TalkVocabularyUpFragment : Fragment() {
                 Log.e("FirebaseStorage", "Error downloading video: ${it.message}")
             }
     }
-
     private fun showVideoDialog(letter: String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Đang tải")
@@ -216,7 +193,7 @@ class TalkVocabularyUpFragment : Fragment() {
         getVideoURL(letter) { videoUrl ->
             progressDialog.dismiss()
 
-            DialogVideo.Builder(requireContext())
+            DialogOpenVideo.Builder(requireContext())
                 .title("Chữ $letter")
                 .urlVideo(videoUrl)
                 .show()
@@ -252,7 +229,8 @@ class TalkVocabularyUpFragment : Fragment() {
 
                 // Tạo Multipart Request
                 val file = File(devicePath)
-                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                val requestFile =
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
                 // Tải Lên Tệp
@@ -287,9 +265,9 @@ class TalkVocabularyUpFragment : Fragment() {
                         FileConfigUtils.hideKeyboard(activity)
                         menuCallback.clearCursor()
                         menuCallback.scrollBottom()
-                        BaseFragment.add(
+                        BaseDialogFragment.add(
                             activity as MainActivity,
-                            TalkSelectVideoFragment.newInstance().setVideoTask(
+                            TalkSelectVideoDialogFragment.newInstance().setVideoTask(
                                 object : Task<ArrayList<StorageImageItem>> {
                                     override fun callback(result: ArrayList<StorageImageItem>) {
                                         menuCallback.addMedia(result)
@@ -369,8 +347,6 @@ class TalkVocabularyUpFragment : Fragment() {
             } catch (e: Exception) {
             }
         }
-//        talkBodyEditView.addImage(talkImageItems)
-
     }
 
     interface MenuCallback {
@@ -408,7 +384,6 @@ class TalkVocabularyUpFragment : Fragment() {
 
     private val charactersList: ArrayList<String> by lazy {
         val result = ArrayList<String>()
-
         for (baseChar in 'A'..'Z') {
             result.add(baseChar.toString())  // Add the base character without diacritic
         }
@@ -416,12 +391,72 @@ class TalkVocabularyUpFragment : Fragment() {
         result.add("\u00E0")
         result.add("\u00E3")
         result.add("\u1EA1")
-
         for (digit in 0..9) {
             result.add(digit.toString())
         }
-
         result
+    }
+
+    /**
+     * Permission Camera, Read and Write File
+     */
+    private fun requestPermission() {
+        if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA) && shouldShowRequestPermissionRationale(
+                PERMISSION_READ_EXTERNAL_STORAGE
+            ) && shouldShowRequestPermissionRationale(
+                PERMISSION_WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            Toast.makeText(
+                requireContext(),
+                "Camera permission is required for this demo",
+                Toast.LENGTH_LONG
+            )
+                .show()
+        }
+
+        requestPermissions(
+            arrayOf(
+                PERMISSION_CAMERA,
+                PERMISSION_READ_EXTERNAL_STORAGE,
+                PERMISSION_WRITE_EXTERNAL_STORAGE
+            ),
+            PERMISSIONS_REQUEST
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSIONS_REQUEST) {
+            if (allPermissionsGranted(grantResults)) {
+            } else {
+                requestPermission()
+            }
+        }
+    }
+
+
+    private fun allPermissionsGranted(grantResults: IntArray): Boolean {
+        for (result in grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun hasPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            (activity as MainActivity).checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED
+            (activity as MainActivity).checkSelfPermission(PERMISSION_READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            (activity as MainActivity).checkSelfPermission(PERMISSION_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
     }
 
     override fun onPause() {
@@ -429,4 +464,10 @@ class TalkVocabularyUpFragment : Fragment() {
         keyboardHeightProvider.setKeyboardHeightObserver(null)
     }
 
+    companion object {
+        private val PERMISSIONS_REQUEST = 1
+        private val PERMISSION_CAMERA = Manifest.permission.CAMERA
+        private val PERMISSION_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+        private val PERMISSION_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    }
 }

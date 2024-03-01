@@ -58,8 +58,6 @@ import java.util.Locale
  */
 @AndroidEntryPoint
 class TalkProfileEditFragment : Fragment() {
-
-
     private var _binding: FragmentTalkProfileEditBinding? = null
     private val binding get() = _binding!!
     private lateinit var user: UserInforRequest

@@ -2,7 +2,7 @@ package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
-import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
+import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterDTO
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserQueryRequest
@@ -47,10 +47,10 @@ interface ApiLogin {
     @PUT("users")
     suspend fun updateUser(@Header("Authorization")  authorization: String ,
                            @Body userRequest: UserUpdateDTO
-    ) : Response<GetAllUserUpdate>
+    ) : Response<GetAllUserRequest>
     //Upload Avatar
     @POST("users/uploadAvatar")
-    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetAllUserUpdate>
+    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetAllUserRequest>
     //Change Password
     @POST("users/changePassword")
     suspend fun changePassword(@Header("Authorization")  authorization: String, @Body userPasswordDTO: UserPasswordDTO) : Response<HostResponse>

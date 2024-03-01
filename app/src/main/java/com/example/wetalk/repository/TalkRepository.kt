@@ -4,7 +4,7 @@ import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
-import com.example.wetalk.data.model.objectmodel.GetAllUserUpdate
+import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.postmodel.UserRegisterDTO
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
@@ -65,7 +65,7 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm cập nhật thông tin người dùng
-    suspend fun updateUser(authorization: String, userRequest: UserUpdateDTO) : Response<GetAllUserUpdate> {
+    suspend fun updateUser(authorization: String, userRequest: UserUpdateDTO) : Response<GetAllUserRequest> {
         return mLogin.updateUser(authorization,userRequest)
     }
 
@@ -75,7 +75,7 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm cập nhật ảnh đại diện người dùng
-    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetAllUserUpdate> {
+    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetAllUserRequest> {
         return mLogin.updateAvatar(authorization, avatarRequest)
     }
 

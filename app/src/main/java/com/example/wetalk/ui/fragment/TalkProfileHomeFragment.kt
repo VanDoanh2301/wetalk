@@ -22,7 +22,7 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
-import com.example.wetalk.util.DialogCenter
+import com.example.wetalk.util.DialogGravityCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.android.material.textfield.TextInputEditText
@@ -157,7 +157,7 @@ class TalkProfileHomeFragment : Fragment() {
                             user = it.data!!
                             binding.txtName.text = user.name
                             if (user.age == null || user.phoneNumber == null || user.gender == null) {
-                                DialogCenter.Builder(requireContext())
+                                DialogGravityCenter.Builder(requireContext())
                                     .title("Gợi ý")
                                     .cancelable(true)
                                     .canceledOnTouchOutside(true)

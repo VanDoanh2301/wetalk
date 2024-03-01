@@ -16,7 +16,6 @@
 
 package com.example.wetalk.ui.activity;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -27,26 +26,17 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
-import android.net.Uri;
 import android.os.SystemClock;
-import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.example.wetalk.R;
 import com.example.wetalk.ui.customview.OverlayView;
-import com.example.wetalk.util.DialogVideo;
 import com.example.wetalk.util.env.BorderedText;
 import com.example.wetalk.util.env.ImageUtils;
 import com.example.wetalk.util.env.Logger;
 import com.example.wetalk.util.tracking.MultiBoxTracker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import org.tensorflow.lite.examples.detection.tflite.Detector;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
@@ -54,7 +44,6 @@ import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIMod
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track

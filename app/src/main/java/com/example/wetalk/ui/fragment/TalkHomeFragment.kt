@@ -50,13 +50,11 @@ class TalkHomeFragment : Fragment() {
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
     private lateinit var adapterImage: ImageAdapter
-    private val CAMERA_PERMISSION_REQUEST_CODE = 1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         _binding = FragmentTalkHomeBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -116,21 +114,6 @@ class TalkHomeFragment : Fragment() {
                             .load(user?.avatarLocation)
                             .apply(RequestOptions.circleCropTransform())
                             .into(binding.imgAvata)
-
-                        //Add user to firebase realtime for call video
-                        viewModel.addUserFirebase(
-                            user!!.name
-                        )
-                        { isDone, reason ->
-                            if (!isDone) {
-                                Log.d("HomeFragment", reason.toString())
-                            } else {
-                                Log.d("HomeFragment", "Add user success")
-                            }
-                        }
-
-
-
                     }
 
                     is Resource.Error -> {
@@ -232,25 +215,6 @@ class TalkHomeFragment : Fragment() {
         }, 200, 3000)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            CAMERA_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    // Người dùng từ chối cấp quyền, bạn có thể thông báo hoặc xử lý khác tùy ý
-                    Toast.makeText(requireContext(), "Quyền camera bị từ chối", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
 
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
-    }
 
 }

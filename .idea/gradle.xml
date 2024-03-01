@@ -4,7 +4,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
@@ -13,7 +12,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib_interpreter" />
             <option value="$PROJECT_DIR$/lib_task_api" />
-            <option value="$PROJECT_DIR$/openCVLibrary348" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
