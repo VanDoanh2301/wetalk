@@ -26,7 +26,7 @@ import com.example.wetalk.databinding.FragmentTalkTestBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.MenuPracticeAdapter
 import com.example.wetalk.ui.adapter.ViewPagerPracticeAdapter
-import com.example.wetalk.ui.viewmodels.TalkTestViewModel
+import com.example.wetalk.ui.viewmodels.TestTopicViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +45,7 @@ class TalkTestFragment : Fragment() {
     private lateinit var test: TestTopic
     private var questions: ArrayList<Question>? = null
     private var testQuests: ArrayList<TestQuest> = ArrayList()
-    private val viewModel: TalkTestViewModel by viewModels()
+    private val viewModel: TestTopicViewModel by viewModels()
     private var viewPager: ViewPager? = null
     private lateinit var menuTestHardAdapter: MenuPracticeAdapter
 

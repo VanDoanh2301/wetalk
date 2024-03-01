@@ -204,7 +204,7 @@
         tools:layout="@layout/fragment_talk_tab_chat" />
     <fragment
         android:id="@+id/talkTabPhoneBookFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTabPhoneBookFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkTabFriendFragment"
         android:label="fragment_talk_tab_phone_book"
         tools:layout="@layout/fragment_talk_tab_phone_book" />
     <fragment

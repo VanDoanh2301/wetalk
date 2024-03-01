@@ -20,7 +20,7 @@ import com.example.wetalk.WeTalkApp
 import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.fragment.BaseDialogFragment
-import com.example.wetalk.ui.fragment.TalkPlayFragment
+import com.example.wetalk.ui.fragment.TalkPlayVideoFragment
 import com.example.wetalk.util.Task
 import com.example.wetalk.util.FileConfigUtils
 import com.xujiaji.happybubble.Auto
@@ -76,7 +76,7 @@ abstract class TalkImageViewItem @JvmOverloads constructor(
                         when (result) {
                             4 -> {
                                 BaseDialogFragment.add(
-                                    context, TalkPlayFragment.newInstance()
+                                    context, TalkPlayVideoFragment.newInstance()
                                         .setPath(item.isVideo?.let { if (it) item.devicePath else item.path } ?: "", item.isVideo?.let { if (it) 2 else 1 } ?: 0)
                                 )
 

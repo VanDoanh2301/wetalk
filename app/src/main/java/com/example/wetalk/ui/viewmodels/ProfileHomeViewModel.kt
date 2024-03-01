@@ -27,46 +27,50 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class TalkProfileHomeViewModel @Inject constructor(
+class ProfileHomeViewModel @Inject constructor(
     private val repository: TalkRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
+    // StateFlow for getting user information
     private val _getInforUser: MutableStateFlow<Resource<UserInforRequest>> =
         MutableStateFlow(Resource.Loading())
     val getInforUser: StateFlow<Resource<UserInforRequest>> get() = _getInforUser
+    // StateFlow for updating user information
     private val _updateUser: MutableStateFlow<Resource<GetAllUserRequest>> =
         MutableStateFlow(Resource.Loading())
     val updateUser: StateFlow<Resource<GetAllUserRequest>> get() = _updateUser
+    // StateFlow for updating user avatar
     private val _updateAvatar: MutableStateFlow<Resource<GetAllUserRequest>> =
         MutableStateFlow(Resource.Loading())
     val updateAvatar: StateFlow<Resource<GetAllUserRequest>> get() = _updateAvatar
+    // LiveData for uploading video result
     private val _uploadResult: MutableLiveData<Resource<String>> =
         MutableLiveData(Resource.Loading())
     val uploadResult: LiveData<Resource<String>> get() = _uploadResult
-
 
     private var user: UserInforRequest? = null
     private var userInfor: GetAllUserRequest? = null
     private var res: String? = null
 
-
-    fun getUser(authorization: String) = viewModelScope.launch() {
-        safeGetAllUsers(authorization)
+    // Function to get user information
+    fun getUser() = viewModelScope.launch() {
+        safeGetAllUsers()
     }
 
-    fun updateAvatarUser(authorization: String, avatarRequest: AvatarRequest) =
+    // Function to safely update user avatar
+    fun safeUpdateAvatarUser(avatarRequest: AvatarRequest) =
         viewModelScope.launch {
-            safeUserAvatar(authorization, avatarRequest)
+            safeUserAvatar(avatarRequest)
         }
 
-    private suspend fun safeUserAvatar(authorization: String, avatarRequest: AvatarRequest) {
-
+    // Function to handle updating user avatar
+    private suspend fun safeUserAvatar(avatarRequest: AvatarRequest) {
         try {
             if (hasInternetConnection(context)) {
-                val response = repository.updateAvata(authorization, avatarRequest)
+                val response = repository.updateAvata(avatarRequest)
                 _updateAvatar.value = handleUpdateAvatarResponse(response)
             } else {
-                _updateAvatar.value = Resource.Error("Mất Kết Nối Internet")
+                _updateAvatar.value = Resource.Error("Lost Internet Connection")
             }
         } catch (e: Exception) {
             Log.e("GETALLUSERS_API_ERROR", e.toString())
@@ -74,6 +78,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
+    // Function to handle response for updating user avatar
     private fun handleUpdateAvatarResponse(response: Response<GetAllUserRequest>): Resource<GetAllUserRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -85,19 +90,19 @@ class TalkProfileHomeViewModel @Inject constructor(
         return Resource.Error((userInfor ?: response.message()).toString())
     }
 
-
-    fun updateInforUser(authorization: String, userRequest: UserUpdateDTO) = viewModelScope.launch {
-        safeUpdateUser(authorization, userRequest)
+    // Function to update user information
+    fun updateInforUser(userRequest: UserUpdateDTO) = viewModelScope.launch {
+        safeUpdateUser(userRequest)
     }
 
-    private suspend fun safeUpdateUser(authorization: String, userRequest: UserUpdateDTO) {
-
+    // Function to safely update user information
+    private suspend fun safeUpdateUser(userRequest: UserUpdateDTO) {
         try {
             if (hasInternetConnection(context)) {
-                val response = repository.updateUser(authorization, userRequest)
+                val response = repository.updateUser(userRequest)
                 _updateUser.value = handleUpdateUsersResponse(response)
             } else {
-                _updateUser.value = Resource.Error("Mất Kết Nối Internet")
+                _updateUser.value = Resource.Error("Lost Internet Connection")
             }
         } catch (e: Exception) {
             Log.e("GETALLUSERS_API_ERROR", e.toString())
@@ -105,6 +110,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
+    // Function to handle response for updating user information
     private fun handleUpdateUsersResponse(response: Response<GetAllUserRequest>): Resource<GetAllUserRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -116,13 +122,14 @@ class TalkProfileHomeViewModel @Inject constructor(
         return Resource.Error((user ?: response.message()).toString())
     }
 
-    private suspend fun safeGetAllUsers(authorization: String) {
+    // Function to safely get all user information
+    private suspend fun safeGetAllUsers() {
         try {
             if (hasInternetConnection(context)) {
-                val response = repository.getUserInfor(authorization)
+                val response = repository.getUserInfor()
                 _getInforUser.value = handleGetAllUsersResponse(response)
             } else {
-                _getInforUser.value = Resource.Error("Mất Kết Nối Internet")
+                _getInforUser.value = Resource.Error("Lost Internet Connection")
             }
         } catch (e: Exception) {
             Log.e("GETALLUSERS_API_ERROR", e.toString())
@@ -130,6 +137,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
+    // Function to handle response for getting all user information
     private fun handleGetAllUsersResponse(response: Response<UserInforRequest>): Resource<UserInforRequest> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -141,16 +149,16 @@ class TalkProfileHomeViewModel @Inject constructor(
         return Resource.Error((user ?: response.message()).toString())
     }
 
-
+    // Function to upload video
     fun uploadVideo(
-        file: MultipartBody.Part)
-    {
+        file: MultipartBody.Part
+    ) {
         viewModelScope.launch {
             updateVideo(file)
         }
-
     }
 
+    // Function to safely update video
     private suspend fun updateVideo(
         file: MultipartBody.Part
     ) {
@@ -160,7 +168,7 @@ class TalkProfileHomeViewModel @Inject constructor(
                 val response = repository.uploadVideo(file)
                 _uploadResult.value = handleUploadResponse(response)
             } else {
-                _uploadResult.value = Resource.Error("Mất Kết Nối Internet")
+                _uploadResult.value = Resource.Error("Lost Internet Connection")
             }
         } catch (e: Exception) {
             Log.d("ERROR_API", e.message.toString())
@@ -168,6 +176,7 @@ class TalkProfileHomeViewModel @Inject constructor(
         }
     }
 
+    // Function to handle response for uploading video
     private fun handleUploadResponse(response: Response<String>): Resource<String> {
         if (response.isSuccessful) {
             LogUtils.d("LOGIN_RETROFIT_SUCCESS: OK")
@@ -186,29 +195,30 @@ class TalkProfileHomeViewModel @Inject constructor(
         return Resource.Error((res ?: response.message()).toString())
     }
 
-    fun changePassword(authorization: String, userPasswordDTO: UserPasswordDTO) = viewModelScope.launch {
-        safeChangePassword(authorization, userPasswordDTO)
+    // Function to change password
+    fun changePassword(userPasswordDTO: UserPasswordDTO) = viewModelScope.launch {
+        safeChangePassword(userPasswordDTO)
     }
 
-    private suspend fun safeChangePassword(authorization: String, userPasswordDTO: UserPasswordDTO)  {
+    // Function to safely change password
+    private suspend fun safeChangePassword(userPasswordDTO: UserPasswordDTO) {
         try {
             if (hasInternetConnection(context)) {
-                val response = repository.changePassword(authorization, userPasswordDTO)
+                val response = repository.changePassword(userPasswordDTO)
                 if (response.isSuccessful) {
                     val hostResponse = response.body()
                     if (hostResponse != null) {
-                        Toast.makeText(context, "Thay đổi mật khẩu thành công", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Password changed successfully", Toast.LENGTH_LONG).show()
                     }
                 } else {
-                    Toast.makeText(context, "Lỗi kết nối", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Connection error", Toast.LENGTH_LONG).show()
                 }
 
             } else {
-
+                // Handle no internet connection
             }
         } catch (e: Exception) {
-
+            // Handle exceptions
         }
     }
-
 }

@@ -14,7 +14,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class TalkTopicViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
+class TopicViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
+    // MutableStateFlow for storing topics resource
     private val _topics: MutableStateFlow<Resource<GetAllTopic>> =
         MutableStateFlow(Resource.Loading())
     val topic: StateFlow<Resource<GetAllTopic>>
@@ -22,6 +23,7 @@ class TalkTopicViewModel @Inject constructor(private val repository: TalkReposit
 
     private var hostResponse: GetAllTopic? = null
 
+    // Function to get all topics
     fun getAllTopic() = viewModelScope.launch {
         try {
             val response = repository.getAllTopic()
@@ -32,6 +34,7 @@ class TalkTopicViewModel @Inject constructor(private val repository: TalkReposit
         }
     }
 
+    // Function to handle response for getting all topics
     private fun handleGetAllTopic(response: Response<GetAllTopic>): Resource<GetAllTopic> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -42,6 +45,4 @@ class TalkTopicViewModel @Inject constructor(private val repository: TalkReposit
         }
         return Resource.Error((hostResponse ?: response.message()).toString())
     }
-
-
 }

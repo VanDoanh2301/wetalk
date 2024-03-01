@@ -1,8 +1,6 @@
 package com.example.wetalk.ui.fragment
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,12 +22,10 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
 import com.example.wetalk.ui.activity.DetectorActivity
 import com.example.wetalk.ui.adapter.ImageAdapter
-import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
+import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -45,7 +40,7 @@ class TalkHomeFragment : Fragment() {
     private var _binding: FragmentTalkHomeBinding? = null
     private val binding get() = _binding!!
     private var isUser = false
-    private val viewModel: TalkProfileHomeViewModel by viewModels()
+    private val viewModel: ProfileHomeViewModel by viewModels()
     private var user: UserInforRequest? = null
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
@@ -64,7 +59,7 @@ class TalkHomeFragment : Fragment() {
         isUser = arguments?.getBoolean("isUser", false) ?: false
         configViewPager()
         slideBar();
-        binding.textView2.text = "Người Dùng Khách"
+        binding.textView2.text = "Người Dùng Ẩn Danh"
         //Role
         if (isUser) {
             binding.btnChat.visibility = View.VISIBLE
@@ -100,7 +95,7 @@ class TalkHomeFragment : Fragment() {
         //Job when start lifecycle
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
-            viewModel.getUser("Bearer $isAccess")
+            viewModel.getUser()
             viewModel.getInforUser.collect {
                 when (it) {
                     is Resource.Loading -> {

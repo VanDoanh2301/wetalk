@@ -62,7 +62,7 @@ class TalkMainChatFragment : Fragment() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
                         0 -> TalkTabChatFragment(user)
-                        1 -> TalkTabPhoneBookFragment()
+                        1 -> TalkTabFriendFragment()
                         2 -> TalkTabProfileFragment(user)
                         else -> throw IllegalArgumentException("Invalid position: $position")
                     }

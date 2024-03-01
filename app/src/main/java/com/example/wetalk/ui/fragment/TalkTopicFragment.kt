@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.databinding.FragmentTalkTopicBinding
-import com.example.wetalk.ui.viewmodels.TalkTopicViewModel
+import com.example.wetalk.ui.viewmodels.TopicViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class TalkTopicFragment : Fragment() {
     private var _binding:FragmentTalkTopicBinding ? = null
     private val binding get() = _binding!!
-    private val viewModel : TalkTopicViewModel by viewModels()
+    private val viewModel : TopicViewModel by viewModels()
     private lateinit var adapter: TopicAdapter
     private var topicRequests : ArrayList<TopicRequest> ?= null
 

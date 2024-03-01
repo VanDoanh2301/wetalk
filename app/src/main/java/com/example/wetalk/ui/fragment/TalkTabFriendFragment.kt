@@ -11,10 +11,10 @@ import com.example.wetalk.R
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkTabPhoneBookFragment.newInstance] factory method to
+ * Use the [TalkTabFriendFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TalkTabPhoneBookFragment : Fragment() {
+class TalkTabFriendFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class TalkTabPhoneBookFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TalkTabPhoneBookFragment().apply {
+            TalkTabFriendFragment().apply {
                 arguments = Bundle().apply {
 
                 }

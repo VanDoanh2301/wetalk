@@ -41,7 +41,6 @@ class TalkRegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initViewModel()
         initRegister();
     }
@@ -60,10 +59,8 @@ class TalkRegisterFragment : Fragment() {
                                 Toast.makeText(requireContext(), "Email đã tồn tại", Toast.LENGTH_LONG).show()
                                 binding.rlProgress.visibility = View.GONE
                             }
-
                         }
                         is Resource.Error -> {
-
 
                         }
                     }
@@ -84,10 +81,7 @@ class TalkRegisterFragment : Fragment() {
                         "USER"
                     );
                     viewModel.generateOtp(userRegisterDTO)
-
                     binding.rlProgress.visibility = View.VISIBLE
-
-
                 }
             }
 

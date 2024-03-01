@@ -1,11 +1,8 @@
 package com.example.wetalk.ui.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.repository.TalkRepository
@@ -18,7 +15,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class TalkTestViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
+class TestTopicViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
+    // MutableStateFlow for storing questions resource
     private val _questions: MutableStateFlow<Resource<GetAllQuestion>> =
         MutableStateFlow(Resource.Loading())
     val questions: StateFlow<Resource<GetAllQuestion>>
@@ -26,6 +24,7 @@ class TalkTestViewModel @Inject constructor(private val repository: TalkReposito
 
     private var hostResponse: GetAllQuestion? = null
 
+    // Function to get all questions by topic ID
     fun getAllQuestionByTopicId(questionSize: QuestionSize) = viewModelScope.launch {
         try {
             val response = repository.getAllQuestionByTopicID(questionSize)
@@ -36,6 +35,7 @@ class TalkTestViewModel @Inject constructor(private val repository: TalkReposito
         }
     }
 
+    // Function to handle response for getting all questions
     private fun handleGetAllQuestion(response: Response<GetAllQuestion>): Resource<GetAllQuestion> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -46,7 +46,4 @@ class TalkTestViewModel @Inject constructor(private val repository: TalkReposito
         }
         return Resource.Error((hostResponse ?: response.message()).toString())
     }
-
-
-
 }

@@ -22,18 +22,20 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import javax.inject.Inject
 
+// ViewModel class for handling vocabulary upload
 @HiltViewModel
-class TalkVocabularyViewModel @Inject constructor(
+class VocabularyUpViewModel @Inject constructor(
     private val mRepository: TalkRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
+    // LiveData for observing upload result
     private val _uploadResult: MutableLiveData<Resource<String>> =
-       MutableLiveData(Resource.Loading())
+        MutableLiveData(Resource.Loading())
     val uploadResult: LiveData<Resource<String>>
         get() = _uploadResult
 
-
+    // StateFlow for holding video local data
     private val _videoLocal = MutableStateFlow(
         VideoLocal(
             -1,
@@ -44,66 +46,62 @@ class TalkVocabularyViewModel @Inject constructor(
             1
         )
     )
-    private var res: String? = null
     val videoLocal: StateFlow<VideoLocal> = _videoLocal
+
+    // StateFlow for holding image items
     private val _talkImageItems = MutableStateFlow(ArrayList<StorageImageItem>())
     val talkImageItems: StateFlow<ArrayList<StorageImageItem>> = _talkImageItems
 
+    // Function to set video local data
     fun setVideoLocal(videoLocal: VideoLocal) {
-        viewModelScope.launch {
-            _videoLocal.emit(videoLocal)
-        }
+        _videoLocal.value = videoLocal
     }
 
+    // Function to add image items
     fun addImageItems(items: ArrayList<StorageImageItem>) {
-        viewModelScope.launch {
-            _talkImageItems.emit(items)
-        }
+        _talkImageItems.value = items
     }
 
-    fun uploadVideo(
-        file: MultipartBody.Part)
-    {
+    // Function to initiate video upload
+    fun uploadVideo(file: MultipartBody.Part) {
         viewModelScope.launch {
             updateVideo(file)
         }
-
     }
 
-    private suspend fun updateVideo(
-        file: MultipartBody.Part
-    ) {
-
+    // Function to update video data
+    private suspend fun updateVideo(file: MultipartBody.Part) {
         _uploadResult.value = Resource.Loading()
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
                 val response = mRepository.uploadVideo(file)
                 _uploadResult.value = handleUploadResponse(response)
             } else {
-                _uploadResult.value = Resource.Error("Mất Kết Nối Internet")
+                _uploadResult.value = Resource.Error("Mất Kết Nối Internet") // Error message in Vietnamese
             }
         } catch (e: Exception) {
-            LogUtils.d("LOGIN_API_ERROR: ${e.message}")
             _uploadResult.value = Resource.Error("${e.message.toString()}")
         }
     }
 
+    // Function to handle upload response
     private fun handleUploadResponse(response: Response<String>): Resource<String> {
         if (response.isSuccessful) {
             LogUtils.d("LOGIN_RETROFIT_SUCCESS: OK")
             response.body()?.let { resultResponse ->
-                return Resource.Success(res ?: resultResponse)
+                return Resource.Success(resultResponse)
             }
         } else {
-            var res = response.body().toString()
-            if (response.code() == 401) res = "Error"
-            else if (response.code() == 400) res = "Invalid request body"
-            else if (response.code() == 500) res = "Internal server error"
-            return Resource.Error(res)
-
+            // Handling different HTTP error codes
+            val res = when (response.code()) {
+                401 -> "Error"
+                400 -> "Invalid request body"
+                500 -> "Internal server error"
+                else -> response.message()
+            }
             LogUtils.d("LOGIN_RETROFIT_ERROR: $response")
+            return Resource.Error(res)
         }
-        return Resource.Error((res ?: response.message()).toString())
+        return Resource.Error(response.message())
     }
 }
-

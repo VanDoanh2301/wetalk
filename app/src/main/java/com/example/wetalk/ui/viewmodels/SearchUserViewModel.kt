@@ -19,7 +19,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class TalkSearchUserViewModel @Inject constructor(
+class SearchUserViewModel @Inject constructor(
     private val repository: TalkRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {

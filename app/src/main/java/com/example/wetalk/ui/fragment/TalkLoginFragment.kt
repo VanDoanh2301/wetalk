@@ -20,97 +20,109 @@ import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * A simple [Fragment] subclass.
- * Use the [TalkLoginFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment for user login.
  */
 @AndroidEntryPoint
 class TalkLoginFragment : Fragment() {
-    private val viewModel:LoginViewModel by viewModels()
+    // View model initialization using Hilt's viewModels delegate
+    private val viewModel: LoginViewModel by viewModels()
+    // Binding object for this fragment
     private var _binding: FragmentTalkLoginBinding? = null
-    private val binding get() =  _binding!!
+    private val binding get() = _binding!!
 
-
+    /**
+     * Inflating the layout for this fragment.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentTalkLoginBinding.inflate(inflater, container,false)
-        val view = binding.root
-        return  view
+        _binding = FragmentTalkLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    /**
+     * Setting up views and actions when the view is created.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Handling back press to finish the activity
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             requireActivity().finish()
         }
+        // Setting click listener for sign in button
         binding.btnSignIn.setOnClickListener {
             onLogin()
         }
-        initLogin();
-        innitActionView();
-
+        // Initializing views and setting up click listeners
+        initViews()
+        // Observing login response
+        observeLoginResponse()
     }
 
-    /** OnClick View */
-    private fun innitActionView() {
-        binding.btnSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_talkLoginFragment_to_talkRegisterFragment)
-        }
-        binding.button.setOnClickListener {
-            val bundle = bundleOf(
-                "isUser" to false
-            )
-            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
-
+    /**
+     * Initializes views and sets up their actions.
+     */
+    private fun initViews() {
+        binding.apply {
+            // Click listener for sign up button
+            btnSignup.setOnClickListener {
+                findNavController().navigate(R.id.action_talkLoginFragment_to_talkRegisterFragment)
+            }
+            // Click listener for button
+            button.setOnClickListener {
+                val bundle = bundleOf("isUser" to false)
+                findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
+            }
         }
     }
 
-    /** Custom login */
-    private fun initLogin() {
+    /**
+     * Observes login response and updates UI accordingly.
+     */
+    private fun observeLoginResponse() {
         lifecycleScope.launchWhenStarted {
-            viewModel.loginResponseStateFlow.collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        binding.loginProgressBar.visibility = View.GONE
-                    }
+            viewModel.loginResponseStateFlow.collect { resource ->
+                binding.loginProgressBar.visibility = View.GONE
+                when (resource) {
                     is Resource.Success -> {
-                        SharedPreferencesUtils.setString("isLogin", it.data!!.accessToken);
+                        resource.data?.accessToken?.let { SharedPreferencesUtils.saveToken(it) }
                         binding.loginProgressBar.visibility = View.VISIBLE
-                        val bundle = bundleOf(
-                            "isUser" to true
-                        )
-
+                        val bundle = bundleOf("isUser" to true)
                         findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
                         findNavController().popBackStack(R.id.talkHomeFragment, false)
-
                     }
                     is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        binding.loginProgressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {
+                        binding.loginProgressBar.visibility = View.VISIBLE
                     }
                 }
             }
         }
     }
+
+    /**
+     * Initiates login process.
+     */
     private fun onLogin() {
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
         if (email.isNotEmpty() && password.isNotEmpty()) {
             val userLoginDTO = LoginDTO(email, password)
             viewModel.login(userLoginDTO)
-
         } else {
             Toast.makeText(requireContext(), "Email Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show()
         }
         binding.loginProgressBar.visibility = View.VISIBLE
-
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    /**
+     * Cleans up the binding object when the fragment's view is destroyed.
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

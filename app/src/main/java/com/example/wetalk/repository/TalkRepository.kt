@@ -15,7 +15,7 @@ import com.example.wetalk.data.model.postmodel.UserOtpDTO
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
-import com.example.wetalk.data.remote.ApiLogin
+import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class TalkRepository @Inject constructor(
-    private val mLogin: ApiLogin,
+    private val mLogin: ApiUser,
     private val mUp: ApiUpload,
     private val mTopic: ApiTopicStudy
 ) {
@@ -60,13 +60,13 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm lấy thông tin người dùng
-    suspend fun getUserInfor(authorization: String) : Response<UserInforRequest> {
-        return mLogin.geUserInfor(authorization)
+    suspend fun getUserInfor() : Response<UserInforRequest> {
+        return mLogin.geUserInfor()
     }
 
     // Hàm cập nhật thông tin người dùng
-    suspend fun updateUser(authorization: String, userRequest: UserUpdateDTO) : Response<GetAllUserRequest> {
-        return mLogin.updateUser(authorization,userRequest)
+    suspend fun updateUser(userRequest: UserUpdateDTO) : Response<GetAllUserRequest> {
+        return mLogin.updateUser(userRequest)
     }
 
     // Hàm lấy tất cả các câu hỏi theo ID chủ đề với kích thước câu hỏi
@@ -75,13 +75,13 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm cập nhật ảnh đại diện người dùng
-    suspend fun updateAvata(authorization: String, avatarRequest: AvatarRequest) : Response<GetAllUserRequest> {
-        return mLogin.updateAvatar(authorization, avatarRequest)
+    suspend fun updateAvata(avatarRequest: AvatarRequest) : Response<GetAllUserRequest> {
+        return mLogin.updateAvatar(avatarRequest)
     }
 
     // Hàm thay đổi mật khẩu người dùng
-    suspend fun changePassword(authorization: String, userPasswordDTO: UserPasswordDTO) : Response<HostResponse> {
-        return mLogin.changePassword(authorization, userPasswordDTO)
+    suspend fun changePassword(userPasswordDTO: UserPasswordDTO) : Response<HostResponse> {
+        return mLogin.changePassword(userPasswordDTO)
     }
 
     // Hàm tìm kiếm người dùng
@@ -92,6 +92,22 @@ class TalkRepository @Inject constructor(
     // Hàm thêm bạn
     suspend fun addFriend(userId:Int) : Response<HostResponse> {
         return mLogin.addFriend(userId)
+    }
+    //Lấy ra tất cả bạn bè
+    suspend fun getAllFriend() {
+        return mLogin.getAllFriend()
+    }
+    //Xóa bạn bè
+    suspend fun getCancelFriend(userId: Int) {
+        return mLogin.getCancelFriend(userId)
+    }
+    //Chấp nhận kết bạn
+    suspend fun acceptFriend (userId: Int) {
+        return mLogin.acceptFriend(userId)
+    }
+    //Danh sách chờ kết bạn
+    suspend fun pendingFriend() {
+        return mLogin.pendingFriend()
     }
 
 }

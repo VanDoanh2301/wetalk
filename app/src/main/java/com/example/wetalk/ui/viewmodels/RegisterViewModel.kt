@@ -19,25 +19,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val repository:TalkRepository,
+    private val repository: TalkRepository,
     @ApplicationContext val context: Context
 ) : ViewModel() {
+    // StateFlow for register response
     private val _registerResponseStateFlow: MutableStateFlow<Resource<HostResponse>> =
         MutableStateFlow(Resource.Loading())
     val registerResponseStateFlow: StateFlow<Resource<HostResponse>>
         get() = _registerResponseStateFlow
 
-private val hostResponse:HostResponse ? =null
+    private val hostResponse: HostResponse? = null
+
+    // Function to generate OTP for user registration
     fun generateOtp(userRegisterDTO: UserRegisterDTO) = viewModelScope.launch {
-       safeGetAllUsers(userRegisterDTO)
+        safeGetAllUsers(userRegisterDTO)
     }
+
+    // Function to safely generate OTP and register user
     private suspend fun safeGetAllUsers(userRegisterDTO: UserRegisterDTO) {
         try {
-            if(NetworkUtil.hasInternetConnection(context)){
+            if (NetworkUtil.hasInternetConnection(context)) {
                 val response = repository.generateOtp(userRegisterDTO)
                 _registerResponseStateFlow.value = handleGetAllUsersResponse(response)
             } else {
-                _registerResponseStateFlow.value = Resource.Error("Mất Kết Nối Internet")
+                _registerResponseStateFlow.value = Resource.Error("Lost Internet Connection")
             }
         } catch (e: Exception) {
             Log.e("GETALLUSERS_API_ERROR", e.toString())
@@ -45,6 +50,7 @@ private val hostResponse:HostResponse ? =null
         }
     }
 
+    // Function to handle response for OTP generation
     private fun handleGetAllUsersResponse(response: Response<HostResponse>): Resource<HostResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -55,6 +61,4 @@ private val hostResponse:HostResponse ? =null
         }
         return Resource.Error((hostResponse ?: response.message()).toString())
     }
-
-
 }

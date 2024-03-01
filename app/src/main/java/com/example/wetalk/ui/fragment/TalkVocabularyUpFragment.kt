@@ -29,7 +29,7 @@ import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.TalkDialogTag
 import com.example.wetalk.ui.customview.TalkBodyEditView
-import com.example.wetalk.ui.viewmodels.TalkVocabularyViewModel
+import com.example.wetalk.ui.viewmodels.VocabularyUpViewModel
 import com.example.wetalk.util.DialogClose
 import com.example.wetalk.util.DialogOpenVideo
 import com.example.wetalk.util.FileConfigUtils
@@ -56,7 +56,7 @@ import java.io.File
  */
 @AndroidEntryPoint
 class TalkVocabularyUpFragment : Fragment() {
-    private val viewModel: TalkVocabularyViewModel by viewModels()
+    private val viewModel: VocabularyUpViewModel by viewModels()
     private lateinit var keyboardHeightProvider: KeyboardHeightProvider
     private lateinit var videoLocal: VideoLocal
     private lateinit var talkBodyEditView: TalkBodyEditView
@@ -106,7 +106,7 @@ class TalkVocabularyUpFragment : Fragment() {
 
         }
         lifecycleScope.launchWhenResumed {
-            viewModel.talkImageItems.collect { talkImageItems ->
+            viewModel.talkIma         geItems.collect { talkImageItems ->
                 if (talkImageItems == null) {
                     talkBodyEditView.visibility = View.GONE
                 } else {

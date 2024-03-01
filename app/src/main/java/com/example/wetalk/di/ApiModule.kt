@@ -2,9 +2,10 @@ package com.example.wetalk.di
 
 import androidx.databinding.ktx.BuildConfig
 import com.example.wetalk.data.remote.ApiChat
-import com.example.wetalk.data.remote.ApiLogin
+import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -46,11 +47,13 @@ object ApiModule {
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(Interceptor { chain: Interceptor.Chain ->
-                val request =
-                    chain.request()
-                        .newBuilder()
-                        .header("Content-Type", "application/json")
-                        .build()
+                val token = SharedPreferencesUtils.getToken()
+                val requestBuilder = chain.request().newBuilder()
+                    .header("Content-Type", "application/json")
+                if (token != null) {
+                    requestBuilder.header("Authorization", "Bearer $token")
+                }
+                val request = requestBuilder.build()
                 chain.proceed(request)
             })
             .callTimeout(60, TimeUnit.SECONDS)
@@ -58,16 +61,6 @@ object ApiModule {
             .readTimeout(60, TimeUnit.SECONDS)
             .build()
     }
-
-//    @Provides
-//    @ViewModelScoped
-//    fun provideGson(): Gson {
-//        return GsonBuilder()
-//            .setDateFormat("HH:mm:ss")
-//            .setLenient()
-//            .create()
-//    }
-
     /** Build api host 8090 */
     @Provides
     @ViewModelScoped
@@ -106,8 +99,8 @@ object ApiModule {
     }
     @Provides
     @ViewModelScoped
-    fun provideNewsApi(@ApiOne retrofit: Retrofit): ApiLogin {
-        return retrofit.create(ApiLogin::class.java)
+    fun provideNewsApi(@ApiOne retrofit: Retrofit): ApiUser {
+        return retrofit.create(ApiUser::class.java)
     }
 
     @Provides

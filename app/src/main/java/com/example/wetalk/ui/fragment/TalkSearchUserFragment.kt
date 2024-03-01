@@ -9,28 +9,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Adapter
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.addTextChangedListener
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserQueryRequest
 import com.example.wetalk.databinding.FragmentTalkSearchUserBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserSearchAdapter
-import com.example.wetalk.ui.viewmodels.TalkSearchUserViewModel
+import com.example.wetalk.ui.viewmodels.SearchUserViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.lang.NullPointerException
 
 /**
@@ -42,7 +35,7 @@ import java.lang.NullPointerException
 class TalkSearchUserFragment : Fragment() {
     private var _binding: FragmentTalkSearchUserBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TalkSearchUserViewModel by viewModels()
+    private val viewModel: SearchUserViewModel by viewModels()
     private lateinit var adapter: UserSearchAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +45,6 @@ class TalkSearchUserFragment : Fragment() {
         _binding = FragmentTalkSearchUserBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSearch()
@@ -66,18 +58,15 @@ class TalkSearchUserFragment : Fragment() {
         // Configuring focus for the search user EditText and displaying the keyboard
         binding.seachUsernameInput.requestFocus() // Set focus on the search EditText
         showKeyboard(binding.seachUsernameInput) // Show the keyboard for the search EditText
-
         // Handling the back button click
         binding.btBack.setOnClickListener {
             // Calling MainActivity's onBackPressed function
             requireActivity().onBackPressed()
         }
-
         binding.seachUsernameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 Log.d("TextWatcher", "beforeTextChanged: $p0")
             }
-
             @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 Log.d("TextWatcher", "onTextChanged: $p0")
@@ -101,9 +90,7 @@ class TalkSearchUserFragment : Fragment() {
                                 } catch (e: NullPointerException) {
                                     throw NullPointerException("Users is null")
                                 }
-
                             }
-
                             is Resource.Error -> {
                                 Log.d("UserRegisterDTO", it.message.toString())
                             }
@@ -111,7 +98,6 @@ class TalkSearchUserFragment : Fragment() {
                     }
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
                 Log.d("TextWatcher", "afterTextChanged: ${p0.toString()}")
             }
@@ -123,7 +109,6 @@ class TalkSearchUserFragment : Fragment() {
          override fun onItem(position: Int, user: UserInforRequest) {
              user.id?.let { viewModel.addFriend(it) }
          }
-
      })
     }
 
@@ -137,7 +122,6 @@ class TalkSearchUserFragment : Fragment() {
                 }
             }
     }
-
     private fun showKeyboard(editText: AppCompatEditText) {
         val inputMethodManager =
             (activity as MainActivity).getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

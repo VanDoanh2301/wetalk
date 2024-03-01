@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
@@ -34,7 +33,7 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserUpdateDTO
 import com.example.wetalk.databinding.FragmentTalkProfileEditBinding
 import com.example.wetalk.ui.activity.MainActivity
-import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
+import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
@@ -62,7 +61,7 @@ class TalkProfileEditFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var user: UserInforRequest
     private lateinit var userUpdateDTO: UserUpdateDTO
-    private val viewModel: TalkProfileHomeViewModel by viewModels()
+    private val viewModel: ProfileHomeViewModel by viewModels()
     private var imagePickLauncher: ActivityResultLauncher<Intent>? = null
     private var selectedImageUri: Uri? = null
     private var devicePath = ""
@@ -83,9 +82,7 @@ class TalkProfileEditFragment : Fragment() {
                 requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
-        ) {
-
-        } else {
+        ) { } else {
             // Request the READ_EXTERNAL_STORAGE permission
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -93,33 +90,33 @@ class TalkProfileEditFragment : Fragment() {
                 123
             )
         }
-
         initData()
         initAge()
         initAvatar()
         initGender()
+        onClickView()
+
+
+    }
+
+    private fun onClickView() {
         binding.btSave.setOnClickListener {
             updateUser()
             updateAvatar()
         }
-
         binding.btBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
     }
 
     private fun updateAvatar() {
         if (selectedImageUri != null) {
             val avatarRequest = AvatarRequest(urlImg)
-            val token = SharedPreferencesUtils.getString("isLogin")
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.updateAvatarUser("Bearer $token", avatarRequest)
+                viewModel.safeUpdateAvatarUser(avatarRequest)
                 viewModel.updateAvatar.collect {
                     when (it) {
-                        is Resource.Loading -> {
-                        }
-
+                        is Resource.Loading -> {}
                         is Resource.Success -> {
                             Log.d("UPAVATAR", "UP SUCCESS")
                         }
@@ -163,20 +160,16 @@ class TalkProfileEditFragment : Fragment() {
                 .show()
         } else {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                val token = SharedPreferencesUtils.getString("isLogin")
-                viewModel.updateInforUser("Bearer $token", userUpdateDTO)
+                viewModel.updateInforUser(userUpdateDTO)
                 viewModel.updateUser.collect {
                     when (it) {
-                        is Resource.Loading -> {
-                        }
-
+                        is Resource.Loading -> {}
                         is Resource.Success -> {
                             Toast.makeText(
                                 requireContext(),
                                 "Cập nhật thành công",
                                 Toast.LENGTH_LONG
                             ).show()
-
                         }
 
                         is Resource.Error -> {
@@ -195,60 +188,16 @@ class TalkProfileEditFragment : Fragment() {
     private fun initData() {
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
-            viewModel.getUser("Bearer $isAccess")
+            viewModel.getUser()
             viewModel.getInforUser.collect {
                 when (it) {
-                    is Resource.Loading -> {
-                    }
-
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         try {
                             user = it.data!!
-                            userUpdateDTO = UserUpdateDTO(
-                                user.name,
-                                user.phoneNumber ?: "",
-                                user.address ?: "",
-                                user.age ?: "",
-                                user.gender ?: ""
-                            )
-                            binding.txtName.setText(user.name)
-                            if (user.age != null && user.age != "") {
-                                val dateTime = OffsetDateTime.parse(
-                                    user.age,
-                                    DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                                )
-                                val formatter =
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
-                                val dateString: String = formatter.format(dateTime.toLocalDate())
-                                binding.txtDate.setText(dateString)
-                            } else {
-                                val formatter =
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
-                                val dateString: String = LocalDateTime.now().format(formatter)
-                                binding.txtDate.setText(dateString)
-                            }
-
-                            binding.txtPhone.setText(user.phoneNumber ?: "")
-                            if (user.gender.equals("MALE")) {
-                                binding.txtGender.setText("Nam")
-                            } else {
-                                binding.txtGender.setText("Nữ")
-                            }
-
-                            binding.txtGender.setText(user.gender ?: "")
-                            binding.txtAddress.setText(user.address ?: "")
-                            binding.txtPhone.hint =
-                                if (user.phoneNumber == null) "Số điện thoại" else ""
-                            binding.txtGender.hint = if (user.gender == null) "Giới tính" else ""
-                            binding.txtAddress.hint = if (user.address == null) "Quê quán" else ""
-
-                            Glide.with(requireContext()).load(user.avatarLocation)
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(binding.imgAvata)
+                            updateUI(user)
                         } catch (e: Exception) {
-
                         }
-
                     }
 
                     is Resource.Error -> {
@@ -259,9 +208,53 @@ class TalkProfileEditFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateUI(user: UserInforRequest) {
+        userUpdateDTO = UserUpdateDTO(
+            user.name,
+            user.phoneNumber ?: "",
+            user.address ?: "",
+            user.age ?: "",
+            user.gender ?: ""
+        )
+        binding.txtName.setText(user.name)
+        if (user.age != null && user.age != "") {
+            val dateTime = OffsetDateTime.parse(
+                user.age,
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME
+            )
+            val formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+            val dateString: String = formatter.format(dateTime.toLocalDate())
+            binding.txtDate.setText(dateString)
+        } else {
+            val formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+            val dateString: String = LocalDateTime.now().format(formatter)
+            binding.txtDate.setText(dateString)
+        }
+
+        binding.txtPhone.setText(user.phoneNumber ?: "")
+        if (user.gender.equals("MALE")) {
+            binding.txtGender.setText("Nam")
+        } else {
+            binding.txtGender.setText("Nữ")
+        }
+
+        binding.txtGender.setText(user.gender ?: "")
+        binding.txtAddress.setText(user.address ?: "")
+        binding.txtPhone.hint =
+            if (user.phoneNumber == null) "Số điện thoại" else ""
+        binding.txtGender.hint = if (user.gender == null) "Giới tính" else ""
+        binding.txtAddress.hint = if (user.address == null) "Quê quán" else ""
+
+        Glide.with(requireContext()).load(user.avatarLocation)
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.imgAvata)
+    }
+
     private fun initAge() {
         binding.txtDate.setOnClickListener {
-
             WeTalkApp.showDatePicker(activity as MainActivity, object : Task<Long> {
                 override fun callback(result: Long) {
                     val format =
@@ -269,7 +262,6 @@ class TalkProfileEditFragment : Fragment() {
                     val dateString: String = format.format(result)
                     binding.txtDate.setText(dateString)
                 }
-
             })
         }
     }
@@ -285,7 +277,6 @@ class TalkProfileEditFragment : Fragment() {
                     setProfilePic(requireContext(), selectedImageUri!!, binding.imgAvata)
                     devicePath = RealPathUtil.getRealPath(requireContext(), data.data)
                     getUrlFile()
-
                 }
             }
         }
@@ -293,6 +284,7 @@ class TalkProfileEditFragment : Fragment() {
             launchGalleryIntent()
         }
     }
+
     private fun initGender() {
         binding.txtGender.setOnClickListener {
             val popupMenu = PopupMenu(requireContext(), it)
@@ -304,6 +296,7 @@ class TalkProfileEditFragment : Fragment() {
                         binding.txtGender.setText("Nam")
                         true
                     }
+
                     R.id.menu_item_2 -> {
                         binding.txtGender.setText("Nữ")
                         true
@@ -333,15 +326,12 @@ class TalkProfileEditFragment : Fragment() {
                 ).show()
                 return
             }
-
             // Tạo Multipart Request
             val file = File(devicePath)
             val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
             // Tải Lên Tệp
             viewModel.uploadVideo(filePart)
-
         } catch (e: Exception) {
             Toast.makeText(
                 requireContext(),
@@ -354,10 +344,7 @@ class TalkProfileEditFragment : Fragment() {
                 viewLifecycleOwner
             ) {
                 when (it) {
-                    is Resource.Loading -> {
-
-                    }
-
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         urlImg = it.data.toString()
                     }
@@ -375,23 +362,4 @@ class TalkProfileEditFragment : Fragment() {
             .into(imageView)
     }
 
-//    private fun uploadImageToFirebaseStorage(imageUri: Uri) {
-//        val storageReference = FirebaseStorage.getInstance().reference
-//        val imageRef = storageReference.child("images/${UUID.randomUUID()}.jpg")
-//
-//        imageRef.putFile(imageUri)
-//            .addOnSuccessListener {
-//                imageRef.downloadUrl.addOnSuccessListener { uri ->
-//                    // Hiển thị hình ảnh bằng Glide
-//                    setProfilePic(requireContext(), uri, binding.imgAvata)
-//                }.addOnFailureListener { e ->
-//                    // Xử lý lỗi khi không lấy được link hình ảnh
-//                    Toast.makeText(requireContext(), "Error getting download URL: ${e.message}", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            .addOnFailureListener { e ->
-//                // Xử lý lỗi khi tải lên hình ảnh
-//                Toast.makeText(requireContext(), "Upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
-//            }
-//    }
 }

@@ -19,7 +19,7 @@ import com.daimajia.androidanimations.library.YoYo
 import com.example.wetalk.R
 import com.example.wetalk.data.local.TestQuest
 import com.example.wetalk.databinding.TalkItemTestBinding
-import com.example.wetalk.ui.viewmodels.TalkTestViewModel
+import com.example.wetalk.ui.viewmodels.TestTopicViewModel
 import com.example.wetalk.util.BounceInCustomAnimator
 import com.example.wetalk.util.FileConfigUtils
 import com.google.android.exoplayer2.MediaItem
@@ -41,7 +41,7 @@ class PracticeFragment : Fragment() {
     private var total_question = 0
     private var isActive = false
     private var exoPlayer: SimpleExoPlayer? = null
-    private val viewModel: TalkTestViewModel by viewModels()
+    private val viewModel: TestTopicViewModel by viewModels()
 
     companion object {
         fun init(

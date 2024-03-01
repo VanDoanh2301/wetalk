@@ -12,7 +12,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TalkPlayFragment : Fragment() {
+class TalkPlayVideoFragment : Fragment() {
     private var path: String? = null
     private var i = 0
     private var _binding: TalkPlayFragmentBinding? = null
@@ -21,7 +21,7 @@ class TalkPlayFragment : Fragment() {
     fun setPath(
         path: String,
         i: Int
-    ): TalkPlayFragment {
+    ): TalkPlayVideoFragment {
         this.path = path
         this.i = i
         return this
@@ -57,10 +57,10 @@ class TalkPlayFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): TalkPlayFragment {
+        fun newInstance(): TalkPlayVideoFragment {
             val args = Bundle()
             val fragment =
-                TalkPlayFragment()
+                TalkPlayVideoFragment()
             fragment.arguments = args
             return fragment
         }

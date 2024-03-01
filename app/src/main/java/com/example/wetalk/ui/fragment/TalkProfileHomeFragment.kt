@@ -21,7 +21,7 @@ import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
-import com.example.wetalk.ui.viewmodels.TalkProfileHomeViewModel
+import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.DialogGravityCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
@@ -41,9 +41,9 @@ import java.util.Locale
 class TalkProfileHomeFragment : Fragment() {
     private var _binding: FragmentTalkProfileHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TalkProfileHomeViewModel by viewModels()
+    private val viewModel: ProfileHomeViewModel by viewModels()
     private lateinit var user: UserInforRequest
-    private lateinit var changePasswordRequest:UserPasswordDTO
+    private lateinit var changePasswordRequest: UserPasswordDTO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,25 +53,18 @@ class TalkProfileHomeFragment : Fragment() {
         _binding = FragmentTalkProfileHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
-
         initUI()
         onClickView()
 
     }
-
     private fun onClickView() {
         binding.btBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
         binding.tvNext.setOnClickListener {
-
         }
         binding.openMenu.setOnClickListener { view ->
             showPopupMenu(view)
@@ -88,13 +81,10 @@ class TalkProfileHomeFragment : Fragment() {
                     findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
                     true
                 }
-
                 R.id.menu_item_2 -> {
                     showChangePasswordDialog();
                     true
                 }
-
-
                 else -> false
             }
         }
@@ -104,22 +94,19 @@ class TalkProfileHomeFragment : Fragment() {
     private fun showChangePasswordDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Thay đổi mật khẩu")
-
         // Inflate layout cho dialog
         val view: View = layoutInflater.inflate(R.layout.change_password_dialog, null)
         builder.setView(view)
         val edtPassOld = view.findViewById<TextInputEditText>(R.id.ed_pass_old)
         val edtPassNew = view.findViewById<TextInputEditText>(R.id.ed_pass_new)
         val edtPassConfim = view.findViewById<TextInputEditText>(R.id.ed_pass_confim)
-
         val oldPassword = edtPassOld.text.toString()
         val newPassword = edtPassNew.text.toString()
         val confirmPassword = edtPassConfim.text.toString()
-
         // Kiểm tra nếu giá trị trong "Confirm Password" giống với giá trị trong "New Password"
         if (confirmPassword == newPassword) {
             // Nếu giống nhau, bạn có thể thực hiện các hành động tương ứng ở đây
-           changePasswordRequest = UserPasswordDTO(oldPassword, newPassword)
+            changePasswordRequest = UserPasswordDTO(oldPassword, newPassword)
         } else {
             // Nếu không giống nhau, hiển thị thông báo hoặc thực hiện hành động phù hợp
             edtPassConfim.error = "Mật khẩu xác nhận không khớp"
@@ -127,19 +114,14 @@ class TalkProfileHomeFragment : Fragment() {
         builder.setPositiveButton("Đồng ý",
             DialogInterface.OnClickListener { dialog, which ->
                 // Xử lý khi người dùng nhấn nút Đồng ý
-                val isToken = SharedPreferencesUtils.getString("isLogin")
-                viewModel.changePassword("Bearer $isToken", changePasswordRequest)
-
+                viewModel.changePassword(changePasswordRequest)
             })
         builder.setNegativeButton("Hủy bỏ",
             DialogInterface.OnClickListener { dialog, which ->
                 // Xử lý khi người dùng nhấn nút Hủy bỏ
                 dialog.dismiss()
             })
-
-
         val dialog: AlertDialog = builder.create()
-
         dialog.show()
     }
 
@@ -147,60 +129,63 @@ class TalkProfileHomeFragment : Fragment() {
     private fun initUI() {
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
-            viewModel.getUser("Bearer $isAccess")
+            viewModel.getUser()
             viewModel.getInforUser.collect {
                 when (it) {
-                    is Resource.Loading -> {
-                    }
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         try {
                             user = it.data!!
-                            binding.txtName.text = user.name
-                            if (user.age == null || user.phoneNumber == null || user.gender == null) {
-                                DialogGravityCenter.Builder(requireContext())
-                                    .title("Gợi ý")
-                                    .cancelable(true)
-                                    .canceledOnTouchOutside(true)
-                                    .content("Cập nhật thông tin cá nhân của bạn")
-                                    .doneText("Cập nhật")
-                                    .positiveText("Huỷ")
-                                    .onPositive {
-                                    }
-                                    .onDone {
-                                        findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
-                                    }
-                                    .show()
-                            }
-                            val dateTime = OffsetDateTime.parse(
-                                user.age,
-                                DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                            )
-                            val formatter =
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                            updateUI(user)
 
-                            val dateString: String = formatter.format(dateTime.toLocalDate())
-                            binding.txtDate.text = dateString
-                            binding.txtDate.text = dateString
-                            binding.txtPhone.text = user.phoneNumber
-                            if (user.gender.equals("MALE")) {
-                                binding.txtGenner.text = "Nam"
-                            } else {
-                                binding.txtGenner.text = "Nữ"
-                            }
-
-                            Glide.with(requireContext()).load(user.avatarLocation)
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(binding.imgAvata)
                         } catch (e: Exception) {
                             Log.d("EXCEPTION", e.message.toString())
                         }
                     }
-                    is Resource.Error -> {
-                        Log.d("UserRegisterDTO", it.message.toString())
-                    }
+                    is Resource.Error -> { Log.d("UserRegisterDTO", it.message.toString()) }
                 }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateUI(user: UserInforRequest) {
+        binding.txtName.text = user.name
+        if (user.age == null || user.phoneNumber == null || user.gender == null) {
+            DialogGravityCenter.Builder(requireContext())
+                .title("Gợi ý")
+                .cancelable(true)
+                .canceledOnTouchOutside(true)
+                .content("Cập nhật thông tin cá nhân của bạn")
+                .doneText("Cập nhật")
+                .positiveText("Huỷ")
+                .onPositive {
+                }
+                .onDone {
+                    findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
+                }
+                .show()
+        }
+        val dateTime = OffsetDateTime.parse(
+            user.age,
+            DateTimeFormatter.ISO_OFFSET_DATE_TIME
+        )
+        val formatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+
+        val dateString: String = formatter.format(dateTime.toLocalDate())
+        binding.txtDate.text = dateString
+        binding.txtDate.text = dateString
+        binding.txtPhone.text = user.phoneNumber
+        if (user.gender.equals("MALE")) {
+            binding.txtGenner.text = "Nam"
+        } else {
+            binding.txtGenner.text = "Nữ"
+        }
+
+        Glide.with(requireContext()).load(user.avatarLocation)
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.imgAvata)
     }
 
 }

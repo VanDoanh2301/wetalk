@@ -16,7 +16,6 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -24,7 +23,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 
-interface ApiLogin {
+interface ApiUser {
     //Generate Otp
     @POST("api/register/generateOtp")
     suspend fun generateOtp(@Body userRegisterDTO: UserRegisterDTO?): Response<HostResponse>
@@ -42,18 +41,17 @@ interface ApiLogin {
             : Response<String>
     //Get UserInfor
     @GET("users/getUserInfor")
-    suspend fun geUserInfor(@Header("Authorization") authorization: String): Response<UserInforRequest>
+    suspend fun geUserInfor(): Response<UserInforRequest>
     //UpdateUser
     @PUT("users")
-    suspend fun updateUser(@Header("Authorization")  authorization: String ,
-                           @Body userRequest: UserUpdateDTO
+    suspend fun updateUser(@Body userRequest: UserUpdateDTO
     ) : Response<GetAllUserRequest>
     //Upload Avatar
     @POST("users/uploadAvatar")
-    suspend fun updateAvatar(@Header("Authorization")  authorization: String,@Body avatarRequest: AvatarRequest) : Response<GetAllUserRequest>
+    suspend fun updateAvatar(@Body avatarRequest: AvatarRequest) : Response<GetAllUserRequest>
     //Change Password
     @POST("users/changePassword")
-    suspend fun changePassword(@Header("Authorization")  authorization: String, @Body userPasswordDTO: UserPasswordDTO) : Response<HostResponse>
+    suspend fun changePassword(@Body userPasswordDTO: UserPasswordDTO) : Response<HostResponse>
     //Search user
     @POST("users/api/search")
     suspend fun searchUser(@Body userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest>
@@ -62,14 +60,14 @@ interface ApiLogin {
     suspend fun addFriend(@Path("userId") userId:Int) : Response<HostResponse>
     //Get list pending ship
     @GET("friend-ship/pending")
-    suspend fun pendingFriend(@Header("Authorization")  authorization: String)
+    suspend fun pendingFriend()
     //Get all friend
     @GET("friend-ship/friend")
-    suspend fun getAllFriend(@Header("Authorization")  authorization: String)
+    suspend fun getAllFriend()
     //Delete friend
     @GET("friend-ship/cancel-friend/{userId}")
-    suspend fun getCancelFriend(@Header("Authorization")  authorization: String, @Path("userId") userId: Int)
+    suspend fun getCancelFriend(@Path("userId") userId: Int)
     //Accept friend
     @GET("friend-ship/accept-friend/{userId}")
-    suspend fun acceptFriend(@Header("Authorization")  authorization: String,  @Path("userId") userId: Int)
+    suspend fun acceptFriend(@Path("userId") userId: Int)
 }

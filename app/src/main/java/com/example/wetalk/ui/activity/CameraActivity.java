@@ -83,7 +83,6 @@ public abstract class CameraActivity extends AppCompatActivity
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.tfe_od_activity_camera);
-
         tvRandom = findViewById(R.id.tv_random);
         tvScore = findViewById(R.id.tv_score);
         switchCamera = findViewById(R.id.img_switch_camera);
@@ -102,8 +101,6 @@ public abstract class CameraActivity extends AppCompatActivity
                 finish();
             }
         });
-
-
         if (hasPermission()) {
             setFragment();
         } else {
