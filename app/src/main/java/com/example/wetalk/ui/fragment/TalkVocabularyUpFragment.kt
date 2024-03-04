@@ -27,7 +27,7 @@ import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
-import com.example.wetalk.ui.adapter.TalkDialogTag
+import com.example.wetalk.ui.adapter.DialogTagAdapter
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.VocabularyUpViewModel
 import com.example.wetalk.util.DialogClose
@@ -366,7 +366,7 @@ class TalkVocabularyUpFragment : Fragment() {
         var dataList = ArrayList<String>()
         dataList = charactersList
 
-        val talkDialogTag = object : TalkDialogTag(requireContext()) {
+        val dialogTagAdapter = object : DialogTagAdapter(requireContext()) {
             override fun OnClickItemTag(position: Int) {
                 val item = dataList[position]
                 binding.tvName.text = "$item"
@@ -374,8 +374,8 @@ class TalkVocabularyUpFragment : Fragment() {
                 alertDialog.dismiss()
             }
         }
-        talkDialogTag.setData(dataList)
-        recyclerView.adapter = talkDialogTag
+        dialogTagAdapter.setData(dataList)
+        recyclerView.adapter = dialogTagAdapter
         builder.setView(recyclerView)
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()

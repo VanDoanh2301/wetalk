@@ -25,23 +25,23 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class TalkRepository @Inject constructor(
-    private val mLogin: ApiUser,
+    private val mUser: ApiUser,
     private val mUp: ApiUpload,
     private val mTopic: ApiTopicStudy
 ) {
     // Hàm đăng nhập người dùng
     suspend fun userLogin(post: LoginDTO): Response<LoginResponse> {
-        return mLogin.login(post)
+        return mUser.login(post)
     }
 
     // Hàm tạo mã OTP
     suspend fun generateOtp(userRegisterDTO: UserRegisterDTO): Response<HostResponse> {
-        return mLogin.generateOtp(userRegisterDTO)
+        return mUser.generateOtp(userRegisterDTO)
     }
 
     // Hàm xác thực OTP
     suspend fun validateOtp(userOtpDTO: UserOtpDTO): Response<HostResponse> {
-        return mLogin.validateOtp(userOtpDTO)
+        return mUser.validateOtp(userOtpDTO)
     }
 
     // Hàm tải lên video
@@ -61,12 +61,12 @@ class TalkRepository @Inject constructor(
 
     // Hàm lấy thông tin người dùng
     suspend fun getUserInfor() : Response<UserInforRequest> {
-        return mLogin.geUserInfor()
+        return mUser.geUserInfor()
     }
 
     // Hàm cập nhật thông tin người dùng
     suspend fun updateUser(userRequest: UserUpdateDTO) : Response<GetAllUserRequest> {
-        return mLogin.updateUser(userRequest)
+        return mUser.updateUser(userRequest)
     }
 
     // Hàm lấy tất cả các câu hỏi theo ID chủ đề với kích thước câu hỏi
@@ -76,38 +76,43 @@ class TalkRepository @Inject constructor(
 
     // Hàm cập nhật ảnh đại diện người dùng
     suspend fun updateAvata(avatarRequest: AvatarRequest) : Response<GetAllUserRequest> {
-        return mLogin.updateAvatar(avatarRequest)
+        return mUser.updateAvatar(avatarRequest)
     }
 
     // Hàm thay đổi mật khẩu người dùng
     suspend fun changePassword(userPasswordDTO: UserPasswordDTO) : Response<HostResponse> {
-        return mLogin.changePassword(userPasswordDTO)
+        return mUser.changePassword(userPasswordDTO)
     }
 
     // Hàm tìm kiếm người dùng
     suspend fun seacherUser(userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest> {
-        return mLogin.searchUser(userQueryRequest)
+        return mUser.searchUser(userQueryRequest)
     }
 
     // Hàm thêm bạn
     suspend fun addFriend(userId:Int) : Response<HostResponse> {
-        return mLogin.addFriend(userId)
+        return mUser.addFriend(userId)
     }
     //Lấy ra tất cả bạn bè
     suspend fun getAllFriend() {
-        return mLogin.getAllFriend()
+        return mUser.getAllFriend()
     }
     //Xóa bạn bè
     suspend fun getCancelFriend(userId: Int) {
-        return mLogin.getCancelFriend(userId)
+        return mUser.getCancelFriend(userId)
     }
     //Chấp nhận kết bạn
     suspend fun acceptFriend (userId: Int) {
-        return mLogin.acceptFriend(userId)
+        return mUser.acceptFriend(userId)
     }
     //Danh sách chờ kết bạn
     suspend fun pendingFriend() {
-        return mLogin.pendingFriend()
+        return mUser.pendingFriend()
+    }
+
+    //Get User by id
+    suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
+        return mUser.getUserById(userId)
     }
 
 }

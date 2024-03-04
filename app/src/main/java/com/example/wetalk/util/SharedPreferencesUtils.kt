@@ -136,15 +136,15 @@ object SharedPreferencesUtils {
     }
 
     fun saveToken(token: String) {
-        mPref!!.edit().putString("token", token).apply()
+        mPref!!.edit().putString(ACCESS_TOKEN, token).apply()
     }
 
     fun getToken(): String? {
-        return mPref!!.getString("token", null)
+        return mPref!!.getString(ACCESS_TOKEN, null)
     }
 
     fun clearToken() {
-        mPref!!.edit().remove("token").apply()
+        mPref!!.edit().remove(ACCESS_TOKEN).apply()
     }
 
 }

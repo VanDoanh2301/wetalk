@@ -17,7 +17,7 @@ import com.example.wetalk.databinding.FragmentTalkTabProfileBinding
  * Use the [TalkTabProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TalkTabProfileFragment(val user: UserInforRequest) : Fragment() {
+class TalkTabProfileFragment() : Fragment() {
     private var _binding : FragmentTalkTabProfileBinding? =null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,16 +34,16 @@ class TalkTabProfileFragment(val user: UserInforRequest) : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvName.text = user.name
-        Glide.with(requireContext()).load(user.avatarLocation)
-            .apply(RequestOptions.circleCropTransform())
-            .into(binding.imgAvata)
+//        binding.tvName.text = user.name
+//        Glide.with(requireContext()).load(user.avatarLocation)
+//            .apply(RequestOptions.circleCropTransform())
+//            .into(binding.imgAvata)
     }
     companion object {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(user: UserInforRequest) =
-            TalkTabProfileFragment(user).apply {
+        fun newInstance() =
+            TalkTabProfileFragment().apply {
                 arguments = bundleOf()
             }
 

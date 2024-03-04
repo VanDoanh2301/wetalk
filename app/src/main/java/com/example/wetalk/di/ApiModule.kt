@@ -5,6 +5,9 @@ import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.util.BASE_URL_1
+import com.example.wetalk.util.BASE_URL_2
+import com.example.wetalk.util.BASE_URL_3
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -24,11 +27,6 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(ViewModelComponent::class)
 object ApiModule {
-    private const val BASE_URL_1 = "http://wetalk.ibme.edu.vn:8080/"
-    private const val BASE_URL_2 = "http://wetalk.ibme.edu.vn:8090/"
-    private const val BASE_URL_3 = "http://wetalk.ibme.edu.vn:8060/"
-    private const val BASE_URL_4 = "http://wetalk.ibme.edu.vn:8050/"
-
     @Provides
     @ViewModelScoped
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {

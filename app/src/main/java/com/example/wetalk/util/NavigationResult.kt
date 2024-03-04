@@ -12,3 +12,4 @@ fun <T> Fragment.getNavigationResultLiveData(key: String = "result") =
 fun <T> Fragment.setNavigationResult(result: T, key: String = "result") {
     findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
 }
+

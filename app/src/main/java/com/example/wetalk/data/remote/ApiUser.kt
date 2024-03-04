@@ -70,4 +70,7 @@ interface ApiUser {
     //Accept friend
     @GET("friend-ship/accept-friend/{userId}")
     suspend fun acceptFriend(@Path("userId") userId: Int)
+    @GET("users/{userId}")
+    //Get user by Id
+    suspend fun getUserById(@Part("userId") userId:Int) : Response<GetAllUserInforRequest>
 }

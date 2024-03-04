@@ -31,12 +31,17 @@ class SearchUserViewModel @Inject constructor(
     private val _getAddFriend = MutableStateFlow<Resource<HostResponse>>(Resource.Loading())
     // Publicly exposed StateFlow to observe the state changes of adding a friend operation
     val getAddFriend: StateFlow<Resource<HostResponse>> get() = _getAddFriend
+    // MutableStateFlow to represent the state of the user information retrieval by ID
+    private val _getUserID = MutableStateFlow<Resource<GetAllUserInforRequest>>(Resource.Loading())
+    // Publicly exposed StateFlow to observe the state changes of user information retrieval by ID
+    val getUserID : StateFlow<Resource<GetAllUserInforRequest>> get() = _getUserID
     // Variable to store user information (if needed)
     private var userInfor: GetAllUserInforRequest? = null
     // Variable to store the response from adding a friend operation (if needed)
-    private var hostResponse: HostResponse? = null
+    private var searchUserRespone: HostResponse? = null
 
-
+    // Variable to store the response from adding a friend operation (if needed)
+    private var userIDRespone: GetAllUserInforRequest? = null
     /**
      * Initiates a user search based on the provided [userQueryRequest].
      * Updates the [_getInforUser] StateFlow with the result of the search operation.
@@ -87,9 +92,44 @@ class SearchUserViewModel @Inject constructor(
     private fun handleAddFriendResponse(response: Response<HostResponse>): Resource<HostResponse> =
         if (response.isSuccessful) {
             Toast.makeText(context, "Đã gửi lời mời kết bạn", Toast.LENGTH_LONG).show()
-            Resource.Success(hostResponse ?: response.body()!!)
+            Resource.Success(searchUserRespone ?: response.body()!!)
 
         } else {
-            Resource.Error((hostResponse ?: response.message()).toString())
+            Resource.Error((searchUserRespone ?: response.message()).toString())
         }
+
+    /**
+     * Initiates a user search based on the provided [userQueryRequest].
+     * Updates the [_getInforUser] StateFlow with the result of the search operation.
+     */
+    fun searchUserByID(userId: Int) = viewModelScope.launch {
+        try {
+            // Check for internet connection before making the API call
+            _getUserID.value = if (NetworkUtil.hasInternetConnection(context)) {
+                // If there is an internet connection, handle the API response
+                handleSearchUserByIDResponse(repository.getUserById(userId))
+            } else {
+                // If there is no internet connection, update the StateFlow with an error
+                Resource.Error("Mất Kết Nối Internet")
+            }
+        } catch (e: Exception) {
+            // Handle exceptions and update the StateFlow with an error
+            _getUserID.value = Resource.Error(e.toString())
+        }
+    }
+
+    /**
+     * Handles the response from the user search API call.
+     * If the response is successful, returns a [Resource.Success] with the user information.
+     * If the response is not successful, returns a [Resource.Error] with an error message.
+     */
+    private fun handleSearchUserByIDResponse(response: Response<GetAllUserInforRequest>): Resource<GetAllUserInforRequest> =
+        if (response.isSuccessful) {
+            // If the API call is successful, return a Success resource with the user information
+            Resource.Success(userIDRespone ?: response.body()!!)
+        } else {
+            // If the API call is not successful, return an Error resource with the error message
+            Resource.Error((userIDRespone ?: response.message()).toString())
+        }
+
 }

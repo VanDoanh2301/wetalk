@@ -18,7 +18,7 @@ import javax.inject.Inject
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTabChatFragment(private val user: UserInforRequest) : Fragment(){
+class TalkTabChatFragment() : Fragment(){
     private var _binding: FragmentTalkTabChatBinding? = null
     private val binding get() = _binding!!
     private val TAG = "TalkTabChatFragment"

@@ -1,7 +1,10 @@
 package com.example.wetalk.ui.fragment
 
+
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,21 +13,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
-
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserQueryRequest
+import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.databinding.FragmentTalkSearchUserBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserSearchAdapter
 import com.example.wetalk.ui.viewmodels.SearchUserViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.NullPointerException
+
 
 /**
  * A simple [Fragment] subclass.
@@ -48,8 +53,6 @@ class TalkSearchUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSearch()
-
-
     }
 
 
@@ -76,10 +79,7 @@ class TalkSearchUserFragment : Fragment() {
                     viewModel.searchUser(userQueryRequest)
                     viewModel.getInforUser.collect {
                         when (it) {
-                            is Resource.Loading -> {
-                                Log.d("TextWatcher", "Loading")
-                            }
-
+                            is Resource.Loading -> { Log.d("TextWatcher", "Loading") }
                             is Resource.Success -> {
                                 try {
                                     val users = it.data!!.data
@@ -91,9 +91,7 @@ class TalkSearchUserFragment : Fragment() {
                                     throw NullPointerException("Users is null")
                                 }
                             }
-                            is Resource.Error -> {
-                                Log.d("UserRegisterDTO", it.message.toString())
-                            }
+                            is Resource.Error -> { Log.d("UserRegisterDTO", it.message.toString()) }
                         }
                     }
                 }
@@ -107,9 +105,62 @@ class TalkSearchUserFragment : Fragment() {
     private  fun initAddFriend() {
      adapter.setOnItemClickAddFriend(object :  UserSearchAdapter.OnItemClick{
          override fun onItem(position: Int, user: UserInforRequest) {
-             user.id?.let { viewModel.addFriend(it) }
+             user.id?.let {
+                 //Call fun add friend by viewModel
+                 viewModel.addFriend(it)
+                 lifecycleScope.launchWhenResumed {
+                     viewModel.getAddFriend.collect {
+                         when(it) {
+                             //Success to notify
+                             is Resource.Success -> {Toast.makeText(requireContext(), "Thêm bạn bè thành công", Toast.LENGTH_LONG).show()}
+                             //Error to notify
+                             is  Resource.Error -> {Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()}
+                         }
+                     }
+                 }
+             }
+         }
+
+         //View Infor User
+         override fun onUser(position: Int, user: UserInforRequest) {
+             user.id?.let {
+                   viewModel.searchUserByID(it)
+                 lifecycleScope.launchWhenResumed {
+                     viewModel.getUserID.collect {
+                         when(it) {
+                             is Resource.Loading -> {}
+                             //Success to notify
+                             is Resource.Success -> {initDialogInformUser(it.data!!.data)}
+                             //Error to notify
+                             is  Resource.Error -> {Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()}
+                         }
+                     }
+                 }
+
+             }
          }
      })
+    }
+
+    private fun initDialogInformUser(data: ArrayList<UserInforRequest>) {
+        val binding: FragmentTalkProfileHomeBinding = FragmentTalkProfileHomeBinding.inflate(layoutInflater)
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
+        builder.setTitle("Custom Dialog")
+        builder.setView(binding.root)
+
+        builder.setPositiveButton("OK") { dialog, which ->
+            // Xử lý sự kiện khi nhấn nút OK trong dialog
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            // Xử lý sự kiện khi nhấn nút Cancel trong dialog
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     companion object {

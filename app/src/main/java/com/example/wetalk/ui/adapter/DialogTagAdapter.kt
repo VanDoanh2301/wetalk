@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetalk.databinding.ItemTagBinding
 
-abstract class TalkDialogTag(
+abstract class DialogTagAdapter(
     var context: Context) :
-    RecyclerView.Adapter<TalkDialogTag.ViewHolder>() {
+    RecyclerView.Adapter<DialogTagAdapter.ViewHolder>() {
     private var dataList : ArrayList<String>? = null
     fun setData(dataList: ArrayList<String>) {
         this.dataList = dataList

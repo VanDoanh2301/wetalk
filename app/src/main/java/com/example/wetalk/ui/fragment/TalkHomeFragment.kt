@@ -54,6 +54,7 @@ class TalkHomeFragment : Fragment() {
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isUser = arguments?.getBoolean("isUser", false) ?: false
@@ -123,35 +124,17 @@ class TalkHomeFragment : Fragment() {
     private fun onClickView() {
         binding.apply {
             //Go to chat fragment
-            btnChat.setOnClickListener {
-                val bundle = bundleOf(
-                    "userData" to user
-                )
-                findNavController().navigate(
-                    R.id.action_talkHomeFragment_to_talkMainChatFragment,
-                    bundle
-                )
-            }
+            btnChat.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkMainChatFragment) }
             //Go to study authen
-            btnAthen.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment)
-            }
+            btnAthen.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignLanguageFragment) }
             //Go to study number
-            numberBtn.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignNumberFragment)
-            }
+            numberBtn.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignNumberFragment) }
             //Go to study character
-            btnCharac.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment)
-            }
+            btnCharac.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment) }
             //Go to test
-            btnTest.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment)
-            }
+            btnTest.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment) }
             //Go to up video
-            btnProvide.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment)
-            }
+            btnProvide.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment) }
             //Go to logout
             btnLogOut.setOnClickListener {
                 //Delete token and pop fragment
@@ -160,9 +143,7 @@ class TalkHomeFragment : Fragment() {
                 findNavController().navigate(R.id.talkLoginFragment)
             }
             //Go to profile
-            btnHistory.setOnClickListener {
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment)
-            }
+            btnHistory.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment) }
             btnHand.setOnClickListener {
 //                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
                 startActivity(Intent(requireActivity(), DetectorActivity::class.java))
@@ -209,7 +190,6 @@ class TalkHomeFragment : Fragment() {
             }
         }, 200, 3000)
     }
-
 
 
 }

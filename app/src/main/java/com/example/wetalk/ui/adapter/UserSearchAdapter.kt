@@ -11,6 +11,7 @@ import com.example.wetalk.databinding.ItemSearchUserBinding
 class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequest>) : RecyclerView.Adapter<UserSearchAdapter.ViewHolder>(){
 
     private var onItemClick: OnItemClick? =null
+
     //SetUp ViewHolder
     inner class ViewHolder(var binding: ItemSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
         /** Config view
@@ -33,7 +34,7 @@ class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequ
                 }
                 itemView.setOnClickListener {
                     if (onItemClick != null) {
-                        onItemClick!!.onItem(position, user)
+                        onItemClick!!.onUser(position, user)
                     }
                 }
             }
@@ -63,7 +64,11 @@ class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequ
     fun setOnItemClickAddFriend(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
+    fun setOnItmViewUser(onItemClick: OnItemClick) {
+        this.onItemClick = onItemClick
+    }
     interface OnItemClick{
         fun  onItem(position: Int, user: UserInforRequest)
+        fun  onUser(position: Int, user: UserInforRequest)
     }
 }

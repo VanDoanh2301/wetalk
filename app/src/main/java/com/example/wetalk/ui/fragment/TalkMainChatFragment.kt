@@ -9,11 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkMainChatBinding
+import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.FileConfigUtils
+import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
@@ -21,17 +29,15 @@ import com.example.wetalk.util.FileConfigUtils
  * Use the [TalkMainChatFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class TalkMainChatFragment : Fragment() {
     private var _binding: FragmentTalkMainChatBinding ? =null
     private val binding get() = _binding!!
-    private lateinit var user: UserInforRequest
+    private var user: UserInforRequest? = null
+    private val viewModel: ProfileHomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            user = bundle.getParcelable("userData") ?: throw IllegalArgumentException("User data not found in arguments")
-        }
-        Log.d("TAG", user.toString())
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +50,41 @@ class TalkMainChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
 
-
-        initBottomNavigation()
+        try {
+            initBottomNavigation(user!!)
+        } catch (e: Exception) {
+            initBottomNavigation()
+        }
         binding.btnMenu.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }
-    private fun initBottomNavigation() {
+
+    private fun initView() {
+        //Job when start lifecycle
+        lifecycleScope.launchWhenStarted {
+            val isAccess = SharedPreferencesUtils.getString("isLogin")
+            viewModel.getUser()
+            viewModel.getInforUser.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+                        val newUser = it.data!!
+                        user = newUser
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("UserRegisterDTO", it.message.toString())
+                    }
+                }
+            }
+        }
+    }
+    private fun initBottomNavigation(user: UserInforRequest) {
         binding.apply {
             /** Custom viewpager */
             pagerMain.adapter = object : FragmentStateAdapter(requireActivity()) {
@@ -61,9 +94,9 @@ class TalkMainChatFragment : Fragment() {
 
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
-                        0 -> TalkTabChatFragment(user)
+                        0 -> TalkTabChatFragment()
                         1 -> TalkTabFriendFragment()
-                        2 -> TalkTabProfileFragment(user)
+                        2 -> TalkTabProfileFragment()
                         else -> throw IllegalArgumentException("Invalid position: $position")
                     }
                 }
@@ -98,6 +131,55 @@ class TalkMainChatFragment : Fragment() {
             setColorImageViewSelect(imgTabMess)
         }
     }
+    private fun initBottomNavigation() {
+        binding.apply {
+            /** Custom viewpager */
+            pagerMain.adapter = object : FragmentStateAdapter(requireActivity()) {
+                override fun getItemCount(): Int {
+                    return 3
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    return when (position) {
+                        0 -> TalkTabChatFragment()
+                        1 -> TalkTabFriendFragment()
+                        2 -> TalkTabProfileFragment()
+                        else -> throw IllegalArgumentException("Invalid position: $position")
+                    }
+                }
+            }
+            /** config onClick tab */
+            btTabMess.setOnClickListener { setCurrentTab(pagerMain, 0) }
+            btTabFriend.setOnClickListener { setCurrentTab(pagerMain, 1) }
+            btTabProfile.setOnClickListener { setCurrentTab(pagerMain, 2) }
+            /** config tab view bottom */
+            pagerMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    setColorImageView(imgTabMess, imgPhonebook, imgTabProfile)
+                    setColorTextView(viewTabMess, viewTabPhonebook, viewTabProfile)
+                    when (position) {
+                        0 -> {
+                            setColorTextViewSelect(viewTabMess)
+                            setColorImageViewSelect(imgTabMess)
+                        }
+                        1 -> {
+                            setColorTextViewSelect(viewTabPhonebook)
+                            setColorImageViewSelect(imgPhonebook)
+                        }
+                        2 -> {
+                            setColorTextViewSelect(viewTabProfile)
+                            setColorImageViewSelect(imgTabProfile)
+                        }
+                    }
+                }
+            })
+            setColorTextViewSelect(viewTabMess)
+            setColorImageViewSelect(imgTabMess)
+        }
+    }
+
+
     private fun setCurrentTab(viewPager: ViewPager2, i: Int) {
         viewPager.currentItem = i
     }
