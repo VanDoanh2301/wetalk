@@ -5,7 +5,10 @@ import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
+import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
+import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
 import com.example.wetalk.data.model.objectmodel.QuestionSize
+import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterDTO
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserQueryRequest
@@ -13,6 +16,7 @@ import com.example.wetalk.data.model.postmodel.UserUpdateDTO
 import com.example.wetalk.data.model.postmodel.LoginDTO
 import com.example.wetalk.data.model.postmodel.UserOtpDTO
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
+import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.data.remote.ApiUser
@@ -21,6 +25,11 @@ import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -109,10 +118,25 @@ class TalkRepository @Inject constructor(
     suspend fun pendingFriend() {
         return mUser.pendingFriend()
     }
-
     //Get User by id
     suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
         return mUser.getUserById(userId)
     }
+    suspend fun postVocabularies(topicDTO: TopicRequest) : Response<HostResponse> {
+        return mTopic.postVocabularies(topicDTO)
+    }
+    suspend fun searchVocabularies(vocabulariesDTO: VocabulariesDTO) : Response<GetAllVocabulariesRequest> {
+        return mTopic.searchVocabularies(vocabulariesDTO)
+    }
+    suspend fun getVocabulariesById( topicId:Int)  : Response<GetAllVocabulariesByIdRequest>{
+        return mTopic.getVocabulariesById(topicId)
+    }
+    suspend fun deleteVocabularies(id:Int) : Response<HostResponse> {
+        return mTopic.deleteVocabularies(id)
+    }
+    suspend fun getCollectData() : Response<GetAllVocabulariesByIdRequest> {
+        return mTopic.getCollectData()
+    }
+
 
 }

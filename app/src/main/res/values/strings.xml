@@ -18,8 +18,8 @@
     <string name="monthly">Monthly</string>
     <string name="daily">Daily</string>
     <string name="challenges">Challenges</string>
-    <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]" translatable="false">TFL Detect</string>
-    <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]" translatable="false">This device doesn\'t support Camera2 API.</string>
+    <string name="tfe_od_app_name" translatable="false" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
+    <string name="tfe_od_camera_error" translatable="false" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>
     <string name="new_challenges">New Challenges</string>
     <string name="name">Name…</string>
     <string name="symbol">Symbol</string>

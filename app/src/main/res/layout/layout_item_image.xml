@@ -13,9 +13,10 @@
         >
         <com.rey.material.widget.ImageView
             android:id="@+id/img_view_1"
-            android:layout_width="200dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/logo"
+            android:layout_marginEnd="24dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,8 +28,8 @@
             android:layout_height="wrap_content"
             android:text="Tham gia chia sẻ video và học tập ngôn ngữ kí hiệu"
             android:textColor="#ffffff"
-            android:paddingStart="20dp"
-            android:textSize="18sp"
+
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

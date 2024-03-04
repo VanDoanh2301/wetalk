@@ -145,7 +145,11 @@
         android:id="@+id/talkSignFragment"
         android:name="com.example.wetalk.ui.fragment.TalkSignFragment"
         android:label="fragment_talk_sign"
-        tools:layout="@layout/fragment_talk_sign" />
+        tools:layout="@layout/fragment_talk_sign" >
+        <action
+            android:id="@+id/action_talkSignFragment_to_vocabulariesHomeFragment"
+            app:destination="@id/vocabulariesHomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/talkProfileHomeFragment"
         android:name="com.example.wetalk.ui.fragment.TalkProfileHomeFragment"
@@ -217,4 +221,9 @@
         android:name="com.example.wetalk.ui.fragment.CallActionFragment"
         android:label="fragment_call_action"
         tools:layout="@layout/fragment_call_action" />
+    <fragment
+        android:id="@+id/vocabulariesHomeFragment"
+        android:name="com.example.wetalk.VocabulariesHomeFragment"
+        android:label="fragment_vocabularies_home"
+        tools:layout="@layout/fragment_vocabularies_home" />
 </navigation>

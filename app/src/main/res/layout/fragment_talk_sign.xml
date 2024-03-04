@@ -28,7 +28,7 @@
             <com.rey.material.widget.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bảng ký tự"
+                android:text="Chủ đề"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -37,12 +37,38 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_view"
-        android:layout_margin="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/item_study"
-        />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_study" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="60dp"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="36dp"
+            android:layout_marginEnd="36dp"
+            >
+            <com.rey.material.widget.ImageView
+                android:id="@+id/add_topic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/ripple_btn_tab_widget_normal"
+                android:src="@drawable/ic_add"
+
+                />
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
 
 </LinearLayout>
