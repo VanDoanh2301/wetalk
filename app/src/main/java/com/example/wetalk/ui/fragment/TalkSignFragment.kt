@@ -56,7 +56,6 @@ class TalkSignFragment : Fragment() {
     }
 
     private fun initData() {
-
         lifecycleScope.launchWhenStarted {
             viewModel.getAllTopic()
             viewModel.topic.collect {
@@ -95,6 +94,7 @@ class TalkSignFragment : Fragment() {
                 val bundle = bundleOf(
                     "id" to topicRequests!![position].id,
                 )
+                findNavController().navigate(R.id.action_talkSignFragment_to_vocabulariesHomeFragment, bundle)
 
             }
         })

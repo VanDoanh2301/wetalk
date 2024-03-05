@@ -60,8 +60,6 @@ class TalkTestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         id = arguments?.getInt("id", -1)!!
         val questionSize = QuestionSize(0, 10, id)
         binding.mainContent.btnBack.setOnClickListener {

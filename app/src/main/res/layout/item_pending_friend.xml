@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@drawable/edit_text_rounded_corner"
+    android:layout_margin="10dp"
+    android:elevation="2dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/img_avata"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="56dp"
+        android:layout_centerVertical="true"
+        android:elevation="8dp"
+        app:cardBackgroundColor="@color/white"
+        android:background="@color/white"
+        >
+
+        <com.rey.material.widget.ImageView
+            android:id="@+id/img_up"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg1" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/img_avata"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:id="@+id/user_name_text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+000000000000"
+            android:visibility="gone"
+            android:id="@+id/phone_text"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_add_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="8dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        >
+        <com.rey.material.widget.TextView
+            android:id="@+id/tv_add_friend"
+            android:layout_width="86dp"
+            style="@style/ripple_btn_tab_widget_normal"
+            android:layout_height="34dp"
+            android:text="Chấp nhận"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textSize="14dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/background_row_top"
+            />
+        <com.rey.material.widget.ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_toRightOf="@+id/tv_add_friend"
+            android:padding="4dp"
+            android:visibility="gone"
+            style="@style/ripple_btn_tab_widget_normal_10"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_close"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>

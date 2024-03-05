@@ -9,10 +9,10 @@ import com.example.wetalk.R
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkVocabularyViewFragment.newInstance] factory method to
+ * Use the [TalkViewHistoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TalkVocabularyViewFragment : Fragment() {
+class TalkViewHistoryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

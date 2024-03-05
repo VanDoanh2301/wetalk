@@ -85,6 +85,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
     modelBuffer = FileUtil.loadMappedFile(context, modelFilename);
     optionsBuilder = ObjectDetectorOptions.builder().setMaxResults(NUM_DETECTIONS);
     objectDetector = ObjectDetector.createFromBufferAndOptions(modelBuffer, optionsBuilder.build());
+
   }
 
   @Override

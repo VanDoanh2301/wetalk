@@ -29,7 +29,7 @@ import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.DialogTagAdapter
 import com.example.wetalk.ui.customview.TalkBodyEditView
-import com.example.wetalk.ui.viewmodels.VocabularyUpViewModel
+import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.util.DialogClose
 import com.example.wetalk.util.DialogOpenVideo
 import com.example.wetalk.util.FileConfigUtils
@@ -51,12 +51,12 @@ import java.io.File
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkVocabularyUpFragment.newInstance] factory method to
+ * Use the [TalkProvideVideoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkVocabularyUpFragment : Fragment() {
-    private val viewModel: VocabularyUpViewModel by viewModels()
+class TalkProvideVideoFragment : Fragment() {
+    private val viewModel: VideoUpViewModel by viewModels()
     private lateinit var keyboardHeightProvider: KeyboardHeightProvider
     private lateinit var videoLocal: VideoLocal
     private lateinit var talkBodyEditView: TalkBodyEditView

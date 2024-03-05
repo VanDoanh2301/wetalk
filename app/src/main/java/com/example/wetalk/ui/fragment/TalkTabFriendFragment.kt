@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkTabPhoneBookBinding
+import com.example.wetalk.ui.adapter.FriendAdapter
+import com.example.wetalk.ui.adapter.PendingAdapter
+import com.example.wetalk.ui.adapter.UserSearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -17,14 +22,19 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class TalkTabFriendFragment : Fragment() {
-    private var _binding: FragmentTalkTabPhoneBookBinding? =null
-    private val binding  get() =  _binding!!
+    private var _binding: FragmentTalkTabPhoneBookBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var friendAdapter: FriendAdapter
+    private lateinit var pendingAdapter: PendingAdapter
+    private var userPending: List<UserInforRequest> = ArrayList()
+    private var userFriend: List<UserInforRequest> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
 
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +45,26 @@ class TalkTabFriendFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
 
+    }
+
+    private fun init() {
+        binding.apply {
+            pendingAdapter = PendingAdapter(requireContext())
+            val linearLayoutPending = LinearLayoutManager(requireContext())
+            rcvPending.layoutManager = linearLayoutPending
+            rcvPending.adapter = pendingAdapter
+            pendingAdapter.submitList(userPending)
+
+
+            friendAdapter = FriendAdapter(requireContext())
+            val linearLayoutFriend = LinearLayoutManager(requireContext())
+            rcvFriend.layoutManager = linearLayoutFriend
+            rcvFriend.adapter = friendAdapter
+            friendAdapter.submitList(userFriend)
+
+        }
     }
 
     companion object {

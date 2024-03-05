@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 // ViewModel class for handling vocabulary upload
 @HiltViewModel
-class VocabularyUpViewModel @Inject constructor(
+class VideoUpViewModel @Inject constructor(
     private val mRepository: TalkRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {

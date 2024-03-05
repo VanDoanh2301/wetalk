@@ -97,12 +97,12 @@
         tools:layout="@layout/fragment_talk_chat_home" />
     <fragment
         android:id="@+id/talkVocabularyViewFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkVocabularyViewFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkViewHistoryFragment"
         android:label="fragment_talk_vocabulary_view"
         tools:layout="@layout/fragment_talk_vocabulary_view" />
     <fragment
         android:id="@+id/talkVocabularyUpFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkVocabularyUpFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkProvideVideoFragment"
         android:label="fragment_talk_vocabulary_up"
         tools:layout="@layout/fragment_talk_vocabulary_up" >
         <action
@@ -223,7 +223,7 @@
         tools:layout="@layout/fragment_call_action" />
     <fragment
         android:id="@+id/vocabulariesHomeFragment"
-        android:name="com.example.wetalk.VocabulariesHomeFragment"
+        android:name="com.example.wetalk.ui.fragment.VocabulariesHomeFragment"
         android:label="fragment_vocabularies_home"
         tools:layout="@layout/fragment_vocabularies_home" />
 </navigation>

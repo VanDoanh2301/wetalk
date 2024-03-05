@@ -45,7 +45,6 @@ class TalkTopicFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = TopicAdapter(requireContext())
-
         binding.btBack.setOnClickListener {
             requireActivity().onBackPressed()
         }

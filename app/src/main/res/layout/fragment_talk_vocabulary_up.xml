@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E6EAF3"
-    tools:context=".ui.fragment.TalkVocabularyUpFragment">
+    tools:context=".ui.fragment.TalkProvideVideoFragment">
 
     <com.rey.material.widget.RelativeLayout
         android:id="@+id/activitylayout"
