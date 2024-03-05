@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.databinding.ItemTagBinding
 
 abstract class DialogTagAdapter(
     var context: Context) :
     RecyclerView.Adapter<DialogTagAdapter.ViewHolder>() {
-    private var dataList : ArrayList<String>? = null
-    fun setData(dataList: ArrayList<String>) {
+    private var dataList : ArrayList<TopicRequest>? = null
+    fun setData(dataList: ArrayList<TopicRequest>) {
         this.dataList = dataList
         notifyDataSetChanged()
     }
@@ -27,7 +28,7 @@ abstract class DialogTagAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val item = dataList!![position]
-        holder.binding.txtTag.text = item
+        holder.binding.txtTag.text = item.content
         holder.binding.cadItem.setOnClickListener{
             OnClickItemTag(position) }
 

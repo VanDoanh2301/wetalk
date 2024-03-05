@@ -217,7 +217,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.rey.material.widget.TextView
                 android:id="@+id/edt_search"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -228,7 +228,8 @@
                 android:drawableEnd="@drawable/search_icon"
                 android:drawablePadding="8dp"
                 android:ems="10"
-                android:hint="Tìm kiếm..."
+                android:gravity="center_vertical"
+                android:hint="Từ vựng..."
                 android:inputType="textPersonName"
                 android:paddingStart="20dp"
                 android:paddingEnd="4dp"

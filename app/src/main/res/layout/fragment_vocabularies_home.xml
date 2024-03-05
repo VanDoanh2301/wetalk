@@ -32,9 +32,41 @@
                     android:layout_height="wrap_content"
                     android:text="Từ vựng theo chủ đề"
                     android:textSize="20sp"
+                    android:visibility="gone"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_gravity="center_horizontal"/>
+
+                <com.rey.material.widget.RelativeLayout
+                    android:layout_width="220dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_row_main">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:gravity="left|center"
+                        android:hint="Từ vựng..."
+                        android:paddingStart="16dp"
+                        android:textSize="14sp" />
+
+                    <com.rey.material.widget.ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="10dp"
+                        android:layout_marginEnd="4dp"
+                        app:srcCompat="@drawable/ic_search" />
+
+                </com.rey.material.widget.RelativeLayout>
+
+
+
+
 
             </androidx.appcompat.widget.Toolbar>
 

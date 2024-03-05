@@ -31,6 +31,6 @@ interface ApiTopicStudy {
     @DELETE("/vocabularies/{id}")
     suspend fun deleteVocabularies(@Path("Id") id:Int) : Response<HostResponse>
     @GET("collect-data/get-history")
-    suspend fun getCollectData() : Response<GetAllVocabulariesByIdRequest>
+    suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest>
 
 }

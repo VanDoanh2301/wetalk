@@ -1,41 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    app:cardCornerRadius="10dp"
-    >
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_custom_home_1"
-        >
-        <com.rey.material.widget.ImageView
-            android:id="@+id/img_view_1"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/logo"
-            android:layout_marginEnd="24dp"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_custom_home_1">
 
-        <com.rey.material.widget.TextView
-            android:id="@+id/txt_view_3"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Tham gia chia sẻ video và học tập ngôn ngữ kí hiệu"
-            android:textColor="#ffffff"
+    <com.rey.material.widget.ImageView
+        android:id="@+id/img_view_1"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:adjustViewBounds="true"
+        android:layout_alignParentRight="true"
+        android:padding="6dp"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/logo" />
 
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_view_1"
-            app:layout_constraintStart_toStartOf="parent" />
+    <com.rey.material.widget.TextView
+        android:id="@+id/txt_view_3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Tham gia chia sẻ video và học tập ngôn ngữ kí hiệu"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        android:paddingStart="16dp"
+        android:textStyle="bold"
+     />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</com.rey.material.widget.RelativeLayout>

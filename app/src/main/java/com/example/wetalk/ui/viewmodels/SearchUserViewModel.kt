@@ -39,7 +39,6 @@ class SearchUserViewModel @Inject constructor(
     private var userInfor: GetAllUserInforRequest? = null
     // Variable to store the response from adding a friend operation (if needed)
     private var searchUserRespone: HostResponse? = null
-
     // Variable to store the response from adding a friend operation (if needed)
     private var userIDRespone: GetAllUserInforRequest? = null
     /**

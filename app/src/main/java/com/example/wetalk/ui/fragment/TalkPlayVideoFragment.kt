@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.wetalk.databinding.TalkPlayFragmentBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.google.android.exoplayer2.MediaItem
@@ -14,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TalkPlayVideoFragment : Fragment() {
     private var path: String? = null
+    private var pathVideo: String? = null
+    private var pathImage: String? = null
     private var i = 0
     private var _binding: TalkPlayFragmentBinding? = null
     private val binding get() = _binding!!
@@ -26,6 +29,17 @@ class TalkPlayVideoFragment : Fragment() {
         this.i = i
         return this
     }
+    fun setVideoPath(
+        pathVideo: String,
+        pathImage: String,
+        i: Int
+    ): TalkPlayVideoFragment {
+        this.pathVideo = pathVideo
+        this.pathImage = pathImage
+        this.i = i
+        return this
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,13 +56,29 @@ class TalkPlayVideoFragment : Fragment() {
         binding.btBack.setOnClickListener {
             (activity as MainActivity).onBackPressed()
         }
-        initializePlayer()
+        if (i == 2) {
+            binding.imgView.visibility = View.GONE
+            binding.videoView.visibility = View.VISIBLE
+            initializePlayer()
+        } else {
+            binding.imgView.visibility = View.VISIBLE
+            binding.videoView.visibility = View.GONE
+            Glide.with(requireContext()).load(path).into(binding.imgView)
+            Glide.with(requireContext()).load(pathImage).into(binding.imgView)
+
+        }
     }
     private fun initializePlayer() {
         exoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
         binding.videoView.player = exoPlayer
 
         path?.let {
+            val mediaItem = MediaItem.fromUri(it)
+            exoPlayer?.setMediaItem(mediaItem)
+            exoPlayer?.prepare()
+            exoPlayer?.play()
+        }
+        pathVideo?.let {
             val mediaItem = MediaItem.fromUri(it)
             exoPlayer?.setMediaItem(mediaItem)
             exoPlayer?.prepare()

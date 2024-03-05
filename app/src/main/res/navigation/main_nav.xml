@@ -61,9 +61,6 @@
             android:id="@+id/action_talkHomeFragment_to_talkVocabularyUpFragment"
             app:destination="@id/talkVocabularyUpFragment" />
         <action
-            android:id="@+id/action_talkHomeFragment_to_talkVocabularyViewFragment"
-            app:destination="@id/talkVocabularyViewFragment" />
-        <action
             android:id="@+id/action_talkHomeFragment_to_talkSignFragment"
             app:destination="@id/talkSignFragment" />
         <action
@@ -96,11 +93,6 @@
         android:label="fragment_talk_chat_home"
         tools:layout="@layout/fragment_talk_chat_home" />
     <fragment
-        android:id="@+id/talkVocabularyViewFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkViewHistoryFragment"
-        android:label="fragment_talk_vocabulary_view"
-        tools:layout="@layout/fragment_talk_vocabulary_view" />
-    <fragment
         android:id="@+id/talkVocabularyUpFragment"
         android:name="com.example.wetalk.ui.fragment.TalkProvideVideoFragment"
         android:label="fragment_talk_vocabulary_up"
@@ -108,6 +100,9 @@
         <action
             android:id="@+id/action_talkVocabularyUpFragment_to_talkSelectVideoFragment"
             app:destination="@id/talkSelectVideoFragment" />
+        <action
+            android:id="@+id/action_talkVocabularyUpFragment_to_talkHistoryVocabulariesFragment"
+            app:destination="@id/talkHistoryVocabulariesFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkSelectVideoFragment"
@@ -226,4 +221,9 @@
         android:name="com.example.wetalk.ui.fragment.VocabulariesHomeFragment"
         android:label="fragment_vocabularies_home"
         tools:layout="@layout/fragment_vocabularies_home" />
+    <fragment
+        android:id="@+id/talkHistoryVocabulariesFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkHistoryVocabulariesFragment"
+        android:label="fragment_talk_history_vocabularies"
+        tools:layout="@layout/fragment_talk_history_vocabularies" />
 </navigation>

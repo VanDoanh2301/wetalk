@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cad_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
     android:layout_margin="8dp">
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Danh từ"
         android:layout_gravity="center"
+        android:gravity="center"
         android:fontFamily="@font/roboto_medium"
         android:textSize="16sp"
         android:padding="8dp"

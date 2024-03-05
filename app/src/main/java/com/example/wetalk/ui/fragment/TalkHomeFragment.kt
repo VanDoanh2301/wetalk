@@ -21,6 +21,7 @@ import com.example.wetalk.data.local.ImageHome
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkHomeBinding
 import com.example.wetalk.ui.activity.DetectorActivity
+import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.Resource
@@ -51,7 +52,6 @@ class TalkHomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentTalkHomeBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -60,6 +60,7 @@ class TalkHomeFragment : Fragment() {
         isUser = arguments?.getBoolean("isUser", false) ?: false
         configViewPager()
         slideBar();
+        initSearch()
         binding.textView2.text = "Người Dùng Ẩn Danh"
         //Role
         if (isUser) {
@@ -92,6 +93,11 @@ class TalkHomeFragment : Fragment() {
         onClickView()
     }
 
+    private fun initSearch() {
+        binding.edtSearch.setOnClickListener {
+             BaseDialogFragment.add(activity as MainActivity, TalkVocabulariesSearchFragment.newInstance().setFocus(true))
+        }
+    }
     private fun initView() {
         //Job when start lifecycle
         lifecycleScope.launchWhenStarted {
@@ -188,7 +194,7 @@ class TalkHomeFragment : Fragment() {
                     }
                 })
             }
-        }, 200, 3000)
+        }, 2000, 3000)
     }
 
 

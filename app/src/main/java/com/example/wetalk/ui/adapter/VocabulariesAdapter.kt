@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.TopicRequest
-import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.databinding.ItemPendingFriendBinding
 import com.example.wetalk.databinding.ItemVideoTutorialBinding
 
 class VocabulariesAdapter(var context: Context) :
@@ -59,7 +57,7 @@ class VocabulariesAdapter(var context: Context) :
     }
 
     /** Custom on Click Item */
-    fun setOnItemClickAddFriend(onItemClick: OnItemClick) {
+    fun setOnItemClick(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
 

@@ -7,7 +7,6 @@
     tools:context=".ui.fragment.TalkSearchUserFragment"
     android:background="#F8F8F8"
     >
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"

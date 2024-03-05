@@ -25,11 +25,6 @@ import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -134,8 +129,8 @@ class TalkRepository @Inject constructor(
     suspend fun deleteVocabularies(id:Int) : Response<HostResponse> {
         return mTopic.deleteVocabularies(id)
     }
-    suspend fun getCollectData() : Response<GetAllVocabulariesByIdRequest> {
-        return mTopic.getCollectData()
+    suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest> {
+        return mTopic.getCollectDataHistory()
     }
 
 

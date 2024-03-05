@@ -46,6 +46,7 @@
                         android:text="Cung cấp video"
                         android:textColor="#ffffff"
                         android:textSize="18sp" />
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cd_save"
                         android:layout_width="61dp"
@@ -81,18 +82,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        >
+                        android:layout_marginTop="16dp">
+
                         <androidx.cardview.widget.CardView
                             android:id="@+id/bt_date"
                             android:layout_width="wrap_content"
                             android:layout_height="46dp"
-                            app:cardBackgroundColor="@color/white"
-                            app:cardCornerRadius="10dp"
                             android:layout_marginStart="16dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="6dp"
                             app:cardElevation="0dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
@@ -120,31 +122,66 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/img_open_tag"
+                            style="@style/ripple_btn_tab_widget_normal_10"
                             android:layout_width="wrap_content"
                             android:layout_height="46dp"
                             android:layout_marginStart="8dp"
                             android:layout_toRightOf="@id/bt_date"
-                            android:gravity="center_vertical"
                             android:background="@drawable/bg_item_preview"
                             android:backgroundTint="@color/white"
-                            android:padding="4dp"
-                            android:orientation="horizontal">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
                             <com.rey.material.widget.ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginStart="8dp"
-                                app:srcCompat="@drawable/ic_draw_tag"/>
+                                app:srcCompat="@drawable/ic_draw_tag" />
+
                             <com.rey.material.widget.TextView
                                 android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:text="Hastag"
-                               android:layout_gravity="center"
-                                android:gravity="center_vertical"
+                                android:layout_gravity="center"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
-                                android:textColor="#3262DC"
-                                />
+                                android:gravity="center_vertical"
+                                android:text="Chủ đề"
+                                android:textColor="#3262DC" />
+
+                        </com.rey.material.widget.LinearLayout>
+
+                        <com.rey.material.widget.LinearLayout
+                            android:id="@+id/img_open_vocabularies"
+                            style="@style/ripple_btn_tab_widget_normal_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toRightOf="@id/img_open_tag"
+                            android:background="@drawable/bg_item_preview"
+                            android:backgroundTint="@color/white"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="8dp"
+                                android:tint="#3262DC"
+                                app:srcCompat="@drawable/ic_book" />
+
+                            <com.rey.material.widget.TextView
+                                android:id="@+id/tv_titlle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:gravity="center_vertical"
+                                android:text="Từ vựng"
+                                android:textColor="#3262DC" />
 
                         </com.rey.material.widget.LinearLayout>
 
@@ -154,8 +191,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@color/white"
                         android:elevation="4dp"
                         app:cardBackgroundColor="#ffffff"
@@ -178,15 +215,14 @@
                             <com.rey.material.widget.RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                >
+                                android:layout_marginTop="16dp">
 
                                 <com.rey.material.widget.ImageView
                                     android:id="@+id/img_none"
                                     android:layout_width="match_parent"
                                     android:layout_height="126dp"
-                                    android:adjustViewBounds="true"
                                     android:layout_marginTop="16dp"
+                                    android:adjustViewBounds="true"
                                     android:src="@drawable/img_up" />
 
                                 <com.example.wetalk.ui.customview.TalkBodyEditView
@@ -207,57 +243,60 @@
                             <com.rey.material.widget.LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
+                                android:orientation="horizontal"
                                 android:weightSum="2">
 
                                 <com.rey.material.widget.LinearLayout
                                     android:id="@+id/img_record"
+                                    style="@style/ripple_btn_tab_widget_normal_10"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:layout_marginStart="8dp"
-                                    android:orientation="horizontal">
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:padding="12dp">
 
                                     <com.rey.material.widget.ImageView
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:adjustViewBounds="true"
-                                        app:srcCompat="@drawable/img_camera"
-                                        />
+                                        app:srcCompat="@drawable/img_camera" />
+
                                     <com.rey.material.widget.TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:paddingStart="16dp"
                                         android:text="Quay video"
                                         android:textColor="#3262DC"
-                                        android:textSize="16sp"
-                                        android:paddingStart="16dp"
-                                        />
+                                        android:textSize="16sp" />
 
                                 </com.rey.material.widget.LinearLayout>
+
                                 <com.rey.material.widget.LinearLayout
                                     android:id="@+id/img_open"
+                                    style="@style/ripple_btn_tab_widget_normal_10"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:layout_marginStart="8dp"
-                                    android:orientation="horizontal">
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:padding="12dp">
 
                                     <com.rey.material.widget.ImageView
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:adjustViewBounds="true"
-                                        app:srcCompat="@drawable/img_storage"
-                                        />
+                                        app:srcCompat="@drawable/img_storage" />
+
                                     <com.rey.material.widget.TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:paddingStart="16dp"
                                         android:text="Ảnh/Video"
                                         android:textColor="#3262DC"
-                                        android:textSize="16sp"
-                                        android:paddingStart="16dp"
-                                        />
+                                        android:textSize="16sp" />
 
                                 </com.rey.material.widget.LinearLayout>
 
@@ -273,10 +312,10 @@
                         android:id="@+id/btn_star"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_custom_button_1"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_custom_button_1"
                         android:text="Xem video hướng dẫn"
                         android:textColor="#3262DC"
 
@@ -285,6 +324,32 @@
             </androidx.core.widget.NestedScrollView>
 
         </com.rey.material.widget.RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="?actionBarSize"
+            android:outlineAmbientShadowColor="#2F80ED"
+            android:outlineSpotShadowColor="#2F80ED"
+            app:cardBackgroundColor="#2F80ED"
+            app:cardCornerRadius="66dp"
+            app:cardElevation="4dp">
+
+            <com.rey.material.widget.ImageView
+                android:id="@+id/bt_history_view"
+                style="@style/ripple_btn_tab_widget_normal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:padding="16dp"
+                android:src="@drawable/ic_storage_history"
+                android:tint="@color/white" />
+
+
+        </androidx.cardview.widget.CardView>
 
     </com.rey.material.widget.RelativeLayout>
 
