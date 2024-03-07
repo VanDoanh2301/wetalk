@@ -2,17 +2,18 @@ package com.example.wetalk.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.ItemPendingFriendBinding
-import com.example.wetalk.databinding.ItemSearchUserBinding
 
 class PendingAdapter(var context: Context) : RecyclerView.Adapter<PendingAdapter.ViewHolder>(){
     private var onItemClick: OnItemClick? =null
-    private var users : List<UserInforRequest> ? =null
+    private var users : List<UserInforRequest>  = emptyList()
 
     //SetUp ViewHolder
     inner class ViewHolder(var binding: ItemPendingFriendBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -25,9 +26,18 @@ class PendingAdapter(var context: Context) : RecyclerView.Adapter<PendingAdapter
                 //Set text name
                 userNameText.text = user.name
                 //Set text phonenumber
-                phoneText.text = user.phoneNumber
+                if (user.phoneNumber != null) {
+                    phoneText.text = user.phoneNumber
+                } else {
+                    phoneText.visibility = View.GONE
+                }
+
                 //Set ImageView
-                Glide.with(context).load(user.avatarLocation).into(imgUp)
+                if (user.avatarLocation == null) {
+                    imgUp.setImageResource(R.drawable.ic_avatar_error)
+                } else {
+                    Glide.with(context).load(user.avatarLocation).into(imgUp)
+                }
 
                 tvAddFriend.setOnClickListener {
                     if (onItemClick != null) {
@@ -56,6 +66,14 @@ class PendingAdapter(var context: Context) : RecyclerView.Adapter<PendingAdapter
         return users!!.size
     }
 
+    fun removeItemAt(position: Int) {
+        if (position in 0 until users.size) {
+            val mutableList = users.toMutableList()
+            mutableList.removeAt(position)
+            users = mutableList.toList()
+            notifyItemRemoved(position)
+        }
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //Get user by position
         val user  = users!![position]
@@ -66,7 +84,7 @@ class PendingAdapter(var context: Context) : RecyclerView.Adapter<PendingAdapter
     fun setOnItemClickAddFriend(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
-    fun setOnItmViewUser(onItemClick: OnItemClick) {
+    fun setOnItemViewUser(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
     interface OnItemClick{

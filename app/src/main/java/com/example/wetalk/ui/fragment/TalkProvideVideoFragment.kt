@@ -18,13 +18,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.wetalk.R
 import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.data.local.VideoBody
@@ -38,8 +35,7 @@ import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TopicViewModel
 import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.ui.viewmodels.VocabulariesViewModel
-import com.example.wetalk.util.DialogClose
-import com.example.wetalk.util.DialogOpenVideo
+import com.example.wetalk.util.dialog.DialogOpenVideo
 import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
@@ -48,7 +44,6 @@ import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
-import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -56,7 +51,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale

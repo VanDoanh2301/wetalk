@@ -11,6 +11,7 @@ import com.example.wetalk.databinding.ItemSearchUserBinding
 class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequest>) : RecyclerView.Adapter<UserSearchAdapter.ViewHolder>(){
 
     private var onItemClick: OnItemClick? =null
+    private var isFriend = false
 
     //SetUp ViewHolder
     inner class ViewHolder(var binding: ItemSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -27,6 +28,9 @@ class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequ
                 //Set ImageView
                 Glide.with(context).load(user.avatarLocation).into(imgUp)
 
+                if (isFriend) {
+                    tvAddFriend.text = "Đã gửi lời mời"
+                }
                 tvAddFriend.setOnClickListener {
                     if (onItemClick != null) {
                         onItemClick!!.onItem(position, user)
@@ -67,6 +71,12 @@ class UserSearchAdapter(var context: Context, var users: ArrayList<UserInforRequ
     fun setOnItmViewUser(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
+
+    fun updateFriend(isFriend: Boolean, position: Int) {
+        this.isFriend = isFriend
+        notifyItemChanged(position)
+    }
+
     interface OnItemClick{
         fun  onItem(position: Int, user: UserInforRequest)
         fun  onUser(position: Int, user: UserInforRequest)

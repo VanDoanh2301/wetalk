@@ -1,4 +1,4 @@
-package com.example.wetalk.util;
+package com.example.wetalk.util.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -7,23 +7,19 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 import com.example.wetalk.R;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.rey.material.widget.TextView;
 
 
-public class DialogOpenVideo {
+public class DialogClose {
     private Dialog dialog;
 
     @SuppressLint("InflateParams")
-    protected DialogOpenVideo(final Builder builder) {
+    protected  DialogClose (final Builder builder) {
         dialog = new Dialog(builder.mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -31,24 +27,19 @@ public class DialogOpenVideo {
         window.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCanceledOnTouchOutside(builder.canceledOnTouchOutside);
         dialog.setCancelable(builder.cancelable);
-        dialog.setContentView(R.layout.ko_exit_dialog);
-        dialog.getWindow().setGravity(Gravity.CENTER);
+        dialog.setContentView(R.layout.exit_dialog);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final TextView btn_quit = (TextView) dialog.findViewById(R.id.btn_cancel);
-        final TextView  btn_ok = (TextView ) dialog.findViewById(R.id.btn_ok);
-        final TextView btn_done = (TextView) dialog.findViewById(R.id.btn_done);
-        final TextView btn_title = (TextView) dialog.findViewById(R.id.title_dialog);
-        final PlayerView playerView = (PlayerView) dialog.findViewById(R.id.videoPlayerView);
+        final TextView btn_ok = (TextView ) dialog.findViewById(R.id.btn_ok);
+        final TextView  btn_done = (TextView ) dialog.findViewById(R.id.btn_done);
+        final TextView btn_title = (TextView ) dialog.findViewById(R.id.title_dialog);
+        final TextView btn_content = (TextView ) dialog.findViewById(R.id.content_dialog);
         final LinearLayout ln_done = (LinearLayout) dialog.findViewById(R.id.ln_done);
-        final RelativeLayout ln_ok_cancel = (RelativeLayout) dialog.findViewById(R.id.lnOKCancel);
+        final LinearLayout ln_ok_cancel = (LinearLayout) dialog.findViewById(R.id.lnOKCancel);
         final LinearLayout lnCustomContent = dialog.findViewById(R.id.lnCustomContent);
         btn_title.setText(builder.title);
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(dialog.getContext()).build();
-        playerView.setPlayer(player);
-        MediaItem mediaItem = MediaItem.fromUri(builder.urlVideo);
-        player.setMediaItem(mediaItem);
-        player.prepare();
-        player.setPlayWhenReady(true);
+        btn_content.setText(builder.content);
         if(builder.positiveText!=null && !builder.positiveText.isEmpty()){
             btn_ok.setVisibility(View.VISIBLE);
             btn_ok.setText(builder.positiveText);
@@ -145,7 +136,7 @@ public class DialogOpenVideo {
     public static class Builder {
         private Context mContext;
         private String title;
-        private String urlVideo;
+        private String content;
         private boolean cancelable = true;
         private boolean canceledOnTouchOutside = true;
         private String positiveText; //text phải
@@ -166,17 +157,13 @@ public class DialogOpenVideo {
             this.customView = null;
         }
 
-        public Builder urlVideo(@NonNull String urlVideo) {
-            this.urlVideo = urlVideo;
-            return this;
-        }
         public Builder title(@NonNull String title) {
             this.title = title;
             return this;
         }
 
         public Builder content(@NonNull String content) {
-            this.urlVideo = content;
+            this.content = content;
             return this;
         }
 
@@ -235,13 +222,13 @@ public class DialogOpenVideo {
         }
 
         @UiThread
-        public DialogOpenVideo build() {
-            return new DialogOpenVideo(this);
+        public DialogClose build() {
+            return new DialogClose(this);
         }
 
         @UiThread
-        public DialogOpenVideo show() {
-            DialogOpenVideo dialog = build();
+        public DialogClose show() {
+            DialogClose dialog = build();
             dialog.show();
             return dialog;
         }
@@ -251,3 +238,4 @@ public class DialogOpenVideo {
         void onClick();
     }
 }
+

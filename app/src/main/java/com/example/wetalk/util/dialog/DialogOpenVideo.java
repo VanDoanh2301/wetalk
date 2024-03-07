@@ -1,4 +1,4 @@
-package com.example.wetalk.util;
+package com.example.wetalk.util.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -7,19 +7,23 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 import com.example.wetalk.R;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.rey.material.widget.TextView;
 
 
-public class DialogGravityCenter {
+public class DialogOpenVideo {
     private Dialog dialog;
 
     @SuppressLint("InflateParams")
-    protected DialogGravityCenter(final Builder builder) {
+    protected DialogOpenVideo(final Builder builder) {
         dialog = new Dialog(builder.mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -27,19 +31,24 @@ public class DialogGravityCenter {
         window.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCanceledOnTouchOutside(builder.canceledOnTouchOutside);
         dialog.setCancelable(builder.cancelable);
-        dialog.setContentView(R.layout.exit_dialog);
+        dialog.setContentView(R.layout.ko_exit_dialog);
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final TextView btn_quit = (TextView) dialog.findViewById(R.id.btn_cancel);
-        final TextView btn_ok = (TextView ) dialog.findViewById(R.id.btn_ok);
-        final TextView  btn_done = (TextView ) dialog.findViewById(R.id.btn_done);
-        final TextView btn_title = (TextView ) dialog.findViewById(R.id.title_dialog);
-        final TextView btn_content = (TextView ) dialog.findViewById(R.id.content_dialog);
+        final TextView  btn_ok = (TextView ) dialog.findViewById(R.id.btn_ok);
+        final TextView btn_done = (TextView) dialog.findViewById(R.id.btn_done);
+        final TextView btn_title = (TextView) dialog.findViewById(R.id.title_dialog);
+        final PlayerView playerView = (PlayerView) dialog.findViewById(R.id.videoPlayerView);
         final LinearLayout ln_done = (LinearLayout) dialog.findViewById(R.id.ln_done);
-        final LinearLayout ln_ok_cancel = (LinearLayout) dialog.findViewById(R.id.lnOKCancel);
+        final RelativeLayout ln_ok_cancel = (RelativeLayout) dialog.findViewById(R.id.lnOKCancel);
         final LinearLayout lnCustomContent = dialog.findViewById(R.id.lnCustomContent);
         btn_title.setText(builder.title);
-        btn_content.setText(builder.content);
+        SimpleExoPlayer player = new SimpleExoPlayer.Builder(dialog.getContext()).build();
+        playerView.setPlayer(player);
+        MediaItem mediaItem = MediaItem.fromUri(builder.urlVideo);
+        player.setMediaItem(mediaItem);
+        player.prepare();
+        player.setPlayWhenReady(true);
         if(builder.positiveText!=null && !builder.positiveText.isEmpty()){
             btn_ok.setVisibility(View.VISIBLE);
             btn_ok.setText(builder.positiveText);
@@ -136,7 +145,7 @@ public class DialogGravityCenter {
     public static class Builder {
         private Context mContext;
         private String title;
-        private String content;
+        private String urlVideo;
         private boolean cancelable = true;
         private boolean canceledOnTouchOutside = true;
         private String positiveText; //text phải
@@ -157,13 +166,17 @@ public class DialogGravityCenter {
             this.customView = null;
         }
 
+        public Builder urlVideo(@NonNull String urlVideo) {
+            this.urlVideo = urlVideo;
+            return this;
+        }
         public Builder title(@NonNull String title) {
             this.title = title;
             return this;
         }
 
         public Builder content(@NonNull String content) {
-            this.content = content;
+            this.urlVideo = content;
             return this;
         }
 
@@ -222,13 +235,13 @@ public class DialogGravityCenter {
         }
 
         @UiThread
-        public DialogGravityCenter build() {
-            return new DialogGravityCenter(this);
+        public DialogOpenVideo build() {
+            return new DialogOpenVideo(this);
         }
 
         @UiThread
-        public DialogGravityCenter show() {
-            DialogGravityCenter dialog = build();
+        public DialogOpenVideo show() {
+            DialogOpenVideo dialog = build();
             dialog.show();
             return dialog;
         }
@@ -238,4 +251,3 @@ public class DialogGravityCenter {
         void onClick();
     }
 }
-

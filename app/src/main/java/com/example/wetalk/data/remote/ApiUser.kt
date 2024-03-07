@@ -1,6 +1,7 @@
 package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
+import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterDTO
@@ -60,16 +61,17 @@ interface ApiUser {
     suspend fun addFriend(@Path("userId") userId:Int) : Response<HostResponse>
     //Get list pending ship
     @GET("friend-ship/pending")
-    suspend fun pendingFriend()
+    suspend fun pendingFriend() : Response<GetAllUserFriendRequest>
     //Get all friend
     @GET("friend-ship/friend")
-    suspend fun getAllFriend()
+    suspend fun getAllFriend() :Response<GetAllUserFriendRequest>
     //Delete friend
     @GET("friend-ship/cancel-friend/{userId}")
-    suspend fun getCancelFriend(@Path("userId") userId: Int)
+    suspend fun getCancelFriend(@Path("userId") userId: Int) : Response<HostResponse>
     //Accept friend
     @GET("friend-ship/accept-friend/{userId}")
-    suspend fun acceptFriend(@Path("userId") userId: Int)
+    suspend fun acceptFriend(@Path("userId") userId: Int): Response<HostResponse>
+
     @GET("users/{userId}")
     //Get user by Id
     suspend fun getUserById(@Part("userId") userId:Int) : Response<GetAllUserInforRequest>

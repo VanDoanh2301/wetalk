@@ -28,6 +28,7 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserSearchAdapter
 import com.example.wetalk.ui.viewmodels.SearchUserViewModel
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -68,11 +69,10 @@ class TalkSearchUserFragment : Fragment() {
         }
         binding.seachUsernameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d("TextWatcher", "beforeTextChanged: $p0")
+
             }
             @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d("TextWatcher", "onTextChanged: $p0")
                 val userStr = p0.toString()
                 val userQueryRequest = UserQueryRequest(1, 10, userStr, true, "")
                 lifecycleScope.launchWhenStarted {
@@ -91,13 +91,12 @@ class TalkSearchUserFragment : Fragment() {
                                     throw NullPointerException("Users is null")
                                 }
                             }
-                            is Resource.Error -> { Log.d("UserRegisterDTO", it.message.toString()) }
+                            is Resource.Error -> { requireContext().showToast() }
                         }
                     }
                 }
             }
             override fun afterTextChanged(p0: Editable?) {
-                Log.d("TextWatcher", "afterTextChanged: ${p0.toString()}")
             }
         })
     }
@@ -112,7 +111,9 @@ class TalkSearchUserFragment : Fragment() {
                      viewModel.getAddFriend.collect {
                          when(it) {
                              //Success to notify
-                             is Resource.Success -> {Toast.makeText(requireContext(), "Thêm bạn bè thành công", Toast.LENGTH_LONG).show()}
+                             is Resource.Success -> {
+                                 adapter.updateFriend(true, position)
+                             }
                              //Error to notify
                              is  Resource.Error -> {Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()}
                          }

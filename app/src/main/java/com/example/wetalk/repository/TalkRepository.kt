@@ -3,6 +3,7 @@ package com.example.wetalk.repository
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
+import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
@@ -54,82 +55,92 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm lấy tất cả các chủ đề
-    suspend fun getAllTopic() : Response<GetAllTopic> {
+    suspend fun getAllTopic(): Response<GetAllTopic> {
         return mTopic.getAllTopic()
     }
 
     // Hàm lấy tất cả các câu hỏi theo ID chủ đề
-    suspend fun getAllQuestionByTopicId(topicId:Int) : Response<GetAllQuestion> {
+    suspend fun getAllQuestionByTopicId(topicId: Int): Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicID(topicId)
     }
 
     // Hàm lấy thông tin người dùng
-    suspend fun getUserInfor() : Response<UserInforRequest> {
+    suspend fun getUserInfor(): Response<UserInforRequest> {
         return mUser.geUserInfor()
     }
 
     // Hàm cập nhật thông tin người dùng
-    suspend fun updateUser(userRequest: UserUpdateDTO) : Response<GetAllUserRequest> {
+    suspend fun updateUser(userRequest: UserUpdateDTO): Response<GetAllUserRequest> {
         return mUser.updateUser(userRequest)
     }
 
     // Hàm lấy tất cả các câu hỏi theo ID chủ đề với kích thước câu hỏi
-    suspend fun getAllQuestionByTopicID(questionSize: QuestionSize) : Response<GetAllQuestion> {
+    suspend fun getAllQuestionByTopicID(questionSize: QuestionSize): Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicId(questionSize)
     }
 
     // Hàm cập nhật ảnh đại diện người dùng
-    suspend fun updateAvata(avatarRequest: AvatarRequest) : Response<GetAllUserRequest> {
+    suspend fun updateAvata(avatarRequest: AvatarRequest): Response<GetAllUserRequest> {
         return mUser.updateAvatar(avatarRequest)
     }
 
     // Hàm thay đổi mật khẩu người dùng
-    suspend fun changePassword(userPasswordDTO: UserPasswordDTO) : Response<HostResponse> {
+    suspend fun changePassword(userPasswordDTO: UserPasswordDTO): Response<HostResponse> {
         return mUser.changePassword(userPasswordDTO)
     }
 
     // Hàm tìm kiếm người dùng
-    suspend fun seacherUser(userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest> {
+    suspend fun seacherUser(userQueryRequest: UserQueryRequest): Response<GetAllUserInforRequest> {
         return mUser.searchUser(userQueryRequest)
     }
 
     // Hàm thêm bạn
-    suspend fun addFriend(userId:Int) : Response<HostResponse> {
+    suspend fun addFriend(userId: Int): Response<HostResponse> {
         return mUser.addFriend(userId)
     }
+
     //Lấy ra tất cả bạn bè
-    suspend fun getAllFriend() {
+    suspend fun getAllFriend(): Response<GetAllUserFriendRequest> {
         return mUser.getAllFriend()
     }
+
     //Xóa bạn bè
-    suspend fun getCancelFriend(userId: Int) {
+    suspend fun getCancelFriend(userId: Int): Response<HostResponse> {
         return mUser.getCancelFriend(userId)
     }
+
     //Chấp nhận kết bạn
-    suspend fun acceptFriend (userId: Int) {
+    suspend fun acceptFriend(userId: Int): Response<HostResponse>  {
         return mUser.acceptFriend(userId)
     }
+
     //Danh sách chờ kết bạn
-    suspend fun pendingFriend() {
+    suspend fun pendingFriend(): Response<GetAllUserFriendRequest> {
         return mUser.pendingFriend()
     }
+
     //Get User by id
     suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
         return mUser.getUserById(userId)
     }
-    suspend fun postVocabularies(topicDTO: TopicRequest) : Response<HostResponse> {
+
+    suspend fun postVocabularies(topicDTO: TopicRequest): Response<HostResponse> {
         return mTopic.postVocabularies(topicDTO)
     }
-    suspend fun searchVocabularies(vocabulariesDTO: VocabulariesDTO) : Response<GetAllVocabulariesRequest> {
+
+    suspend fun searchVocabularies(vocabulariesDTO: VocabulariesDTO): Response<GetAllVocabulariesRequest> {
         return mTopic.searchVocabularies(vocabulariesDTO)
     }
-    suspend fun getVocabulariesById( topicId:Int)  : Response<GetAllVocabulariesByIdRequest>{
+
+    suspend fun getVocabulariesById(topicId: Int): Response<GetAllVocabulariesByIdRequest> {
         return mTopic.getVocabulariesById(topicId)
     }
-    suspend fun deleteVocabularies(id:Int) : Response<HostResponse> {
+
+    suspend fun deleteVocabularies(id: Int): Response<HostResponse> {
         return mTopic.deleteVocabularies(id)
     }
-    suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest> {
+
+    suspend fun getCollectDataHistory(): Response<GetAllVocabulariesByIdRequest> {
         return mTopic.getCollectDataHistory()
     }
 

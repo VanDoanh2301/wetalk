@@ -1,7 +1,6 @@
 package com.example.wetalk.ui.fragment
 
 import TopicAdapter
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,17 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 
 import com.example.wetalk.databinding.FragmentTalkSignBinding
-import com.example.wetalk.ui.adapter.StudyAdapter
 import com.example.wetalk.ui.viewmodels.TopicViewModel
-import com.example.wetalk.util.DialogOpenVideo
 import com.example.wetalk.util.Resource
-import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

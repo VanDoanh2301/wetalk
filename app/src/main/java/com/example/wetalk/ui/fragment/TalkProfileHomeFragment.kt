@@ -22,7 +22,7 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
-import com.example.wetalk.util.DialogGravityCenter
+import com.example.wetalk.util.dialog.DialogGravityCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.android.material.textfield.TextInputEditText

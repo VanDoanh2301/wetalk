@@ -14,7 +14,6 @@ import com.example.wetalk.R
  */
 class TalkChatHomeFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

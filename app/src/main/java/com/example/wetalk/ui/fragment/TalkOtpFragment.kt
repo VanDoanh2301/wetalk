@@ -97,36 +97,28 @@ class TalkOtpFragment : Fragment() {
         }
     }
 
-
-    private suspend fun startResendTimer() {
+    private fun startResendTimer() {
         binding?.resendOtpTextview?.isEnabled = false
-
         try {
-            var timeoutSeconds = 60L
-            val timer = Timer()
+            timer = Timer()
             timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     timeoutSeconds--
-                    CoroutineScope(Dispatchers.Default).launch {
-                        withContext(Dispatchers.Main) {
-                            if (binding != null && isAdded) {
-                                binding.resendOtpTextview.text =
-                                    "Resend OTP in $timeoutSeconds seconds"
-                            }
+                    activity?.runOnUiThread {
+                        if (binding != null && isAdded) {
+                            binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds"
                         }
                     }
+
                     if (timeoutSeconds <= 0) {
+                        timeoutSeconds = 60L
+                        binding?.loginProgressBar?.visibility = View.GONE
                         timer.cancel()
-                        CoroutineScope(Dispatchers.Main).launch {
-                            binding?.loginProgressBar?.visibility = View.GONE
-                        }
                     }
                 }
             }, 0, 1000)
         } catch (e: Exception) {
-            CoroutineScope(Dispatchers.Main).launch {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 

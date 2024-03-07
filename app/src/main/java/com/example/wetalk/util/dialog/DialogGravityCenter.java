@@ -1,4 +1,4 @@
-package com.example.wetalk.util;
+package com.example.wetalk.util.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -15,11 +15,11 @@ import com.example.wetalk.R;
 import com.rey.material.widget.TextView;
 
 
-public class DialogClose {
+public class DialogGravityCenter {
     private Dialog dialog;
 
     @SuppressLint("InflateParams")
-    protected  DialogClose (final Builder builder) {
+    protected DialogGravityCenter(final Builder builder) {
         dialog = new Dialog(builder.mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -28,7 +28,7 @@ public class DialogClose {
         dialog.setCanceledOnTouchOutside(builder.canceledOnTouchOutside);
         dialog.setCancelable(builder.cancelable);
         dialog.setContentView(R.layout.exit_dialog);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final TextView btn_quit = (TextView) dialog.findViewById(R.id.btn_cancel);
         final TextView btn_ok = (TextView ) dialog.findViewById(R.id.btn_ok);
@@ -222,13 +222,13 @@ public class DialogClose {
         }
 
         @UiThread
-        public DialogClose build() {
-            return new DialogClose(this);
+        public DialogGravityCenter build() {
+            return new DialogGravityCenter(this);
         }
 
         @UiThread
-        public DialogClose show() {
-            DialogClose dialog = build();
+        public DialogGravityCenter show() {
+            DialogGravityCenter dialog = build();
             dialog.show();
             return dialog;
         }

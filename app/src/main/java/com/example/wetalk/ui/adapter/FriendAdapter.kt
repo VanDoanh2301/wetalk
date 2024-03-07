@@ -2,18 +2,19 @@ package com.example.wetalk.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.ItemFriendBinding
-import com.example.wetalk.databinding.ItemSearchUserBinding
 
 class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.ViewHolder>(){
 
     private var onItemClick: OnItemClick? =null
-    private var users : List<UserInforRequest> ? =null
+    private var users : List<UserInforRequest>  = emptyList()
 
     //SetUp ViewHolder
     inner class ViewHolder(var binding: ItemFriendBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -26,9 +27,19 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
                 //Set text name
                 userNameText.text = user.name
                 //Set text phonenumber
-                phoneText.text = user.phoneNumber
+                if (user.phoneNumber == null) {
+                    phoneText.visibility = View.GONE
+                } else {
+                    phoneText.text = user.phoneNumber
+                }
+
                 //Set ImageView
-                Glide.with(context).load(user.avatarLocation).into(imgUp)
+                if (user.avatarLocation == null) {
+                    imgUp.setImageResource(R.drawable.ic_avatar_error)
+                } else {
+                    Glide.with(context).load(user.avatarLocation).into(imgUp)
+                }
+
 
                 tvAddFriend.setOnClickListener {
                     if (onItemClick != null) {
@@ -67,7 +78,7 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
     fun setOnItemClickAddFriend(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
-    fun setOnItmViewUser(onItemClick: OnItemClick) {
+    fun setOnItemViewUser(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
     interface OnItemClick{

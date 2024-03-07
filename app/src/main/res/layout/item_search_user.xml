@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rey.material.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="62dp"
+    android:layout_height="66dp"
     android:background="@drawable/edit_text_rounded_corner"
-    android:layout_margin="10dp"
+    android:layout_marginTop="16dp"
     android:elevation="2dp">
 
     <androidx.cardview.widget.CardView
@@ -12,12 +12,10 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="56dp"
         android:layout_centerVertical="true"
-        android:elevation="8dp"
-        app:cardBackgroundColor="@color/white"
-        android:background="@color/white"
+        app:cardCornerRadius="56dp"
+        app:cardBackgroundColor="@color/transparent"
+        android:background="@color/transparent"
         >
 
         <com.rey.material.widget.ImageView
@@ -26,33 +24,39 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
+            android:background="@drawable/circular_bg"
             android:src="@drawable/bg1" />
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
+    <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginStart="8dp"
         android:layout_toRightOf="@+id/img_avata"
         android:layout_centerVertical="true"
         android:layout_gravity="center">
-        <TextView
+        <com.rey.material.widget.TextView
+            android:id="@+id/user_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User name"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:id="@+id/user_name_text"/>
-        <TextView
+            app:fontFamily="@font/roboto_medium"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        <com.rey.material.widget.TextView
+            android:id="@+id/phone_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+000000000000"
-            android:id="@+id/phone_text"/>
-    </LinearLayout>
+            android:layout_marginTop="2dp"
+            app:fontFamily="@font/roboto_regular"
+            android:text="+000000000000" />
+    </com.rey.material.widget.LinearLayout>
 
 
-    <RelativeLayout
+    <com.rey.material.widget.RelativeLayout
         android:id="@+id/rl_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,12 +67,12 @@
         >
         <com.rey.material.widget.TextView
             android:id="@+id/tv_add_friend"
-            android:layout_width="86dp"
+            android:layout_width="wrap_content"
             style="@style/ripple_btn_tab_widget_normal"
             android:layout_height="34dp"
             android:text="Kết bạn"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:textSize="14dp"
             android:textColor="#ffffff"
             android:background="@drawable/background_row_top"
@@ -85,5 +89,5 @@
             android:src="@drawable/ic_close"
             />
 
-    </RelativeLayout>
-</RelativeLayout>
+    </com.rey.material.widget.RelativeLayout>
+</com.rey.material.widget.RelativeLayout>

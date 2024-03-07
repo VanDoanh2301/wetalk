@@ -15,6 +15,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkMainChatBinding
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
@@ -50,87 +51,14 @@ class TalkMainChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
 
-        try {
-            initBottomNavigation(user!!)
-        } catch (e: Exception) {
-            initBottomNavigation()
-        }
+       initBottomNavigation()
         binding.btnMenu.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }
 
-    private fun initView() {
-        //Job when start lifecycle
-        lifecycleScope.launchWhenStarted {
-            val isAccess = SharedPreferencesUtils.getString("isLogin")
-            viewModel.getUser()
-            viewModel.getInforUser.collect {
-                when (it) {
-                    is Resource.Loading -> {
-                    }
 
-                    is Resource.Success -> {
-                        val newUser = it.data!!
-                        user = newUser
-                    }
-
-                    is Resource.Error -> {
-                        Log.d("UserRegisterDTO", it.message.toString())
-                    }
-                }
-            }
-        }
-    }
-    private fun initBottomNavigation(user: UserInforRequest) {
-        binding.apply {
-            /** Custom viewpager */
-            pagerMain.adapter = object : FragmentStateAdapter(requireActivity()) {
-                override fun getItemCount(): Int {
-                    return 3
-                }
-
-                override fun createFragment(position: Int): Fragment {
-                    return when (position) {
-                        0 -> TalkTabChatFragment()
-                        1 -> TalkTabFriendFragment()
-                        2 -> TalkTabProfileFragment()
-                        else -> throw IllegalArgumentException("Invalid position: $position")
-                    }
-                }
-            }
-            /** config onClick tab */
-            btTabMess.setOnClickListener { setCurrentTab(pagerMain, 0) }
-            btTabFriend.setOnClickListener { setCurrentTab(pagerMain, 1) }
-            btTabProfile.setOnClickListener { setCurrentTab(pagerMain, 2) }
-            /** config tab view bottom */
-            pagerMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    setColorImageView(imgTabMess, imgPhonebook, imgTabProfile)
-                    setColorTextView(viewTabMess, viewTabPhonebook, viewTabProfile)
-                    when (position) {
-                        0 -> {
-                            setColorTextViewSelect(viewTabMess)
-                            setColorImageViewSelect(imgTabMess)
-                        }
-                        1 -> {
-                            setColorTextViewSelect(viewTabPhonebook)
-                            setColorImageViewSelect(imgPhonebook)
-                        }
-                        2 -> {
-                            setColorTextViewSelect(viewTabProfile)
-                            setColorImageViewSelect(imgTabProfile)
-                        }
-                    }
-                }
-            })
-            setColorTextViewSelect(viewTabMess)
-            setColorImageViewSelect(imgTabMess)
-        }
-    }
     private fun initBottomNavigation() {
         binding.apply {
             /** Custom viewpager */

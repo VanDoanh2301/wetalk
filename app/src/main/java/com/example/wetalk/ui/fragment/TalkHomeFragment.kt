@@ -119,7 +119,9 @@ class TalkHomeFragment : Fragment() {
                     }
 
                     is Resource.Error -> {
-                        Log.d("UserRegisterDTO", it.message.toString())
+                        user = UserInforRequest(0, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", R.drawable.ic_avatar_error.toString())
+                        binding.textView2.text = user?.name
+                        binding.imgAvata.setImageResource(R.drawable.ic_avatar_error)
                     }
                 }
             }

@@ -4,6 +4,14 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
+data class GetAllUserFriendRequest(
+    @SerializedName("message") val message: String?,
+    @SerializedName("code") val code: Int?,
+    @SerializedName("data") val data: ArrayList<UserInforRequest>
+) : Parcelable
+
 @Parcelize
 data class UserInforRequest(
     @SerializedName("id")

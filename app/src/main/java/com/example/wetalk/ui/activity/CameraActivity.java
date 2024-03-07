@@ -36,7 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wetalk.R;
 import com.example.wetalk.ui.fragment.CameraConnectionFragment;
-import com.example.wetalk.util.DialogOpenVideo;
+import com.example.wetalk.util.dialog.DialogOpenVideo;
 import com.example.wetalk.util.env.ImageUtils;
 import com.example.wetalk.util.env.Logger;
 import com.google.android.gms.tasks.OnFailureListener;
