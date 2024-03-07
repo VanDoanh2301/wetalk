@@ -39,7 +39,7 @@ class TalkSplashFragment : Fragment() {
         lifecycleScope.launch {
             delay(2000L)
 
-            if (SharedPreferencesUtils.getString("isLogin") != null) {
+            if (SharedPreferencesUtils.getToken() != null) {
                 val bundle = bundleOf("isUser" to true)
                 findNavController().navigate(R.id.talkHomeFragment, bundle)
             } else {

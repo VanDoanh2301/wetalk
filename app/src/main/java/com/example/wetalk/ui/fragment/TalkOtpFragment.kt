@@ -15,6 +15,10 @@ import com.example.wetalk.databinding.FragmentTalkOtpBinding
 import com.example.wetalk.ui.viewmodels.OtpViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Timer
 import java.util.TimerTask
 
@@ -27,12 +31,12 @@ import java.util.TimerTask
 @AndroidEntryPoint
 class TalkOtpFragment : Fragment() {
 
-    private var _binding: FragmentTalkOtpBinding? =null
-    private val binding get() =  _binding!!
+    private var _binding: FragmentTalkOtpBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: OtpViewModel by viewModels()
-    private lateinit var email:String
+    private lateinit var email: String
     private var timeoutSeconds = 60L
-    private  lateinit var  timer:Timer
+    private lateinit var timer: Timer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +50,9 @@ class TalkOtpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         email = arguments?.getString("email").toString()
-        startResendTimer()
+        lifecycleScope.launch {
+            startResendTimer()
+        }
         initViewModel();
         initOtp();
     }
@@ -55,9 +61,12 @@ class TalkOtpFragment : Fragment() {
     private fun initOtp() {
         binding.loginNextBtn.setOnClickListener {
             if (binding.loginOtp.text.toString().isEmpty()) {
-                Toast.makeText(requireContext(), "Kiểm tra email của bạn để lấy mã OTP", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Kiểm tra email của bạn để lấy mã OTP",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-
                 var userOtpDTO =
                     UserOtpDTO(email, Integer.parseInt(binding.loginOtp.text.toString()))
                 viewModel.validateOtp(userOtpDTO)
@@ -68,16 +77,18 @@ class TalkOtpFragment : Fragment() {
     /** Create viewModel */
     private fun initViewModel() {
         lifecycleScope.launchWhenStarted {
-            viewModel.otpResponseStateFlow.collect{
-                when(it) {
+            viewModel.otpResponseStateFlow.collect {
+                when (it) {
                     is Resource.Success -> {
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_talkOtpFragment_to_talkDoneFragment2)
                     }
+
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         binding.loginProgressBar.visibility = View.GONE
                     }
+
                     is Resource.Loading -> {
                         binding.loginProgressBar.visibility = View.VISIBLE
                     }
@@ -87,30 +98,35 @@ class TalkOtpFragment : Fragment() {
     }
 
 
-    private fun startResendTimer() {
+    private suspend fun startResendTimer() {
         binding?.resendOtpTextview?.isEnabled = false
 
         try {
-            timer = Timer()
+            var timeoutSeconds = 60L
+            val timer = Timer()
             timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     timeoutSeconds--
-
-                    activity?.runOnUiThread {
-                        if (binding != null && isAdded) {
-                            binding.resendOtpTextview.text = "Resend OTP in $timeoutSeconds seconds"
+                    CoroutineScope(Dispatchers.Default).launch {
+                        withContext(Dispatchers.Main) {
+                            if (binding != null && isAdded) {
+                                binding.resendOtpTextview.text =
+                                    "Resend OTP in $timeoutSeconds seconds"
+                            }
                         }
                     }
-
                     if (timeoutSeconds <= 0) {
-                        timeoutSeconds = 60L
-                        binding?.loginProgressBar?.visibility = View.GONE
                         timer.cancel()
+                        CoroutineScope(Dispatchers.Main).launch {
+                            binding?.loginProgressBar?.visibility = View.GONE
+                        }
                     }
                 }
             }, 0, 1000)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

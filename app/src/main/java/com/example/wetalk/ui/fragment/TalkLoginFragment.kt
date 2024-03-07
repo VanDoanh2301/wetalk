@@ -96,7 +96,7 @@ class TalkLoginFragment : Fragment() {
                         Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {
-                        binding.loginProgressBar.visibility = View.VISIBLE
+                        binding.loginProgressBar.visibility = View.GONE
                     }
                 }
             }
