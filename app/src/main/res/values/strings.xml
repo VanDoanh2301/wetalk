@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Diary Journal</string>
+    <string name="app_name">We Talk</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="like_title">Rate Diary</string>
     <string name="like_content">If you enjoy Diary, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!</string>

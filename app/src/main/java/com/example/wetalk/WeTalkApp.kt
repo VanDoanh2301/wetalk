@@ -49,6 +49,7 @@ class WeTalkApp : Application(), Application.ActivityLifecycleCallbacks, Lifecyc
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
+
     override fun onActivityDestroyed(activity: Activity) {
 
     }

@@ -8,31 +8,9 @@ object SharedPreferencesUtils {
     private var mPref: SharedPreferences? = null
     const val NAME = "PROVIDE_CDL";
 
-    enum class Cmd(val default: String) {
-    }
-
-
     fun init(context: Context) {
-        mPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
+        mPref = context.getSharedPreferences(ACCESS_TOKEN, Context.MODE_PRIVATE)
     }
-
-    fun set(cmd: Cmd, data: String?) {
-        if (mPref != null) {
-            val edit = mPref!!.edit()
-            edit.putString(cmd.toString(), data)
-            edit.commit()
-        }
-    }
-
-    fun getCmd(cmd: Cmd): String? {
-        if (mPref == null || !mPref!!.contains(cmd.name)) {
-            val edit = mPref!!.edit()
-            edit.putString(cmd.toString(), cmd.default)
-            edit.commit()
-        }
-        return mPref!!.getString(cmd.toString(), "null")
-    }
-
     fun setBoolean(_key: String?, _value: Boolean) {
         if (_key == null) {
             return
@@ -145,6 +123,24 @@ object SharedPreferencesUtils {
 
     fun clearToken() {
         mPref!!.edit().remove(ACCESS_TOKEN).apply()
+    }
+
+    fun saveRoom(room: String) {
+        mPref!!.edit().putString(ROOM_CHAT, room).apply()
+    }
+
+    fun getRoom(): String? {
+        return mPref!!.getString(ROOM_CHAT, null)
+    }
+    fun setCurrentUser(id:Int)  {
+         mPref!!.edit().putInt(CURRENT_USER, id).apply()
+    }
+    fun getCurrentUser() : Int {
+       return mPref!!.getInt(CURRENT_USER, 0)
+    }
+
+    fun clearROOM() {
+        mPref!!.edit().remove(ROOM_CHAT).apply()
     }
 
 }

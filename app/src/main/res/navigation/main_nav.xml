@@ -89,7 +89,7 @@
         tools:layout="@layout/fragment_talk_search_user" />
     <fragment
         android:id="@+id/talkChatHomeFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkChatHomeFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkOpenChatFragment"
         android:label="fragment_talk_chat_home"
         tools:layout="@layout/fragment_talk_chat_home" />
     <fragment
@@ -180,7 +180,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkMainChatFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkMainChatFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkHomeChatFragment"
         android:label="fragment_talk_main_chat"
         tools:layout="@layout/fragment_talk_main_chat" >
         <action

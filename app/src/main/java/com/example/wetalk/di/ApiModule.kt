@@ -5,6 +5,8 @@ import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.data.remote.SocketManager
+import com.example.wetalk.repository.SocketRepository
 import com.example.wetalk.util.BASE_URL_1
 import com.example.wetalk.util.BASE_URL_2
 import com.example.wetalk.util.BASE_URL_3
@@ -16,6 +18,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import io.socket.client.IO
+import io.socket.client.Socket
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,6 +27,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -116,6 +121,23 @@ object ApiModule {
     @ViewModelScoped
     fun provideChat(@ApiFour retrofit: Retrofit): ApiChat {
         return retrofit.create(ApiChat::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSocketIO(okHttpClient: OkHttpClient): Socket {
+        val options = IO.Options().apply {
+            callFactory = okHttpClient
+            webSocketFactory = okHttpClient
+            query = "room= ${SharedPreferencesUtils.getRoom()}"
+        }
+        return IO.socket("http://10.0.2.2:8085", options)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSocketManager(socket: Socket): SocketManager {
+        return SocketRepository(socket)
     }
 }
 
