@@ -1,10 +1,10 @@
 package com.example.wetalk.ui.viewmodels
 
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.responsemodel.HostResponse
@@ -43,6 +43,11 @@ class FriendTabViewModel @Inject constructor(private var repository: TalkReposit
         MutableStateFlow(Resource.Loading())
     val createRoom: StateFlow<Resource<HostResponse>> get() = _createRoom
     private var roomResponse: HostResponse? = null
+
+    private var _conversionsContact: MutableLiveData<Resource<GetAllListConversations>> =
+        MutableLiveData(Resource.Loading())
+    val conversionsContact: LiveData<Resource<GetAllListConversations>> get() = _conversionsContact
+    private var conversionsResponse: GetAllListConversations? = null
 
     fun getAllFriendPending() = viewModelScope.launch {
         try {
@@ -139,4 +144,23 @@ class FriendTabViewModel @Inject constructor(private var repository: TalkReposit
         return Resource.Error((roomResponse ?: response.message()).toString())
     }
 
+    fun getListConversationsContactId(contactId:Int) = viewModelScope.launch {
+        try {
+            val response = repository.roomChat(contactId)
+            _conversionsContact.value = handleGetAllListConversations(response)
+        } catch (e: Exception) {
+            _conversionsContact.value = Resource.Error(e.message.toString())
+        }
+    }
+
+    private fun handleGetAllListConversations(response: Response<GetAllListConversations>):
+            Resource<GetAllListConversations>? {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(conversionsResponse ?: it)
+            }
+        } else {
+        }
+        return Resource.Error((conversionsResponse ?: response.message()).toString())
+    }
 }

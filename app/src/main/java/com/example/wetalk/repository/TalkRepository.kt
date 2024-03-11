@@ -29,8 +29,6 @@ import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -156,10 +154,13 @@ class TalkRepository @Inject constructor(
 
     //Chat message
     suspend fun createRoom(roomConversation: RoomConversation) : Response<HostResponse> {
-        return mChat.createRoom(roomConversation)
+        return mChat.createGroup(roomConversation)
     }
-    suspend fun getAllConversations() : Response<GetAllListConversations> {
+    suspend fun getAllConversations() : Response<List<GetAllListConversations>> {
         return mChat.getAllConversations()
+    }
+    suspend fun roomChat(contactId:Int) : Response<GetAllListConversations> {
+        return mChat.roomChat(contactId)
     }
 
 }

@@ -2,6 +2,11 @@ package com.example.wetalk.data.model.objectmodel
 
 import com.google.gson.annotations.SerializedName
 
+data class GetAllListConversations(
+    @SerializedName("conversationId") val conversationId: Int,
+    @SerializedName("grouAttachConvResList") val grouAttachConvResList: List<GroupAttachmentConversation>
+)
+
 data class LastMessage(
     @SerializedName("content") val content: String,
     @SerializedName("messageType") val messageType: String,
@@ -19,7 +24,3 @@ data class GroupAttachmentConversation(
     @SerializedName("lastMessageRes") val lastMessageRes: LastMessage
 )
 
-data class GetAllListConversations(
-    @SerializedName("conversationId") val conversationId: Int,
-    @SerializedName("grouAttachConvResList") val grouAttachConvResList: List<GroupAttachmentConversation>
-)

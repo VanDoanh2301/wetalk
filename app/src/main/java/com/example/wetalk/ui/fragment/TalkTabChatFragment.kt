@@ -30,8 +30,6 @@ class TalkTabChatFragment() : Fragment() {
     private var user: UserInforRequest? = null
     private lateinit var conversationAdapter: ConversationAdapter
     private var resultList : ArrayList<GetAllListConversations> = ArrayList()
-
-
     private val viewModel: ChatTabViewModel by viewModels()
 
     override fun onCreateView(
@@ -52,7 +50,6 @@ class TalkTabChatFragment() : Fragment() {
             rcvFriend.adapter = conversationAdapter
 
         }
-
         initView()
         onView()
     }
@@ -66,16 +63,21 @@ class TalkTabChatFragment() : Fragment() {
     private fun initView() {
         lifecycleScope.launchWhenStarted {
              viewModel.getAllListConversations()
-            viewModel.conversions.observe(viewLifecycleOwner) {
+             viewModel.conversions.observe(viewLifecycleOwner) {
                 when(it) {
                     is Resource.Success -> {
-                          var listConversations = it.data
+                        var listConversations = it.data!!
                         if (listConversations != null) {
                             conversationAdapter.submitList(listConversations)
+                            binding.rcvFriend.visibility = View.VISIBLE
+                            binding.lnlNotFriend.visibility = View.GONE
+                        } else {
+                            binding.rcvFriend.visibility = View.GONE
+                            binding.lnlNotFriend.visibility = View.VISIBLE
                         }
                     }
                     is Resource.Error -> {
-
+                        binding.lnlNotFriend.visibility = View.VISIBLE
                     }
                 }
             }

@@ -7,12 +7,16 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiChat {
     @POST("conversations")
-    suspend fun createRoom(@Body roomConversation: RoomConversation) : Response<HostResponse>
+    suspend fun createGroup(@Body roomConversation: RoomConversation) : Response<HostResponse>
 
     @GET("conversations/all-me")
-    suspend fun getAllConversations() : Response<GetAllListConversations>
+    suspend fun getAllConversations() : Response<List<GetAllListConversations>>
+
+    @GET("conversations/{contactId}")
+    suspend fun roomChat(@Path("contactId") contactId:Int) : Response<GetAllListConversations>
 
 }

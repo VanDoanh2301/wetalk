@@ -11,16 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
-import com.example.wetalk.data.model.objectmodel.ConversationType
-import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkTabPhoneBookBinding
 import com.example.wetalk.ui.adapter.FriendAdapter
 import com.example.wetalk.ui.adapter.PendingAdapter
 import com.example.wetalk.ui.viewmodels.FriendTabViewModel
-import com.example.wetalk.util.CURRENT_USER
 import com.example.wetalk.util.Resource
-import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.dialog.DialogInformUser
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -115,8 +111,8 @@ class TalkTabFriendFragment : Fragment() {
                         deleteFriend(user, position)
                     }
                     .onChat {
-                        val bundle = bundleOf("contactId" to user.id)
-                        findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
+                        joinRoom(user.id!!)
+
                     }
                     .show()
             }
@@ -124,24 +120,41 @@ class TalkTabFriendFragment : Fragment() {
         })
     }
 
-    private fun createRoom(user: UserInforRequest?) {
-         lifecycleScope.launchWhenResumed {
-             val currentUserID = SharedPreferencesUtils.getCurrentUser()!!
-             val singleConversation = RoomConversation(
-                 conversationName = user!!.name,
-                 conversationType = ConversationType.SINGLE.name,
-                 contactIds = arrayListOf(currentUserID, user.id!!)
-             )
-             viewModel.postCreateRoom(singleConversation)
-             viewModel.createRoom.collect {
-                 when(it) {
-                   is  Resource.Success -> {
-
-                     }
-                 }
-             }
-         }
+    private fun joinRoom(id: Int) {
+        lifecycleScope.launchWhenStarted {
+            viewModel.getListConversationsContactId(id)
+            viewModel.conversionsContact.observe(viewLifecycleOwner) {
+                when(it) {
+                    is Resource.Success -> {
+                        var conversationId = it.data!!.conversationId
+                        val bundle = bundleOf("conversationId" to conversationId)
+                        findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
+                    }
+                    is Resource.Error -> {
+                        requireContext().showToast()
+                    }
+                }
+            }
+        }
     }
+//    private fun createRoom(user: UserInforRequest?) {
+//         lifecycleScope.launchWhenResumed {
+//             val currentUserID = SharedPreferencesUtils.getCurrentUser()!!
+//             val singleConversation = RoomConversation(
+//                 conversationName = user!!.name,
+//                 conversationType = ConversationType.SINGLE.name,
+//                 contactIds = arrayListOf(currentUserID, user.id!!)
+//             )
+//             viewModel.postCreateRoom(singleConversation)
+//             viewModel.createRoom.collect {
+//                 when(it) {
+//                   is  Resource.Success -> {
+//
+//                     }
+//                 }
+//             }
+//         }
+//    }
 
     private fun deleteFriend(user: UserInforRequest, position:Int) {
         lifecycleScope.launchWhenResumed {

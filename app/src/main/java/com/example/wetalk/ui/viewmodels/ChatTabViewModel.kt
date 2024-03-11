@@ -16,10 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatTabViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
 
-    private var _conversions: MutableLiveData<Resource<GetAllListConversations>> =
+    private var _conversions: MutableLiveData<Resource<List<GetAllListConversations>>> =
         MutableLiveData(Resource.Loading())
-    val conversions: LiveData<Resource<GetAllListConversations>> get() = _conversions
-    private var conversionsResponse: GetAllListConversations? = null
+    val conversions: LiveData<Resource<List<GetAllListConversations>>> get() = _conversions
+    private var conversionsResponse: List<GetAllListConversations>? = null
 
     fun getAllListConversations() = viewModelScope.launch {
         try {
@@ -30,7 +30,8 @@ class ChatTabViewModel @Inject constructor(private val repository: TalkRepositor
         }
     }
 
-    private fun handleGetAllListConversations(response: Response<GetAllListConversations>): Resource<GetAllListConversations>? {
+    private fun handleGetAllListConversations(response: Response<List<GetAllListConversations>>):
+            Resource<List<GetAllListConversations>>? {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resource.Success(conversionsResponse ?: it)

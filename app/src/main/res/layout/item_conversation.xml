@@ -26,8 +26,6 @@
             android:src="@drawable/bg1" />
 
     </androidx.cardview.widget.CardView>
-
-
     <com.rey.material.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +53,6 @@
             app:fontFamily="@font/roboto_regular"
             android:text="Hello" />
     </com.rey.material.widget.LinearLayout>
-
 
     <RelativeLayout
         android:id="@+id/rl_add_friend"

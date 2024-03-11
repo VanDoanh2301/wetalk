@@ -29,7 +29,6 @@ class TopicViewModel @Inject constructor(private val repository: TalkRepository)
             val response = repository.getAllTopic()
             _topics.value = handleGetAllTopic(response)
         } catch (e: Exception) {
-            Log.e("GETALLTOPIC_API_ERROR", e.message.toString())
             _topics.value = Resource.Error(e.message.toString())
         }
     }
