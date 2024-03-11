@@ -22,8 +22,8 @@ class ChatHomeViewModel @Inject constructor(private val socketRepository: Socket
     private val _receivedMessage: MutableLiveData<ChatMessage> = MutableLiveData()
     val receivedMessage: LiveData<ChatMessage> get() = _receivedMessage
 
-    private val _sendMessage: MutableLiveData<Resource<HostResponse>> = MutableLiveData(Resource.Loading())
-    val sendMessage: LiveData<Resource<HostResponse>> get() = _sendMessage
+    private val _sendMessage: MutableLiveData<Resource<String>> = MutableLiveData(Resource.Loading())
+    val sendMessage: LiveData<Resource<String>> get() = _sendMessage
 
     fun connect() {
         viewModelScope.launch {
@@ -40,6 +40,7 @@ class ChatHomeViewModel @Inject constructor(private val socketRepository: Socket
         viewModelScope.launch {
             try {
                 socketRepository.sendMessage(chatMessage)
+                _sendMessage.value = Resource.Success("Sending message success")
             } catch (e: Exception) {
                 _sendMessage.value = Resource.Error("Sending message failed: ${e.message}")
             }

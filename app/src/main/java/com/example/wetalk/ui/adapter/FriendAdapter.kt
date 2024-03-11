@@ -11,10 +11,10 @@ import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.ItemFriendBinding
 
-class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.ViewHolder>(){
+class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
 
-    private var onItemClick: OnItemClick? =null
-    private var users : List<UserInforRequest>  = emptyList()
+    private var onItemClick: OnItemClick? = null
+    private var users: List<UserInforRequest> = emptyList()
 
     //SetUp ViewHolder
     inner class ViewHolder(var binding: ItemFriendBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -22,7 +22,7 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
          * [user] : Object UserInforRequest
          * [position] : Position item user in List
          */
-        fun bind(user : UserInforRequest, position: Int) {
+        fun bind(user: UserInforRequest, position: Int) {
             binding.apply {
                 //Set text name
                 userNameText.text = user.name
@@ -59,7 +59,7 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //Create view for adapter
         val inflater = LayoutInflater.from(context)
-        val binding =  ItemFriendBinding.inflate(inflater, parent, false)
+        val binding = ItemFriendBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -70,7 +70,7 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //Get user by position
-        val user  = users!![position]
+        val user = users!![position]
         holder.bind(user, position)
     }
 
@@ -78,20 +78,38 @@ class FriendAdapter(var context: Context) : RecyclerView.Adapter<FriendAdapter.V
     fun setOnItemClickAddFriend(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
+
     fun setOnItemViewUser(onItemClick: OnItemClick) {
         this.onItemClick = onItemClick
     }
-    interface OnItemClick{
-        fun  onItem(position: Int, user: UserInforRequest)
-        fun  onUser(position: Int, user: UserInforRequest)
+
+    fun removeItemAt(position: Int) {
+        if (position in 0 until users.size) {
+            val mutableList = users.toMutableList()
+            mutableList.removeAt(position)
+            users = mutableList.toList()
+            notifyItemRemoved(position)
+        }
     }
+
+    fun addItem(newItem: UserInforRequest) {
+        val mutableList = users.toMutableList()
+        mutableList.add(newItem)
+        users = mutableList.toList()
+        notifyItemInserted(users.size-1)
+    }
+
+    interface OnItemClick {
+        fun onItem(position: Int, user: UserInforRequest)
+        fun onUser(position: Int, user: UserInforRequest)
+    }
+
     fun submitList(newList: List<UserInforRequest>) {
         val diffCallback = ResultPregnancyDiffCallback(users!!, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         users = newList
         diffResult.dispatchUpdatesTo(this)
     }
-
 
 
     inner class ResultPregnancyDiffCallback(

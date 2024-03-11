@@ -135,8 +135,8 @@ object SharedPreferencesUtils {
     fun setCurrentUser(id:Int)  {
          mPref!!.edit().putInt(CURRENT_USER, id).apply()
     }
-    fun getCurrentUser() : Int {
-       return mPref!!.getInt(CURRENT_USER, 0)
+    fun getCurrentUser(): Int? {
+        return mPref?.getInt(CURRENT_USER, 0) ?: 0
     }
 
     fun clearROOM() {

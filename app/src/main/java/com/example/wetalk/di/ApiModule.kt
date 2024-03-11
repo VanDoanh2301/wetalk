@@ -10,6 +10,8 @@ import com.example.wetalk.repository.SocketRepository
 import com.example.wetalk.util.BASE_URL_1
 import com.example.wetalk.util.BASE_URL_2
 import com.example.wetalk.util.BASE_URL_3
+import com.example.wetalk.util.BASE_URL_4
+import com.example.wetalk.util.BASE_URL_SOCKET
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -100,6 +102,18 @@ object ApiModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
+
+    @Provides
+    @ViewModelScoped
+    @ApiFour
+    fun provideRetrofitFour(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_4)
+            .client(okHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
     @Provides
     @ViewModelScoped
     fun provideNewsApi(@ApiOne retrofit: Retrofit): ApiUser {
@@ -131,7 +145,7 @@ object ApiModule {
             webSocketFactory = okHttpClient
             query = "room= ${SharedPreferencesUtils.getRoom()}"
         }
-        return IO.socket("http://10.0.2.2:8085", options)
+        return IO.socket(BASE_URL_SOCKET, options)
     }
 
     @Provides

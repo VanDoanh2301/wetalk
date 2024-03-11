@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
+import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.Resource
@@ -32,6 +33,16 @@ class FriendTabViewModel @Inject constructor(private var repository: TalkReposit
         MutableStateFlow(Resource.Loading())
     val acceptFriend: StateFlow<Resource<HostResponse>> get() = _acceptFriend
     private var acceptResponse: HostResponse? = null
+
+    private var _deleteFriend: MutableStateFlow<Resource<HostResponse>> =
+        MutableStateFlow(Resource.Loading())
+    val deleteFriend: StateFlow<Resource<HostResponse>> get() = _deleteFriend
+    private var deleteResponse: HostResponse? = null
+
+    private var _createRoom: MutableStateFlow<Resource<HostResponse>> =
+        MutableStateFlow(Resource.Loading())
+    val createRoom: StateFlow<Resource<HostResponse>> get() = _createRoom
+    private var roomResponse: HostResponse? = null
 
     fun getAllFriendPending() = viewModelScope.launch {
         try {
@@ -90,5 +101,42 @@ class FriendTabViewModel @Inject constructor(private var repository: TalkReposit
         return Resource.Error((acceptResponse ?: response.message()).toString())
     }
 
+    fun postDeleteFriend(userId: Int) = viewModelScope.launch {
+        try {
+            val response = repository.deleteFriend(userId)
+            _deleteFriend.value = handleDeleteFriend(response)
+        } catch (e: Exception) {
+            _deleteFriend.value = Resource.Error(e.message.toString())
+        }
+    }
+
+    private fun handleDeleteFriend(response: Response<HostResponse>): Resource<HostResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(deleteResponse ?: it)
+            }
+        } else {
+        }
+        return Resource.Error((deleteResponse?: response.message()).toString())
+    }
+
+    fun postCreateRoom(roomConversation: RoomConversation) = viewModelScope.launch {
+        try {
+            val response = repository.createRoom(roomConversation)
+            _createRoom.value = handleCreateRoom(response)
+        } catch (e: Exception) {
+            _createRoom.value = Resource.Error(e.message.toString())
+        }
+    }
+
+    private fun handleCreateRoom(response: Response<HostResponse>): Resource<HostResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(roomResponse ?: it)
+            }
+        } else {
+        }
+        return Resource.Error((roomResponse ?: response.message()).toString())
+    }
 
 }

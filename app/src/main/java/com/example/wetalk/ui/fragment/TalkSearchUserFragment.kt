@@ -27,6 +27,7 @@ import com.example.wetalk.databinding.FragmentTalkSearchUserBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserSearchAdapter
 import com.example.wetalk.ui.viewmodels.SearchUserViewModel
+import com.example.wetalk.ui.viewmodels.TabFriendViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,7 @@ class TalkSearchUserFragment : Fragment() {
     private var _binding: FragmentTalkSearchUserBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchUserViewModel by viewModels()
+    private val friendViewModel: TabFriendViewModel by viewModels()
     private lateinit var adapter: UserSearchAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +56,12 @@ class TalkSearchUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSearch()
+        getFriend()
     }
 
+    private fun getFriend()  {
+
+    }
 
     private fun initSearch() {
         binding.rcvUser.layoutManager = LinearLayoutManager(requireContext())

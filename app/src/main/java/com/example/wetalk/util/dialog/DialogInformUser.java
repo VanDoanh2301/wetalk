@@ -31,7 +31,7 @@ public class DialogInformUser {
         dialog.setCanceledOnTouchOutside(builder.canceledOnTouchOutside);
         dialog.setCancelable(builder.cancelable);
         dialog.setContentView(R.layout.user_dialog);
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final Button btn_chat = (Button) dialog.findViewById(R.id.bt_chat);
         final Button btn_delete = (Button) dialog.findViewById(R.id.bt_delete);

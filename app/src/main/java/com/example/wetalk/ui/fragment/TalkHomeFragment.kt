@@ -24,6 +24,7 @@ import com.example.wetalk.ui.activity.DetectorActivity
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
+import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -116,7 +117,11 @@ class TalkHomeFragment : Fragment() {
                             .load(user?.avatarLocation)
                             .apply(RequestOptions.circleCropTransform())
                             .into(binding.imgAvata)
+
+                        user?.id?.let { it1 -> SharedPreferencesUtils.setCurrentUser(it1) }
+                        SharedPreferencesUtils.setString(EMAIL_USER, user!!.email)
                     }
+
 
                     is Resource.Error -> {
                         user = UserInforRequest(0, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", R.drawable.ic_avatar_error.toString())

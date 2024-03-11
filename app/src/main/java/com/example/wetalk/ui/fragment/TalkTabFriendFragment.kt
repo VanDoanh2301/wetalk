@@ -4,16 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wetalk.R
+import com.example.wetalk.data.model.objectmodel.ConversationType
+import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkTabPhoneBookBinding
 import com.example.wetalk.ui.adapter.FriendAdapter
 import com.example.wetalk.ui.adapter.PendingAdapter
 import com.example.wetalk.ui.viewmodels.FriendTabViewModel
+import com.example.wetalk.util.CURRENT_USER
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.dialog.DialogInformUser
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +40,7 @@ class TalkTabFriendFragment : Fragment() {
     private val viewModel: FriendTabViewModel by viewModels()
     private var userPending: ArrayList<UserInforRequest> = ArrayList()
     private var userFriend: ArrayList<UserInforRequest> = ArrayList()
+    private var isUpdate = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,6 +48,9 @@ class TalkTabFriendFragment : Fragment() {
         }
     }
 
+    fun updateUI(isUpdate:Boolean) {
+        this.isUpdate = isUpdate
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,50 +65,97 @@ class TalkTabFriendFragment : Fragment() {
         initData()
         onView()
 
+        if (isUpdate) {
+            init()
+            initData()
+        }
+
     }
+
     private fun onView() {
-         pendingAdapter.setOnItemClickAddFriend(object : PendingAdapter.OnItemClick{
-             override fun onItem(position: Int, user: UserInforRequest) {
-                 lifecycleScope.launchWhenResumed {
-                      user.id?.let { viewModel.postAcceptFriend(it) }
-                      viewModel.acceptFriend.collect {
-                         when (it) {
-                             is Resource.Loading -> {}
-                             is Resource.Success -> {  //get data if response success
-                                    pendingAdapter.removeItemAt(position)
-                                    initData()
-                             }
-                             is Resource.Error -> {
-                                  requireContext().showToast()
-                             }
-                         }
-                     }
+        pendingAdapter.setOnItemClickAddFriend(object : PendingAdapter.OnItemClick {
+            override fun onItem(position: Int, user: UserInforRequest) {
+                lifecycleScope.launchWhenResumed {
+                    user.id?.let { viewModel.postAcceptFriend(it) }
+                    viewModel.acceptFriend.collect {
+                        when (it) {
+                            is Resource.Loading -> {}
+                            is Resource.Success -> {  //get data if response success
+                                pendingAdapter.removeItemAt(position)
+                                friendAdapter.addItem(user)
+                            }
+                            is Resource.Error -> {
+                                requireContext().showToast()
+                            }
+                        }
+                    }
 
-                 }
-             }
+                }
+            }
 
-             override fun onUser(position: Int, user: UserInforRequest) {
+            override fun onUser(position: Int, user: UserInforRequest) {
 
-             }
+            }
 
-         })
+        })
 
-        friendAdapter.setOnItemViewUser(object : FriendAdapter.OnItemClick{
+        friendAdapter.setOnItemViewUser(object : FriendAdapter.OnItemClick {
             override fun onItem(position: Int, user: UserInforRequest) {
 
             }
 
             override fun onUser(position: Int, user: UserInforRequest) {
-                  DialogInformUser.Builder(requireContext())
-                      .onName(user.name)
-                      .onDate(if (user.age != null) user.age else "")
-                      .onAddress(if (user.address != null) user.address else "")
-                      .onPhone(if (user.phoneNumber != null) user.phoneNumber  else "")
-                      .onGender(if (user.gender.equals("MALE")) "Name" else "Nữ")
-                      .show()
+                DialogInformUser.Builder(requireContext())
+                    .onName(user.name)
+                    .onDate(if (user.age != null) user.age else "")
+                    .onAddress(if (user.address != null) user.address else "")
+                    .onPhone(if (user.phoneNumber != null) user.phoneNumber else "")
+                    .onGender(if (user.gender.equals("MALE")) "Name" else "Nữ")
+                    .onDelete {
+                        deleteFriend(user, position)
+                    }
+                    .onChat {
+                        val bundle = bundleOf("contactId" to user.id)
+                        findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
+                    }
+                    .show()
             }
 
         })
+    }
+
+    private fun createRoom(user: UserInforRequest?) {
+         lifecycleScope.launchWhenResumed {
+             val currentUserID = SharedPreferencesUtils.getCurrentUser()!!
+             val singleConversation = RoomConversation(
+                 conversationName = user!!.name,
+                 conversationType = ConversationType.SINGLE.name,
+                 contactIds = arrayListOf(currentUserID, user.id!!)
+             )
+             viewModel.postCreateRoom(singleConversation)
+             viewModel.createRoom.collect {
+                 when(it) {
+                   is  Resource.Success -> {
+
+                     }
+                 }
+             }
+         }
+    }
+
+    private fun deleteFriend(user: UserInforRequest, position:Int) {
+        lifecycleScope.launchWhenResumed {
+            user.id?.let { viewModel.postDeleteFriend(it) }
+            viewModel.deleteFriend.collect {
+                when (it) {
+                    is Resource.Success -> {
+                        requireContext().showToast("Xóa bạn thành công")
+                        friendAdapter.removeItemAt(position)
+
+                    }
+                }
+            }
+        }
     }
 
     private fun initData() {
@@ -114,9 +172,10 @@ class TalkTabFriendFragment : Fragment() {
                             userFriend.addAll(friends)
                             friendAdapter.submitList(userFriend)
                         } else {
-                            requireContext().showToast("Danh sách trống")
+
                         }
                     }
+
                     is Resource.Error -> {
                         requireContext().showToast()
                     }
@@ -135,7 +194,10 @@ class TalkTabFriendFragment : Fragment() {
 
                         }
                     }
-                    is Resource.Error -> {requireContext().showToast()}
+
+                    is Resource.Error -> {
+                        requireContext().showToast()
+                    }
                 }
             }
         }
@@ -158,13 +220,7 @@ class TalkTabFriendFragment : Fragment() {
         }
     }
 
-    private fun fetchDataError() : ArrayList<UserInforRequest> {
-        val fris : ArrayList<UserInforRequest> = ArrayList()
-        fris.add(UserInforRequest(0, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", ""))
-        fris.add(UserInforRequest(1, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", ""))
-        fris.add(UserInforRequest(2, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", ""))
-        return fris
-    }
+
     companion object {
         @JvmStatic
         fun newInstance() =

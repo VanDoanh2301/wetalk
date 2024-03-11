@@ -71,7 +71,10 @@ class TalkHomeChatFragment : Fragment() {
             }
             /** config onClick tab */
             btTabMess.setOnClickListener { setCurrentTab(pagerMain, 0) }
-            btTabFriend.setOnClickListener { setCurrentTab(pagerMain, 1) }
+            btTabFriend.setOnClickListener {
+                setCurrentTab(pagerMain, 1)
+                TalkTabFriendFragment.newInstance().updateUI(true)
+            }
             btTabProfile.setOnClickListener { setCurrentTab(pagerMain, 2) }
             /** config tab view bottom */
             pagerMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

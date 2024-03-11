@@ -1,6 +1,7 @@
 package com.example.wetalk.repository
 
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
+import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
@@ -9,6 +10,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
 import com.example.wetalk.data.model.objectmodel.QuestionSize
+import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterDTO
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
@@ -20,19 +22,23 @@ import com.example.wetalk.data.model.postmodel.UserPasswordDTO
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
+import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
 class TalkRepository @Inject constructor(
     private val mUser: ApiUser,
     private val mUp: ApiUpload,
-    private val mTopic: ApiTopicStudy
+    private val mTopic: ApiTopicStudy,
+    private val mChat: ApiChat
 ) {
     // Hàm đăng nhập người dùng
     suspend fun userLogin(post: LoginDTO): Response<LoginResponse> {
@@ -119,6 +125,10 @@ class TalkRepository @Inject constructor(
         return mUser.pendingFriend()
     }
 
+    suspend fun deleteFriend(userId: Int): Response<HostResponse> {
+        return mUser.deleteFriend(userId)
+    }
+
     //Get User by id
     suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
         return mUser.getUserById(userId)
@@ -144,5 +154,12 @@ class TalkRepository @Inject constructor(
         return mTopic.getCollectDataHistory()
     }
 
+    //Chat message
+    suspend fun createRoom(roomConversation: RoomConversation) : Response<HostResponse> {
+        return mChat.createRoom(roomConversation)
+    }
+    suspend fun getAllConversations() : Response<GetAllListConversations> {
+        return mChat.getAllConversations()
+    }
 
 }
