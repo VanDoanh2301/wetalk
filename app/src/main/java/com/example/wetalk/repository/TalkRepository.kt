@@ -9,6 +9,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
+import com.example.wetalk.data.model.objectmodel.Message
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.TopicRequest
@@ -29,6 +30,7 @@ import com.example.wetalk.data.remote.ApiUpload
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -162,5 +164,7 @@ class TalkRepository @Inject constructor(
     suspend fun roomChat(contactId:Int) : Response<GetAllListConversations> {
         return mChat.roomChat(contactId)
     }
-
+    suspend fun getAllMessage(conversationId:Int) : Response<List<Message>> {
+        return mChat.getAllMessage(conversationId)
+    }
 }

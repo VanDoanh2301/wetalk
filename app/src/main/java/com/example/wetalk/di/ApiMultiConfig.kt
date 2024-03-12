@@ -17,3 +17,7 @@ annotation class ApiThree
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ApiFour
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ApiFive

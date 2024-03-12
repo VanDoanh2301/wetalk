@@ -112,7 +112,6 @@ class TalkTabFriendFragment : Fragment() {
                     }
                     .onChat {
                         joinRoom(user.id!!)
-
                     }
                     .show()
             }
@@ -126,8 +125,8 @@ class TalkTabFriendFragment : Fragment() {
             viewModel.conversionsContact.observe(viewLifecycleOwner) {
                 when(it) {
                     is Resource.Success -> {
-                        var conversationId = it.data!!.conversationId
-                        val bundle = bundleOf("conversationId" to conversationId)
+                        var conversations = it.data!!
+                        val bundle = bundleOf("conversationId" to conversations)
                         findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
                     }
                     is Resource.Error -> {

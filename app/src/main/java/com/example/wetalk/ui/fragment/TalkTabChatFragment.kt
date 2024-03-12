@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkTabChatBinding
@@ -15,6 +18,7 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.ConversationAdapter
 import com.example.wetalk.ui.viewmodels.ChatTabViewModel
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -58,6 +62,17 @@ class TalkTabChatFragment() : Fragment() {
         binding.edtSearch.setOnClickListener {
             BaseDialogFragment.add(activity as MainActivity, TalkSearchUserFragment.newInstance())
         }
+        conversationAdapter.setOnClickItem(object : ConversationAdapter.OnClickItem{
+            override fun onClickItem(
+                position: Int,
+                getAllListConversations: GetAllListConversations
+            ) {
+                SharedPreferencesUtils.saveRoom(getAllListConversations.conversationId)
+                val bundle = bundleOf("conversationId" to getAllListConversations)
+                findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
+            }
+
+        })
     }
 
     private fun initView() {

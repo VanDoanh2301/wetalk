@@ -1,6 +1,7 @@
 package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
+import com.example.wetalk.data.model.objectmodel.Message
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import retrofit2.Response
@@ -19,4 +20,6 @@ interface ApiChat {
     @GET("conversations/{contactId}")
     suspend fun roomChat(@Path("contactId") contactId:Int) : Response<GetAllListConversations>
 
+    @GET("messages/{conversationId}")
+    suspend fun getAllMessage(@Path("conversationId") conversationId:Int) : Response<List<Message>>
 }

@@ -125,12 +125,12 @@ object SharedPreferencesUtils {
         mPref!!.edit().remove(ACCESS_TOKEN).apply()
     }
 
-    fun saveRoom(room: String) {
-        mPref!!.edit().putString(ROOM_CHAT, room).apply()
+    fun saveRoom(room: Int) {
+        mPref!!.edit().putInt(ROOM_CHAT, room).apply()
     }
 
-    fun getRoom(): String? {
-        return mPref!!.getString(ROOM_CHAT, null)
+    fun getRoom(): Int? {
+        return mPref!!.getInt(ROOM_CHAT, 0)
     }
     fun setCurrentUser(id:Int)  {
          mPref!!.edit().putInt(CURRENT_USER, id).apply()

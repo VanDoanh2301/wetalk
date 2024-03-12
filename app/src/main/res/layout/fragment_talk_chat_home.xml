@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     tools:context=".ui.fragment.TalkOpenChatFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-
         android:id="@+id/toolbar">
 
         <TextView
@@ -51,6 +51,7 @@
             android:src="@drawable/ic_video_call"
             android:layout_toLeftOf="@+id/select_call"
             android:padding="16dp"
+            app:tint ="#000000"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_centerVertical="true"
             />
@@ -72,16 +73,17 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_layout"
         android:layout_below="@id/toolbar"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp" />
 
     <com.rey.material.widget.RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
+        android:layout_marginBottom="16dp"
         android:id="@+id/bottom_layout">
 
         <com.rey.material.widget.ImageView
@@ -91,7 +93,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="12dp"
+            android:padding="14dp"
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_photo"
             app:tint="@color/blue_sea" />
@@ -101,20 +103,24 @@
         <com.rey.material.widget.RelativeLayout
             android:id="@+id/rlt_chat"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/img_open_photo"
             android:layout_toLeftOf="@id/message_send_btn"
             android:background="@drawable/edit_text_rounded_corner"
             android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:layout_margin="4dp"
             android:hint="Write message here" >
 
-            <com.rey.material.widget.TextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/chat_message_input"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:background="@color/transparent"
+                android:padding="14dp"
                 android:hint="Write message here"
+                android:textSize="14sp"
                 android:paddingStart="16dp" />
 
         </com.rey.material.widget.RelativeLayout>
@@ -125,8 +131,9 @@
             android:layout_height="?actionBarSize"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="12dp"
+            style="@style/ripple_btn_tab_widget_normal_10"
+            android:padding="14dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/ic_send"
             app:tint="@color/blue_sea" />

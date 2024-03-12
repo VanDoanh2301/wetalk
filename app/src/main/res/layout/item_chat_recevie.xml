@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rey.material.widget.LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rey.material.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="?actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
     android:gravity="start"
+    android:layout_marginTop="8dp"
     android:layout_gravity="start">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cd_avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:cardCornerRadius="36dp"
+        android:layout_gravity="bottom"
+        app:cardBackgroundColor="#FFFFFF"
+        android:background="#FFFFFF">
 
+        <com.rey.material.widget.ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/circular_bg"
+            android:src="@drawable/ic_person"
+            android:padding="8dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/off_white"
+            android:layout_centerInParent="true"
+            android:id="@+id/img_avata"
+            />
+
+    </androidx.cardview.widget.CardView>
     <com.rey.material.widget.LinearLayout
         android:id="@+id/mLinear"
         android:orientation="horizontal"
         android:background="@drawable/custom_bg_recevie"
-        android:padding="15dp"
-        android:layout_margin="20dp"
+        android:padding="14dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
 
         <com.rey.material.widget.TextView
             android:id="@+id/tv_receive"

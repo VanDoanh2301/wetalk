@@ -1,26 +1,49 @@
 package com.example.wetalk.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.ChatMessage
+import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.databinding.FragmentTalkChatHomeBinding
 import com.example.wetalk.ui.adapter.ChatMessageAdapter
 import com.example.wetalk.ui.viewmodels.ChatHomeViewModel
+import com.example.wetalk.ui.viewmodels.ChatStatus
+import com.example.wetalk.util.AVATAR_SENDER
+import com.example.wetalk.util.EMAIL_USER
+import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SEND_STATUS
+import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.Interceptor
+import okhttp3.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class TalkOpenChatFragment : Fragment() {
-    private var _binding: FragmentTalkChatHomeBinding ?= null
+    private var _binding: FragmentTalkChatHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var chatMessageAdapter: ChatMessageAdapter
     private var resultList: ArrayList<ChatMessage> = ArrayList()
-    private val viewModel:ChatHomeViewModel by viewModels()
+    private lateinit var conversations: GetAllListConversations
+    private var TAG = "TalkOpenChatFragment"
+    private val viewModel: ChatHomeViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        conversations = arguments?.getParcelable("conversationId")!!
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,29 +56,156 @@ class TalkOpenChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatMessageAdapter = ChatMessageAdapter(requireContext())
+
         init()
-        initChat()
+        initSender()
+        initStatus()
+        initMessage()
+        viewModel.connectSocket()
+        viewModel.chatMessages.observe(viewLifecycleOwner) {
+            chatMessageAdapter.addItem(it)
+        }
+        binding.messageSendBtn.setOnClickListener {
+            var chatMessage = ChatMessage(
+                SharedPreferencesUtils.getCurrentUser()!!,
+                binding.chatMessageInput.text.toString(),
+                "TEXT",
+                null
+            )
+            chatMessageAdapter.addItem(chatMessage)
+            viewModel.sendMessageClient(chatMessage)
+        }
+        binding.backBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
+
+    private fun initMessage() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.getAllMessage(conversations.conversationId)
+            viewModel.messages.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Resource.Success -> {
+                        var messages = it.data
+                        messages!!.sortedBy { message ->
+                            // Chuyển đổi chuỗi thời gian sang đối tượng LocalDateTime
+                            val dateTimeString = message.created
+                            val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                            val dateTime = LocalDateTime.parse(dateTimeString, formatter)
+
+                            val hour = dateTime.hour
+                            val minute = dateTime.minute
+                            val second = dateTime.second
+                            val millisecond = dateTime.nano / 1_000_000 // Chuyển đổi từ nanosecond sang millisecond
+
+
+                            listOf(hour, minute, second, millisecond)
+                        }
+                        messages!!.forEach { message ->
+                            val chatMessage = ChatMessage(
+                                message.contactId ?: -1,
+                                message.content ?: "",
+                                message.messageType ?: "TEXT",
+                                message.mediaLocation ?: null
+                            )
+                            resultList.add(chatMessage)
+
+                        }
+                        chatMessageAdapter.submitList(resultList)
+                        binding.chatRecyclerView.adapter = chatMessageAdapter
+                        val lastPosition = resultList.size - 1
+                        binding.chatRecyclerView.scrollToPosition(lastPosition)
+
+
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initStatus() {
+        viewModel.chatStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                ChatStatus.ERROR -> {
+                    SharedPreferencesUtils.setString(SEND_STATUS, "error")
+                }
+
+                ChatStatus.DONE -> {
+                    SharedPreferencesUtils.setString(SEND_STATUS, "done")
+                }
+
+                ChatStatus.LOADING -> {
+
+                }
+            }
+        }
+    }
+
+    private fun initSender() {
+        val senderUser = conversations.grouAttachConvResList.filter {
+            it.email != SharedPreferencesUtils.getString(
+                EMAIL_USER
+            )
+        }
+        val avataSender = senderUser.get(0).avatarLocation
+        if (avataSender != null) {
+            Glide.with(requireContext()).load(avataSender).into(binding.profilePicLayout.imgAvata)
+
+        } else {
+            binding.profilePicLayout.imgAvata.setImageResource(R.drawable.ic_avatar_error)
+        }
+        SharedPreferencesUtils.setString(
+            AVATAR_SENDER,
+            if (avataSender != null) avataSender else ""
+        )
+        val nameSender = senderUser.get(0).contactName
+        binding.otherUsername.text = nameSender
+    }
+
     private fun init() {
         binding.apply {
             val linearLayoutManager = LinearLayoutManager(requireContext())
             chatRecyclerView.layoutManager = linearLayoutManager
-            chatRecyclerView.adapter = chatMessageAdapter
             chatMessageAdapter.submitList(resultList)
-            chatMessageAdapter.registerAdapterDataObserver(object :
-                RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    super.onItemRangeInserted(positionStart, itemCount)
-                    chatRecyclerView.smoothScrollToPosition(0)
+            chatRecyclerView.adapter = chatMessageAdapter
+
+            val scrollListener = object : RecyclerView.OnChildAttachStateChangeListener {
+                override fun onChildViewAttachedToWindow(view: View) {
+                    // Kiểm tra nếu view đính kèm là item cuối cùng trong danh sách
+                    val lastPosition = resultList.size - 1
+                    if (binding.chatRecyclerView.getChildAdapterPosition(view) == lastPosition) {
+                        // Cuộn xuống vị trí mới
+                        binding.chatRecyclerView.post {
+                            binding.chatRecyclerView.smoothScrollToPosition(lastPosition)
+                        }
+                    }
                 }
-            })
+
+                override fun onChildViewDetachedFromWindow(view: View) {
+                    // Không cần xử lý
+                }
+            }
+            chatRecyclerView.addOnChildAttachStateChangeListener(scrollListener)
         }
     }
-    private fun initChat() {
-       binding.apply {
 
-       }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
     }
 
+    class TokenInterceptor(private val authToken: String) : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalRequest = chain.request()
+            val requestWithToken = originalRequest.newBuilder()
+                .header("Authorization", "Bearer $authToken")
+                .build()
+            return chain.proceed(requestWithToken)
+        }
+    }
 }

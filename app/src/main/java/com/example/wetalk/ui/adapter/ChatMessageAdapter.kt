@@ -2,13 +2,25 @@ package com.example.wetalk.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.ChatMessage
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.ItemChatRecevieBinding
 import com.example.wetalk.databinding.ItemChatSendBinding
+import com.example.wetalk.util.AVATAR_SENDER
+import com.example.wetalk.util.SEND_STATUS
 import com.example.wetalk.util.SharedPreferencesUtils
+import com.google.android.exoplayer2.C
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ChatMessageAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     private val TYPE_1 = 1
@@ -23,13 +35,36 @@ class ChatMessageAdapter(var context: Context) : RecyclerView.Adapter<RecyclerVi
         fun bind(position: Int, chatMessage: ChatMessage) {
             binding.apply {
                   tvSend.text = chatMessage.content
+                  val status = SharedPreferencesUtils.getString(SEND_STATUS)
+                if (status.equals("done")) {
+                    tvStatus.visibility = View.VISIBLE
+                    CoroutineScope(Dispatchers.Main).launch {
+                        delay(2000) // Đợi 2 giây
+                        tvStatus.visibility = View.GONE
+                    }
+                } else {
+                    tvStatus.visibility = View.GONE
+                }
             }
         }
     }
     inner class ItemChat2ViewHolder(var binding: ItemChatRecevieBinding) : RecyclerView.ViewHolder(binding.root) {
+        private var isAvatarSet = false
         fun bind(position: Int, chatMessage: ChatMessage) {
             binding.apply {
                 tvReceive.text = chatMessage.content
+                if (position == 0 || resultList[position - 1].id != chatMessage.id) {
+                    val avatar = SharedPreferencesUtils.getString(AVATAR_SENDER)
+                    if (avatar.isNullOrEmpty()) {
+                        imgAvata.setImageResource(R.drawable.ic_avatar_error)
+                    } else {
+                        Glide.with(context).load(avatar).into(imgAvata)
+                    }
+                    isAvatarSet = true
+                    cdAvatar.visibility = View.VISIBLE
+                } else {
+                    cdAvatar.visibility = View.INVISIBLE
+                }
             }
         }
     }
@@ -41,7 +76,12 @@ class ChatMessageAdapter(var context: Context) : RecyclerView.Adapter<RecyclerVi
             TYPE_1
         }
     }
-
+    fun addItem(newItem: ChatMessage) {
+        val mutableList = resultList.toMutableList()
+        mutableList.add(newItem)
+        resultList = mutableList.toList()
+        notifyItemInserted(resultList.size)
+    }
     fun submitList(newList: List<ChatMessage>) {
         val diffCallback = ResultPregnancyDiffCallback(resultList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)

@@ -14,7 +14,7 @@ data class GetAllUserFriendRequest(
 
 @Parcelize
 data class UserInforRequest(
-    @SerializedName("id")
+    @SerializedName("userId")
     var id : Int?,
     @SerializedName("name")
     var name: String,

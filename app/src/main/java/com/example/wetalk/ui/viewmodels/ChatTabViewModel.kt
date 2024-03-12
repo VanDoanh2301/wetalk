@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatTabViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
-
     private var _conversions: MutableLiveData<Resource<List<GetAllListConversations>>> =
         MutableLiveData(Resource.Loading())
     val conversions: LiveData<Resource<List<GetAllListConversations>>> get() = _conversions

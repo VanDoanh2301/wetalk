@@ -5,8 +5,8 @@ import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
-import com.example.wetalk.data.remote.SocketManager
-import com.example.wetalk.repository.SocketRepository
+import com.example.wetalk.ui.viewmodels.ChatHomeViewModel
+import com.example.wetalk.ui.viewmodels.ChatTabViewModel
 import com.example.wetalk.util.BASE_URL_1
 import com.example.wetalk.util.BASE_URL_2
 import com.example.wetalk.util.BASE_URL_3
@@ -116,6 +116,19 @@ object ApiModule {
     }
     @Provides
     @ViewModelScoped
+    @ApiFive
+    fun provideRetrofitFive(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_SOCKET)
+            .client(okHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+
+    @Provides
+    @ViewModelScoped
     fun provideNewsApi(@ApiOne retrofit: Retrofit): ApiUser {
         return retrofit.create(ApiUser::class.java)
     }
@@ -137,22 +150,6 @@ object ApiModule {
         return retrofit.create(ApiChat::class.java)
     }
 
-    @Provides
-    @ViewModelScoped
-    fun provideSocketIO(okHttpClient: OkHttpClient): Socket {
-        val options = IO.Options().apply {
-            callFactory = okHttpClient
-            webSocketFactory = okHttpClient
-            query = "room= ${SharedPreferencesUtils.getRoom()}"
-        }
-        return IO.socket(BASE_URL_SOCKET, options)
-    }
-
-    @Provides
-    @ViewModelScoped
-    fun provideSocketManager(socket: Socket): SocketManager {
-        return SocketRepository(socket)
-    }
 }
 
 

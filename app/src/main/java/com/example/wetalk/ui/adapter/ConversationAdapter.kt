@@ -20,6 +20,10 @@ class ConversationAdapter(var context: Context) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
     private var users: List<GetAllListConversations> = emptyList()
 
+    private var onClickItem : OnClickItem ?= null
+    fun setOnClickItem(onClickItem: OnClickItem) {
+        this.onClickItem = onClickItem
+    }
     inner class ViewHolder(var binding: ItemConversationBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: GetAllListConversations, position: Int) {
@@ -43,6 +47,12 @@ class ConversationAdapter(var context: Context) :
                         imgUp.setImageResource(R.drawable.ic_avatar_error)
                     } else {
                         Glide.with(context).load(firstElement.avatarLocation).into(imgUp)
+                    }
+
+                    openChat.setOnClickListener {
+                        if (onClickItem != null) {
+                            onClickItem!!.onClickItem(position, user)
+                        }
                     }
 
                 } else {
@@ -100,5 +110,9 @@ class ConversationAdapter(var context: Context) :
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition] == newList[newItemPosition]
         }
+    }
+
+    interface OnClickItem{
+        fun onClickItem(position: Int, getAllListConversations: GetAllListConversations)
     }
 }
