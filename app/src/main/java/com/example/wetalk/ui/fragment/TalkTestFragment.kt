@@ -168,11 +168,9 @@ class TalkTestFragment : Fragment() {
             this
         )
         { requestKey, bundle ->
-
             val result = bundle.getInt("index")
             val question = bundle.getParcelable<TestQuest>("question")!!
             updateTestCurrentIndex(question, result)
-
 
         }
 

@@ -38,7 +38,7 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
 
     init {
         val options = IO.Options().apply {
-            query = "conversationId=${SharedPreferencesUtils.getRoom()}"
+            query = "conversationId=${SharedPreferencesUtils.getRoom()}"+"&contactId=${SharedPreferencesUtils.getCurrentUser()}"
         }
         try {
             socket = IO.socket(BASE_URL_SOCKET, options)
@@ -82,6 +82,7 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
         jsonObject.put("content", chatMessage.content)
         jsonObject.put("messageType", chatMessage.messageType)
         jsonObject.put("mediaLocation", chatMessage.mediaLocation)
+        socket.emit("send_message", jsonObject)
         socket.emit("send_message", jsonObject, Ack { args ->
             if (args.isNotEmpty()) {
                 _chatStatus.postValue(ChatStatus.ERROR)
