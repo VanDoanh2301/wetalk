@@ -87,20 +87,6 @@ class TalkOpenChatFragment : Fragment() {
                 when (it) {
                     is Resource.Success -> {
                         var messages = it.data
-                        messages!!.sortedBy { message ->
-                            // Chuyển đổi chuỗi thời gian sang đối tượng LocalDateTime
-                            val dateTimeString = message.created
-                            val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-                            val dateTime = LocalDateTime.parse(dateTimeString, formatter)
-
-                            val hour = dateTime.hour
-                            val minute = dateTime.minute
-                            val second = dateTime.second
-                            val millisecond = dateTime.nano / 1_000_000 // Chuyển đổi từ nanosecond sang millisecond
-
-
-                            listOf(hour, minute, second, millisecond)
-                        }
                         messages!!.forEach { message ->
                             val chatMessage = ChatMessage(
                                 message.contactId ?: -1,
@@ -109,7 +95,6 @@ class TalkOpenChatFragment : Fragment() {
                                 message.mediaLocation ?: null
                             )
                             resultList.add(chatMessage)
-
                         }
                         chatMessageAdapter.submitList(resultList)
                         binding.chatRecyclerView.adapter = chatMessageAdapter

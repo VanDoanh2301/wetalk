@@ -16,21 +16,21 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ApiTopicStudy {
-    @GET("topics")
+    @GET("topics/all")
     suspend fun getAllTopic() : Response<GetAllTopic>
     @GET("questions/{topicId}")
     suspend fun getAllQuestionByTopicID(@Path("topicId") topicId:Int) : Response<GetAllQuestion>
-    @POST("questions/get-by-topic")
+    @POST("questions/limits-topic")
     suspend fun getAllQuestionByTopicId(@Body questionSize: QuestionSize) : Response<GetAllQuestion>
     @POST("vocabularies")
     suspend fun postVocabularies(@Body topicDTO: TopicRequest) : Response<HostResponse>
-    @POST("vocabularies/api/search")
+    @POST("vocabularies/search")
     suspend fun searchVocabularies(@Body vocabulariesDTO: VocabulariesDTO) : Response<GetAllVocabulariesRequest>
     @GET("vocabularies/{topicId}")
     suspend fun getVocabulariesById(@Path("topicId") topicId:Int)  : Response<GetAllVocabulariesByIdRequest>
     @DELETE("/vocabularies/{id}")
     suspend fun deleteVocabularies(@Path("Id") id:Int) : Response<HostResponse>
-    @GET("collect-data/get-history")
+    @GET("collect-data/all-me")
     suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest>
 
 }

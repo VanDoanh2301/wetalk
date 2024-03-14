@@ -11,10 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
+import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.LoginDTO
 import com.example.wetalk.databinding.FragmentTalkLoginBinding
 import com.example.wetalk.ui.viewmodels.LoginViewModel
+import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
+import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class TalkLoginFragment : Fragment() {
     // View model initialization using Hilt's viewModels delegate
     private val viewModel: LoginViewModel by viewModels()
+    private val viewModelProfile: ProfileHomeViewModel by viewModels()
     // Binding object for this fragment
     private var _binding: FragmentTalkLoginBinding? = null
     private val binding get() = _binding!!
@@ -56,8 +62,35 @@ class TalkLoginFragment : Fragment() {
         }
         // Initializing views and setting up click listeners
         initViews()
-        // Observing login response
-        observeLoginResponse()
+
+
+    }
+    private fun getDataUser() {
+        lifecycleScope.launchWhenStarted {
+            val isAccess = SharedPreferencesUtils.getString("isLogin")
+            viewModelProfile.getUser()
+            viewModelProfile.getInforUser.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+                        val newUser = it.data!!
+                        val role = newUser.role
+                        if (role.equals("ADMIN")) {
+
+                        } else {
+                            val bundle = bundleOf("isUser" to true)
+                            findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
+                            findNavController().popBackStack(R.id.talkHomeFragment, false)
+                        }
+                    }
+                    is Resource.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -88,9 +121,8 @@ class TalkLoginFragment : Fragment() {
                     is Resource.Success -> {
                         resource.data?.accessToken?.let { SharedPreferencesUtils.saveToken(it) }
                         binding.loginProgressBar.visibility = View.VISIBLE
-                        val bundle = bundleOf("isUser" to true)
-                        findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)
-                        findNavController().popBackStack(R.id.talkHomeFragment, false)
+                        getDataUser()
+
                     }
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
@@ -112,10 +144,10 @@ class TalkLoginFragment : Fragment() {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             val userLoginDTO = LoginDTO(email, password)
             viewModel.login(userLoginDTO)
+            observeLoginResponse()
         } else {
             Toast.makeText(requireContext(), "Email Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show()
         }
-        binding.loginProgressBar.visibility = View.VISIBLE
     }
 
     /**
