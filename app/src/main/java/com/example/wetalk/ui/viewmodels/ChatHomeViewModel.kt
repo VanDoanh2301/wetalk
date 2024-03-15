@@ -5,9 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.ChatMessage
 import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
 import com.example.wetalk.data.model.objectmodel.Message
+import com.example.wetalk.data.model.objectmodel.MessagePaging
+import com.example.wetalk.paging.MessagePagingSource
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.BASE_URL_SOCKET
 import com.example.wetalk.util.Resource
@@ -17,6 +24,8 @@ import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Response
@@ -32,13 +41,21 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
     val chatMessages: LiveData<ChatMessage> get() = _chatMessages
     private val _chatStatus = MutableLiveData<ChatStatus>()
     val chatStatus: LiveData<ChatStatus> get() = _chatStatus
-    private var _messages  = MutableLiveData<Resource<List<Message>>>(Resource.Loading())
-    val messages: LiveData<Resource<List<Message>>> get() =  _messages
-    private var messageResponse : List<Message> ?= null
+    private var _messages = MutableLiveData<Resource<List<Message>>>(Resource.Loading())
+    val messages: LiveData<Resource<List<Message>>> get() = _messages
+    private var messageResponse: List<Message>? = null
+
+
+    fun loadMore(messagePaging: MessagePaging): LiveData<PagingData<Message>> {
+        val pagingData = repository.getLimitMessages(messagePaging).cachedIn(viewModelScope)
+        return pagingData
+    }
+
 
     init {
         val options = IO.Options().apply {
-            query = "conversationId=${SharedPreferencesUtils.getRoom()}"+"&contactId=${SharedPreferencesUtils.getCurrentUser()}"
+            query =
+                "conversationId=${SharedPreferencesUtils.getRoom()}" + "&contactId=${SharedPreferencesUtils.getCurrentUser()}"
         }
         try {
             socket = IO.socket(BASE_URL_SOCKET, options)
@@ -47,8 +64,8 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
             e.printStackTrace()
             _chatStatus.value = ChatStatus.ERROR
         }
-    }
 
+    }
     fun connectSocket() {
         socket.on(Socket.EVENT_CONNECT, onConnect)
         socket.on("get_message", onMessageReceived)
@@ -82,7 +99,6 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
         jsonObject.put("content", chatMessage.content)
         jsonObject.put("messageType", chatMessage.messageType)
         jsonObject.put("mediaLocation", chatMessage.mediaLocation)
-        socket.emit("send_message", jsonObject)
         socket.emit("send_message", jsonObject, Ack { args ->
             if (args.isNotEmpty()) {
                 _chatStatus.postValue(ChatStatus.ERROR)
@@ -92,7 +108,8 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
         })
 
     }
-    fun getAllMessage(conversationId:Int) = viewModelScope.launch {
+
+    fun getAllMessage(conversationId: Int) = viewModelScope.launch {
         try {
             val response = repository.getAllMessage(conversationId)
             _messages.value = handleGetAllMessages(response)

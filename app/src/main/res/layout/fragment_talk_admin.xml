@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.TalkAdminFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.rey.material.widget.ImageView
+                    android:id="@+id/img_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/top_background" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView3"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/white"
+                    android:elevation="8dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="60dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img_view">
+
+                    <com.rey.material.widget.ImageView
+                        android:id="@+id/img_avata"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_avatar_error" />
+
+                </androidx.cardview.widget.CardView>
+
+                <com.rey.material.widget.TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Hello name"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                    app:layout_constraintStart_toStartOf="@+id/cardView3"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+                <com.rey.material.widget.TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="TextView@gmaiil.com"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_name"
+                    app:layout_constraintStart_toStartOf="@+id/tv_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+                <com.rey.material.widget.TextView
+                    android:id="@+id/edt_search"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="-32dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/bg_custom_home"
+                    android:drawableEnd="@drawable/search_icon"
+                    android:drawablePadding="8dp"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:hint="Từ vựng..."
+                    android:inputType="textPersonName"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="4dp"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_view" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.rey.material.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/background_row_main"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraint">
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraint_1">
+
+                    <com.rey.material.widget.LinearLayout
+                        style="@style/ripple_btn_tab_widget_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_margin="16dp"
+                                android:padding="4dp"
+                                android:tint="#FF727DEF"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_topic" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Thêm\nchủ đề"
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        style="@style/ripple_btn_tab_widget_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_home_1" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Thêm\ntừ vựng"
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            style="@style/ripple_btn_tab_widget_normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_margin="16dp"
+                                android:padding="4dp"
+                                android:tint="#FF727DEF"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_accept_video" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Duyệt\nvideo"
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                </com.rey.material.widget.LinearLayout>
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+
+                    >
+
+                    <com.rey.material.widget.LinearLayout
+                        style="@style/ripple_btn_tab_widget_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_margin="16dp"
+                                android:padding="4dp"
+                                android:tint="#FF727DEF"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_account" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Quản lí\ntài khoản"
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        style="@style/ripple_btn_tab_widget_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_margin="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_home_2" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Báo cáo người dùng "
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            style="@style/ripple_btn_tab_widget_normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp">
+
+                            <com.rey.material.widget.ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_margin="16dp"
+                                android:padding="4dp"
+                                android:tint="#FF727DEF"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/baseline_home_24" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Quay lại\ntrang chủ"
+                            android:textColor="#2e3d6d"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                </com.rey.material.widget.LinearLayout>
+            </com.rey.material.widget.LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</com.rey.material.widget.FrameLayout>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +15,10 @@ import com.bumptech.glide.Glide
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.ChatMessage
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
+import com.example.wetalk.data.model.objectmodel.MessagePaging
 import com.example.wetalk.databinding.FragmentTalkChatHomeBinding
 import com.example.wetalk.ui.adapter.ChatMessageAdapter
+import com.example.wetalk.ui.adapter.MessagePagingAdapter
 import com.example.wetalk.ui.viewmodels.ChatHomeViewModel
 import com.example.wetalk.ui.viewmodels.ChatStatus
 import com.example.wetalk.util.AVATAR_SENDER
@@ -23,7 +26,9 @@ import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SEND_STATUS
 import com.example.wetalk.util.SharedPreferencesUtils
+import com.google.android.exoplayer2.C
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.time.LocalDateTime
@@ -55,7 +60,7 @@ class TalkOpenChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatMessageAdapter = ChatMessageAdapter(requireContext())
+        chatMessageAdapter =  ChatMessageAdapter(requireContext())
 
         init()
         initSender()
@@ -63,7 +68,7 @@ class TalkOpenChatFragment : Fragment() {
         initMessage()
         viewModel.connectSocket()
         viewModel.chatMessages.observe(viewLifecycleOwner) {
-            chatMessageAdapter.addItem(it)
+
         }
         binding.messageSendBtn.setOnClickListener {
             var chatMessage = ChatMessage(
@@ -73,6 +78,8 @@ class TalkOpenChatFragment : Fragment() {
                 null
             )
             chatMessageAdapter.addItem(chatMessage)
+            binding.chatRecyclerView.scrollToPosition(0)
+
             viewModel.sendMessageClient(chatMessage)
         }
         binding.backBtn.setOnClickListener {
@@ -96,10 +103,21 @@ class TalkOpenChatFragment : Fragment() {
                             )
                             resultList.add(chatMessage)
                         }
-                        chatMessageAdapter.submitList(resultList)
-                        binding.chatRecyclerView.adapter = chatMessageAdapter
-                        val lastPosition = resultList.size - 1
-                        binding.chatRecyclerView.scrollToPosition(lastPosition)
+                        binding.apply {
+                            val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+                            linearLayoutManager.stackFromEnd = false
+                            chatMessageAdapter.submitList(resultList)
+                            chatRecyclerView.layoutManager = linearLayoutManager
+                            chatRecyclerView.adapter = chatMessageAdapter
+                            chatRecyclerView.setHasFixedSize(true)
+
+
+                        }
+
+//                        chatMessageAdapter.submitList(resultList)
+//                        binding.chatRecyclerView.adapter = chatMessageAdapter
+//                        val lastPosition = resultList.size - 1
+//                        binding.chatRecyclerView.scrollToPosition(lastPosition)
 
 
                     }
@@ -109,7 +127,30 @@ class TalkOpenChatFragment : Fragment() {
                     }
                 }
             }
+//            viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+//                if (isLoading) {
+//                    binding.progress.visibility = View.VISIBLE
+//                } else {
+//                    // Ẩn ProgressBar
+//                    binding.progress.visibility = View.GONE
+//                }
+//            }
+//            val messagePaging = MessagePaging(1, 10, conversations.conversationId)
+//
+//            viewModel.loadMore(messagePaging).observe(requireActivity(), Observer {
+//                binding.apply {
+//                    val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+//                    chatMessageAdapter.submitData(lifecycle, it)
+//                    chatRecyclerView.layoutManager = linearLayoutManager
+//                    chatRecyclerView.adapter = chatMessageAdapter
+//                    chatRecyclerView.setHasFixedSize(true)
+//
+//                }
+//            })
         }
+
+
+
     }
 
     private fun initStatus() {
@@ -153,28 +194,26 @@ class TalkOpenChatFragment : Fragment() {
 
     private fun init() {
         binding.apply {
-            val linearLayoutManager = LinearLayoutManager(requireContext())
-            chatRecyclerView.layoutManager = linearLayoutManager
-            chatMessageAdapter.submitList(resultList)
-            chatRecyclerView.adapter = chatMessageAdapter
 
-            val scrollListener = object : RecyclerView.OnChildAttachStateChangeListener {
-                override fun onChildViewAttachedToWindow(view: View) {
-                    // Kiểm tra nếu view đính kèm là item cuối cùng trong danh sách
-                    val lastPosition = resultList.size - 1
-                    if (binding.chatRecyclerView.getChildAdapterPosition(view) == lastPosition) {
-                        // Cuộn xuống vị trí mới
-                        binding.chatRecyclerView.post {
-                            binding.chatRecyclerView.smoothScrollToPosition(lastPosition)
-                        }
-                    }
-                }
 
-                override fun onChildViewDetachedFromWindow(view: View) {
-                    // Không cần xử lý
-                }
-            }
-            chatRecyclerView.addOnChildAttachStateChangeListener(scrollListener)
+//            val scrollListener = object : RecyclerView.OnChildAttachStateChangeListener {
+//                override fun onChildViewAttachedToWindow(view: View) {
+//                    // Kiểm tra nếu view đính kèm là item cuối cùng trong danh sách
+//                    val lastPosition = resultList.size - 1
+//                    if (binding.chatRecyclerView.getChildAdapterPosition(view) == lastPosition) {
+//                        // Cuộn xuống vị trí mới
+//                        binding.chatRecyclerView.post {
+//                            binding.chatRecyclerView.smoothScrollToPosition(lastPosition)
+//                        }
+//                    }
+//                }
+//
+//                override fun onChildViewDetachedFromWindow(view: View) {
+//                    // Không cần xử lý
+//                }
+//            }
+//            chatRecyclerView.addOnChildAttachStateChangeListener(scrollListener)
+//        }
         }
     }
 

@@ -26,3 +26,12 @@ data class Message(
     @SerializedName("contactId")
     val contactId: Int
 )
+
+data class MessagePaging(
+    @SerializedName("page")
+    var page: Int,
+    @SerializedName("size")
+    var size: Int,
+    @SerializedName("conversationId")
+var conversationId: Int
+)

@@ -35,16 +35,16 @@ class ChatMessageAdapter(var context: Context) : RecyclerView.Adapter<RecyclerVi
         fun bind(position: Int, chatMessage: ChatMessage) {
             binding.apply {
                   tvSend.text = chatMessage.content
-                  val status = SharedPreferencesUtils.getString(SEND_STATUS)
-                if (status.equals("done")) {
-                    tvStatus.visibility = View.VISIBLE
-                    CoroutineScope(Dispatchers.Main).launch {
-                        delay(2000) // Đợi 2 giây
-                        tvStatus.visibility = View.GONE
-                    }
-                } else {
-                    tvStatus.visibility = View.GONE
-                }
+//                  val status = SharedPreferencesUtils.getString(SEND_STATUS)
+//                if (status.equals("done")) {
+//                    tvStatus.visibility = View.VISIBLE
+//                    CoroutineScope(Dispatchers.Main).launch {
+//                        delay(2000) // Đợi 2 giây
+//                        tvStatus.visibility = View.GONE
+//                    }
+//                } else {
+//                    tvStatus.visibility = View.GONE
+//                }
             }
         }
     }
@@ -78,9 +78,9 @@ class ChatMessageAdapter(var context: Context) : RecyclerView.Adapter<RecyclerVi
     }
     fun addItem(newItem: ChatMessage) {
         val mutableList = resultList.toMutableList()
-        mutableList.add(newItem)
+        mutableList.add(0, newItem)
         resultList = mutableList.toList()
-        notifyItemInserted(resultList.size)
+        notifyItemInserted(0)
     }
     fun submitList(newList: List<ChatMessage>) {
         val diffCallback = ResultPregnancyDiffCallback(resultList, newList)

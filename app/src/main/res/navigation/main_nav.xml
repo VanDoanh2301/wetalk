@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_talkLoginFragment_to_talkHomeFragment"
             app:destination="@id/talkHomeFragment" />
+        <action
+            android:id="@+id/action_talkLoginFragment_to_talkAdminFragment"
+            app:destination="@id/talkAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkRegisterFragment"
@@ -226,4 +229,9 @@
         android:name="com.example.wetalk.ui.fragment.TalkHistoryVocabulariesFragment"
         android:label="fragment_talk_history_vocabularies"
         tools:layout="@layout/fragment_talk_history_vocabularies" />
+    <fragment
+        android:id="@+id/talkAdminFragment"
+        android:name="com.example.wetalk.ui.fragment.TalkAdminFragment"
+        android:label="fragment_talk_admin"
+        tools:layout="@layout/fragment_talk_admin" />
 </navigation>

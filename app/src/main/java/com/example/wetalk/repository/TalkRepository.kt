@@ -1,5 +1,8 @@
 package com.example.wetalk.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
@@ -10,6 +13,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
 import com.example.wetalk.data.model.objectmodel.Message
+import com.example.wetalk.data.model.objectmodel.MessagePaging
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.TopicRequest
@@ -27,9 +31,11 @@ import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.paging.MessagePagingSource
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Path
 import javax.inject.Inject
 
@@ -167,4 +173,12 @@ class TalkRepository @Inject constructor(
     suspend fun getAllMessage(conversationId:Int) : Response<List<Message>> {
         return mChat.getAllMessage(conversationId)
     }
+    suspend fun getMessagesLimit(messagePaging: MessagePaging) : Response<List<Message>> {
+        return mChat.getMessagesLimit(messagePaging)
+    }
+    fun getLimitMessages(messagePaging: MessagePaging) = Pager(
+        config = PagingConfig(pageSize = 10, maxSize = 100),
+        pagingSourceFactory = { MessagePagingSource(mChat, messagePaging) }
+    ).liveData
+
 }

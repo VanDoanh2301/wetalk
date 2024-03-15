@@ -2,6 +2,7 @@ package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.Message
+import com.example.wetalk.data.model.objectmodel.MessagePaging
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import retrofit2.Response
@@ -22,4 +23,7 @@ interface ApiChat {
 
     @GET("messages/{conversationId}")
     suspend fun getAllMessage(@Path("conversationId") conversationId:Int) : Response<List<Message>>
+
+    @POST("messages/limits-conversation")
+    suspend fun getMessagesLimit(@Body messagePaging: MessagePaging) : Response<List<Message>>
 }
