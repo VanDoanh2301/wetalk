@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginRight
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +32,7 @@ import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
+import com.example.wetalk.databinding.DialogTopicBinding
 import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.DialogTagAdapter
@@ -47,6 +49,8 @@ import com.example.wetalk.util.helper.FileHelper
 import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
+import com.example.wetalk.util.showToast
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -89,10 +93,6 @@ class TalkProvideVideoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        if (!hasPermission()) {
-            requestPermission()
-        }
         _binding = FragmentTalkVocabularyUpBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -102,11 +102,23 @@ class TalkProvideVideoFragment : Fragment() {
         val originalFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
         val currentDate = LocalDate.now().format(originalFormat)
         binding.tvDate.text = currentDate.toString()
+        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
+            Manifest.permission.CAMERA
+        ).onAllGranted(object : Func() {
+            override fun call() {
+            }
+        }).ask(12)
+        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).onAllGranted(object : Func() {
+            override fun call() {
+            }
+        }).ask(12)
 
         init()
         initDataTopic()
         onClickView()
-        onRecord()
         onCallBack()
         onBack();
         onUploadVideo();
@@ -124,20 +136,21 @@ class TalkProvideVideoFragment : Fragment() {
 
         binding.imgOpenVocabularies.setOnClickListener {
             if (binding.tvName.text.equals("Chủ đề")) {
-                Toast.makeText(requireContext(), "Vui lòng chọn chủ đề", Toast.LENGTH_LONG).show()
+                requireContext().showToast("Vui lòng chọn chủ đề")
             } else {
                 showDialogVocabularies()
             }
         }
     }
-
     private fun showDialogVocabularies() {
         val builder = AlertDialog.Builder(
             requireContext()
         )
-        val recyclerView = RecyclerView(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogLayout = DialogTopicBinding.inflate(inflater)
+        val recyclerView = dialogLayout.recyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        var dataList = ArrayList<TopicRequest>()
+        val dataList = ArrayList<TopicRequest>()
         dataList.addAll(resultVocabularies)
         val dialogTagAdapter = object : DialogTagAdapter(requireContext()) {
             override fun OnClickItemTag(position: Int) {
@@ -148,12 +161,16 @@ class TalkProvideVideoFragment : Fragment() {
                 alertDialog.dismiss()
             }
         }
-
         dialogTagAdapter.setData(dataList)
         recyclerView.adapter = dialogTagAdapter
-        builder.setView(recyclerView)
-        builder.setTitle("Chủ đề")
+        builder.setView(dialogLayout.root)
         builder.setPositiveButton("Đóng", null)
+        builder.setPositiveButton("Lưu") { dialog, which ->
+            val enteredText = dialogLayout.editText.text.toString()
+            binding.tvTitlle.text = enteredText
+            dialog.dismiss()
+        }
+
         alertDialog = builder.create()
         alertDialog.show()
     }
@@ -162,7 +179,12 @@ class TalkProvideVideoFragment : Fragment() {
         val builder = AlertDialog.Builder(
             requireContext()
         )
-        val recyclerView = RecyclerView(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogLayout = DialogTopicBinding.inflate(inflater)
+        val recyclerView = dialogLayout.recyclerView
+        dialogLayout.tvContent.text = "Chủ đề"
+        dialogLayout.editText.visibility = View.GONE
+        dialogLayout.tvHelp.visibility = View.GONE
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         var dataList = ArrayList<TopicRequest>()
         dataList.addAll(resultTopics)
@@ -177,8 +199,7 @@ class TalkProvideVideoFragment : Fragment() {
         }
         dialogTagAdapter.setData(dataList)
         recyclerView.adapter = dialogTagAdapter
-        builder.setView(recyclerView)
-        builder.setTitle("Từ vựng theo chủ đề")
+        builder.setView(dialogLayout.root)
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()
         alertDialog.show()
@@ -195,7 +216,6 @@ class TalkProvideVideoFragment : Fragment() {
                             var vocabularies = it.data!!.data
                             resultVocabularies.addAll(vocabularies)
                         } catch (e: Exception) {
-
                         }
                     }
                     is Resource.Error -> {
@@ -206,7 +226,6 @@ class TalkProvideVideoFragment : Fragment() {
             }
         }
     }
-
     private fun initDataTopic() {
         lifecycleScope.launchWhenStarted {
             topicViewModel.getAllTopic()
@@ -217,16 +236,13 @@ class TalkProvideVideoFragment : Fragment() {
                         try {
                             resultTopics.addAll(topicRequests)
                         } catch (e: Exception) {
-                            Toast.makeText(requireContext(), "Topic is Null", Toast.LENGTH_SHORT)
-                                .show()
+                            requireContext().showToast()
                         }
                     }
-
                     is Resource.Loading -> {
                     }
-
                     is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        requireContext().showToast()
                     }
 
                 }
@@ -267,12 +283,8 @@ class TalkProvideVideoFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     val urlStr = it.data.toString()
-                    val progressDialog = ProgressDialog(requireContext())
-                    progressDialog.setTitle("Vui lòng chờ xác thực")
-                    progressDialog.setMessage("Xin chờ...")
-                    progressDialog.show()
-
-                    val validatePost = MediaValidatePost(urlStr, "")
+                    val validatePost = MediaValidatePost(urlStr, binding.tvTitlle.text.toString())
+                    viewModel.getValidMedia(validatePost)
                 }
 
                 is Resource.Error -> {
@@ -281,14 +293,41 @@ class TalkProvideVideoFragment : Fragment() {
             }
         }
         binding.imgRecord.setOnClickListener {
-            if (hasPermission()) {
-                launchCamera()
-            } else {
-                requestPermission()
+            onRecord()
+
+        }
+    }
+    private fun onResultValid() {
+        val progressDialog = ProgressDialog(requireContext())
+        progressDialog.setTitle("Vui lòng chờ xác thực")
+        progressDialog.setMessage("Xin chờ...")
+        viewModel.validMedia.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    progressDialog.dismiss()
+                    requireContext().showToast(it.data!!.message)
+                }
+                is Resource.Error -> {
+                    progressDialog.dismiss()
+                    requireContext().showToast()
+                }
+                is Resource.Loading -> {
+                    progressDialog.show()
+                }
             }
         }
     }
 
+    private fun onRecord() {
+        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
+            Manifest.permission.CAMERA
+        ).onAllGranted(object : Func() {
+            override fun call() {
+                launchCamera()
+            }
+        }).ask(12)
+
+    }
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         startActivityForResult(intent, 1111)
@@ -296,12 +335,8 @@ class TalkProvideVideoFragment : Fragment() {
 
     private fun openStarVideo() {
         binding.btnStar.setOnClickListener {
-            if (!binding.tvName.text.equals("Từ vựng")) {
-                if (vocabulariesRequest != null) {
-                    showVideoDialog(vocabulariesRequest!!)
-                } else {
-                    Toast.makeText(requireContext(), "Vui lòng chọn từ vựng để xem video mẫu", Toast.LENGTH_LONG).show() }
-
+            if (!binding.tvName.text.equals("Từ vựng") || !binding.tvName.text.equals("")) {
+                    showVideoDialog(binding.tvTitlle.text.toString())
             } else {
                 Toast.makeText(requireContext(), "Vui lòng chọn chủ đề để xem video mẫu", Toast.LENGTH_LONG).show()
             }
@@ -309,16 +344,25 @@ class TalkProvideVideoFragment : Fragment() {
 
     }
 
-    private fun showVideoDialog(topicRequest: TopicRequest) {
+    private fun showVideoDialog(content:String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Đang tải")
         progressDialog.setMessage("Xin chờ...")
         progressDialog.show()
-        DialogOpenVideo.Builder(requireContext()).title("Chữ ${topicRequest.content}").urlVideo(topicRequest.videoLocation).show()
+
+        if (vocabulariesRequest == null) {
+            getVideoURL(content) { videoUrl ->
+                progressDialog.dismiss()
+                DialogOpenVideo.Builder(requireContext())
+                    .title("Chữ $content")
+                    .urlVideo(videoUrl)
+                    .show()
+            }
+        } else {
+            DialogOpenVideo.Builder(requireContext()).title("Chữ ${vocabulariesRequest!!.content}").urlVideo(vocabulariesRequest!!.videoLocation).show()
+        }
         progressDialog.dismiss()
-
     }
-
 
     private fun onUploadVideo() {
         binding.cvSave.setOnClickListener {
@@ -331,11 +375,9 @@ class TalkProvideVideoFragment : Fragment() {
                 val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 viewModel.uploadVideo(filePart)
-
-
-
+                onResultValid()
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Đã xảy ra lỗi khi xử lý tệp", Toast.LENGTH_LONG).show()
+                requireContext().showToast()
             }
         }
     }
@@ -348,31 +390,33 @@ class TalkProvideVideoFragment : Fragment() {
 
     private fun onFolder() {
         binding.imgOpen.setOnClickListener {
-            mRequestObject = PermissionUtil.with(activity as MainActivity).request(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ).onAllGranted(object : Func() {
-                override fun call() {
-                    FileConfigUtils.hideKeyboard(activity)
-                    menuCallback.clearCursor()
-                    menuCallback.scrollBottom()
-                    BaseDialogFragment.add(
-                        activity as MainActivity,
-                        TalkSelectVideoDialogFragment.newInstance()
-                            .setVideoTask(object : Task<ArrayList<StorageImageItem>> {
-                                override fun callback(result: ArrayList<StorageImageItem>) {
-                                    menuCallback.addMedia(result)
-                                    devicePath = result[0].devicePath
-                                }
-                            })
-                    )
-
-                }
-            }).ask(12)
+            onOpenFolder()
         }
-
     }
 
+    private fun onOpenFolder() {
+        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).onAllGranted(object : Func() {
+            override fun call() {
+                FileConfigUtils.hideKeyboard(activity)
+                menuCallback.clearCursor()
+                menuCallback.scrollBottom()
+                BaseDialogFragment.add(
+                    activity as MainActivity,
+                    TalkSelectVideoDialogFragment.newInstance()
+                        .setVideoTask(object : Task<ArrayList<StorageImageItem>> {
+                            override fun callback(result: ArrayList<StorageImageItem>) {
+                                menuCallback.addMedia(result)
+                                devicePath = result[0].devicePath
+                            }
+                        })
+                )
+
+            }
+        }).ask(12)
+    }
 
     private fun onCallBack() {
         menuCallback = object : MenuCallback {
@@ -387,17 +431,11 @@ class TalkProvideVideoFragment : Fragment() {
             }
             override fun addTag() {}
             override fun list(lineType: Int) {}
-            override fun clearCursor() {}
+            override fun clearCursor() {
+               val  result: ArrayList<StorageImageItem> = ArrayList()
+                viewModel.addImageItems(result)
+            }
             override fun scrollBottom() {}
-        }
-    }
-
-    /** Permission open camera */
-    private fun onRecord() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 111)
-        } else {
-            binding.imgRecord.isEnabled = true
         }
     }
 
@@ -425,76 +463,16 @@ class TalkProvideVideoFragment : Fragment() {
         fun scrollBottom()
     }
 
+    private fun getVideoURL(letter: String, callback: (String) -> Unit) {
+        val storage = FirebaseStorage.getInstance()
+        val videoRef = storage.reference.child("videos/${letter}.mp4")
 
-    private val charactersList: ArrayList<String> by lazy {
-        val result = ArrayList<String>()
-        for (baseChar in 'A'..'Z') {
-            result.add(baseChar.toString())  // Add the base character without diacritic
-        }
-        result.add("\u1EA5")
-        result.add("\u00E0")
-        result.add("\u00E3")
-        result.add("\u1EA1")
-        for (digit in 0..9) {
-            result.add(digit.toString())
-        }
-        result
-    }
-
-    /**
-     * PermissionPermission Camera, Read and Write File
-     */
-    private fun requestPermission() {
-        if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA) && shouldShowRequestPermissionRationale(
-                PERMISSION_READ_EXTERNAL_STORAGE
-            ) && shouldShowRequestPermissionRationale(
-                PERMISSION_WRITE_EXTERNAL_STORAGE
-            )
-        ) {
-            Toast.makeText(
-                requireContext(), "Camera permission is required for this demo", Toast.LENGTH_LONG
-            ).show()
-        }
-
-        requestPermissions(
-            arrayOf(
-                PERMISSION_CAMERA,
-                PERMISSION_READ_EXTERNAL_STORAGE,
-                PERMISSION_WRITE_EXTERNAL_STORAGE
-            ), PERMISSIONS_REQUEST
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST) {
-            if (allPermissionsGranted(grantResults)) {
-            } else {
-                requestPermission()
+        videoRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                callback(uri.toString())
             }
-        }
-    }
-
-
-    private fun allPermissionsGranted(grantResults: IntArray): Boolean {
-        for (result in grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false
+            .addOnFailureListener {
             }
-        }
-        return true
-    }
-
-    private fun hasPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            (activity as MainActivity).checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED
-            (activity as MainActivity).checkSelfPermission(PERMISSION_READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            (activity as MainActivity).checkSelfPermission(PERMISSION_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
     }
 
     override fun onPause() {
@@ -502,10 +480,4 @@ class TalkProvideVideoFragment : Fragment() {
         keyboardHeightProvider.setKeyboardHeightObserver(null)
     }
 
-    companion object {
-        private val PERMISSIONS_REQUEST = 1
-        private val PERMISSION_CAMERA = Manifest.permission.CAMERA
-        private val PERMISSION_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
-        private val PERMISSION_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
-    }
 }

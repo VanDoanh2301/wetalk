@@ -83,17 +83,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.rey.material.widget.RelativeLayout
+                    <com.rey.material.widget.LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:weightSum="3"
                         android:layout_marginTop="16dp">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/bt_date"
                             android:layout_width="wrap_content"
                             android:layout_height="46dp"
-                            android:layout_marginStart="16dp"
                             app:cardBackgroundColor="@color/white"
+                            android:layout_weight="1.2"
                             app:cardCornerRadius="6dp"
                             app:cardElevation="0dp">
 
@@ -116,7 +120,7 @@
                                 android:gravity="center_vertical"
                                 android:text="Friday, 27/7/2021"
                                 android:textColor="@color/black"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                         </androidx.cardview.widget.CardView>
 
@@ -126,6 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="46dp"
                             android:layout_marginStart="8dp"
+                            android:layout_weight="0.9"
                             android:layout_toRightOf="@id/bt_date"
                             android:background="@drawable/bg_item_preview"
                             android:backgroundTint="@color/white"
@@ -145,6 +150,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="8dp"
+                                android:textSize="12sp"
                                 android:layout_marginEnd="8dp"
                                 android:gravity="center_vertical"
                                 android:text="Chủ đề"
@@ -158,6 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="46dp"
                             android:layout_marginStart="8dp"
+                            android:layout_weight="0.9"
                             android:layout_toRightOf="@id/img_open_tag"
                             android:background="@drawable/bg_item_preview"
                             android:backgroundTint="@color/white"
@@ -179,13 +186,14 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
+                                android:textSize="12sp"
                                 android:gravity="center_vertical"
                                 android:text="Từ vựng"
                                 android:textColor="#3262DC" />
 
                         </com.rey.material.widget.LinearLayout>
 
-                    </com.rey.material.widget.RelativeLayout>
+                    </com.rey.material.widget.LinearLayout>
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"

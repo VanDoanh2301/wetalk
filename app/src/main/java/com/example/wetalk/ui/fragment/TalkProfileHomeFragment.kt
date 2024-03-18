@@ -125,7 +125,6 @@ class TalkProfileHomeFragment : Fragment() {
         dialog.show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initUI() {
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
@@ -148,23 +147,23 @@ class TalkProfileHomeFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI(user: UserInforRequest) {
         binding.txtName.text = user.name
         if (user.age == null || user.phoneNumber == null || user.gender == null) {
-            DialogGravityCenter.Builder(requireContext())
-                .title("Gợi ý")
-                .cancelable(true)
-                .canceledOnTouchOutside(true)
-                .content("Cập nhật thông tin cá nhân của bạn")
-                .doneText("Cập nhật")
-                .positiveText("Huỷ")
-                .onPositive {
-                }
-                .onDone {
-                    findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
-                }
-                .show()
+            binding.txtDate.text = "Cập nhật ngày sinh"
+            binding.txtGenner.text = "Cập nhật giới tính"
+            binding.txtPhone.text = "Cập nhật số điện thoại"
+
+            binding.txtPhone.setOnClickListener {
+                findNavController().navigate(R.id.action_talkProfileHomeFragment_to_talkProfileEditFragment)
+            }
+            binding.txtGenner.setOnClickListener {
+                binding.txtPhone.performClick()
+            }
+            binding.txtDate.setOnClickListener {
+                binding.txtPhone.performClick()
+            }
+
         }
         val dateTime = OffsetDateTime.parse(
             user.age,
