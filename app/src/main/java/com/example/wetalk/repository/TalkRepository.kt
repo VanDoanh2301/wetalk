@@ -17,26 +17,28 @@ import com.example.wetalk.data.model.objectmodel.MessagePaging
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.TopicRequest
-import com.example.wetalk.data.model.postmodel.UserRegisterDTO
+import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.UserQueryRequest
-import com.example.wetalk.data.model.postmodel.UserUpdateDTO
-import com.example.wetalk.data.model.postmodel.LoginDTO
-import com.example.wetalk.data.model.postmodel.UserOtpDTO
-import com.example.wetalk.data.model.postmodel.UserPasswordDTO
+import com.example.wetalk.data.model.postmodel.UpdateUserPost
+import com.example.wetalk.data.model.postmodel.LoginPost
+import com.example.wetalk.data.model.postmodel.MediaValidatePost
+import com.example.wetalk.data.model.postmodel.OtpPost
+import com.example.wetalk.data.model.postmodel.PasswordPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
+import com.example.wetalk.data.model.responsemodel.ValidationResponse
 import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.data.remote.ApiValidation
 import com.example.wetalk.paging.MessagePagingSource
 import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -44,23 +46,9 @@ class TalkRepository @Inject constructor(
     private val mUser: ApiUser,
     private val mUp: ApiUpload,
     private val mTopic: ApiTopicStudy,
-    private val mChat: ApiChat
+    private val mChat: ApiChat,
+    private val mValid : ApiValidation
 ) {
-    // Hàm đăng nhập người dùng
-    suspend fun userLogin(post: LoginDTO): Response<LoginResponse> {
-        return mUser.login(post)
-    }
-
-    // Hàm tạo mã OTP
-    suspend fun generateOtp(userRegisterDTO: UserRegisterDTO): Response<HostResponse> {
-        return mUser.generateOtp(userRegisterDTO)
-    }
-
-    // Hàm xác thực OTP
-    suspend fun validateOtp(userOtpDTO: UserOtpDTO): Response<HostResponse> {
-        return mUser.validateOtp(userOtpDTO)
-    }
-
     // Hàm tải lên video
     suspend fun uploadVideo(file: MultipartBody.Part): Response<String> {
         return mUp.uploadVideo(file)
@@ -80,9 +68,23 @@ class TalkRepository @Inject constructor(
     suspend fun getUserInfor(): Response<UserInforRequest> {
         return mUser.geUserInfor()
     }
+    //User------------------------------------------------------------------------------------------
+    // Hàm đăng nhập người dùng
+    suspend fun userLogin(post: LoginPost): Response<LoginResponse> {
+        return mUser.login(post)
+    }
 
+    // Hàm tạo mã OTP
+    suspend fun generateOtp(userRegisterPost: UserRegisterPost): Response<HostResponse> {
+        return mUser.generateOtp(userRegisterPost)
+    }
+
+    // Hàm xác thực OTP
+    suspend fun validateOtp(otpPost: OtpPost): Response<HostResponse> {
+        return mUser.validateOtp(otpPost)
+    }
     // Hàm cập nhật thông tin người dùng
-    suspend fun updateUser(userRequest: UserUpdateDTO): Response<GetAllUserRequest> {
+    suspend fun updateUser(userRequest: UpdateUserPost): Response<GetAllUserRequest> {
         return mUser.updateUser(userRequest)
     }
 
@@ -97,8 +99,8 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm thay đổi mật khẩu người dùng
-    suspend fun changePassword(userPasswordDTO: UserPasswordDTO): Response<HostResponse> {
-        return mUser.changePassword(userPasswordDTO)
+    suspend fun changePassword(passwordPost: PasswordPost): Response<HostResponse> {
+        return mUser.changePassword(passwordPost)
     }
 
     // Hàm tìm kiếm người dùng
@@ -160,7 +162,7 @@ class TalkRepository @Inject constructor(
         return mTopic.getCollectDataHistory()
     }
 
-    //Chat message
+    //Chat message----------------------------------------------------------------------------------
     suspend fun createRoom(roomConversation: RoomConversation) : Response<HostResponse> {
         return mChat.createGroup(roomConversation)
     }
@@ -181,4 +183,8 @@ class TalkRepository @Inject constructor(
         pagingSourceFactory = { MessagePagingSource(mChat, messagePaging) }
     ).liveData
 
+    //Ai Validation---------------------------------------------------------------------------------
+    suspend fun validationMedia(mediaValidatePost: MediaValidatePost) : Response<ValidationResponse> {
+        return mValid.validationMedia(mediaValidatePost)
+    }
 }

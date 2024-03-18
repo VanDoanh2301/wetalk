@@ -5,12 +5,14 @@ import com.example.wetalk.data.remote.ApiChat
 import com.example.wetalk.data.remote.ApiUser
 import com.example.wetalk.data.remote.ApiTopicStudy
 import com.example.wetalk.data.remote.ApiUpload
+import com.example.wetalk.data.remote.ApiValidation
 import com.example.wetalk.ui.viewmodels.ChatHomeViewModel
 import com.example.wetalk.ui.viewmodels.ChatTabViewModel
 import com.example.wetalk.util.BASE_URL_1
 import com.example.wetalk.util.BASE_URL_2
 import com.example.wetalk.util.BASE_URL_3
 import com.example.wetalk.util.BASE_URL_4
+import com.example.wetalk.util.BASE_URL_6
 import com.example.wetalk.util.BASE_URL_SOCKET
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.gson.Gson
@@ -125,7 +127,17 @@ object ApiModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
-
+    @Provides
+    @ViewModelScoped
+    @ApiSix
+    fun provideRetrofitSix(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_6)
+            .client(okHttpClient)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
 
     @Provides
     @ViewModelScoped
@@ -148,6 +160,12 @@ object ApiModule {
     @ViewModelScoped
     fun provideChat(@ApiFour retrofit: Retrofit): ApiChat {
         return retrofit.create(ApiChat::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideValidation(@ApiSix retrofit: Retrofit): ApiValidation {
+        return retrofit.create(ApiValidation::class.java)
     }
 
 }

@@ -9,6 +9,9 @@ import com.example.wetalk.data.local.StorageImageItem
 import com.example.wetalk.data.local.VideoBody
 import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
+import com.example.wetalk.data.model.objectmodel.Message
+import com.example.wetalk.data.model.postmodel.MediaValidatePost
+import com.example.wetalk.data.model.responsemodel.ValidationResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil
@@ -34,6 +37,12 @@ class VideoUpViewModel @Inject constructor(
         MutableLiveData(Resource.Loading())
     val uploadResult: LiveData<Resource<String>>
         get() = _uploadResult
+
+    private val _validMedia: MutableLiveData<Resource<ValidationResponse>> =
+        MutableLiveData(Resource.Loading())
+    val validMedia: LiveData<Resource<ValidationResponse>> get() = _validMedia
+
+    private val validationResponse: ValidationResponse? = null
 
     // StateFlow for holding video local data
     private val _videoLocal = MutableStateFlow(
@@ -77,7 +86,8 @@ class VideoUpViewModel @Inject constructor(
                 val response = mRepository.uploadVideo(file)
                 _uploadResult.value = handleUploadResponse(response)
             } else {
-                _uploadResult.value = Resource.Error("Mất Kết Nối Internet") // Error message in Vietnamese
+                _uploadResult.value =
+                    Resource.Error("Mất Kết Nối Internet") // Error message in Vietnamese
             }
         } catch (e: Exception) {
             _uploadResult.value = Resource.Error("${e.message.toString()}")
@@ -87,7 +97,6 @@ class VideoUpViewModel @Inject constructor(
     // Function to handle upload response
     private fun handleUploadResponse(response: Response<String>): Resource<String> {
         if (response.isSuccessful) {
-            LogUtils.d("LOGIN_RETROFIT_SUCCESS: OK")
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
@@ -99,9 +108,27 @@ class VideoUpViewModel @Inject constructor(
                 500 -> "Internal server error"
                 else -> response.message()
             }
-            LogUtils.d("LOGIN_RETROFIT_ERROR: $response")
             return Resource.Error(res)
         }
         return Resource.Error(response.message())
+    }
+
+    fun getValidMedia(mediaValidatePost: MediaValidatePost) = viewModelScope.launch {
+        try {
+            val response = mRepository.validationMedia(mediaValidatePost)
+            _validMedia.value = handleValidMedia(response)
+        } catch (e: Exception) {
+            _validMedia.value = Resource.Error(e.message.toString())
+        }
+    }
+
+    private fun handleValidMedia(response: Response<ValidationResponse>): Resource<ValidationResponse>? {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(validationResponse ?: it)
+            }
+        } else {
+        }
+        return Resource.Error((validationResponse ?: response.message()).toString())
     }
 }

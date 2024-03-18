@@ -10,15 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.model.postmodel.UserOtpDTO
+import com.example.wetalk.data.model.postmodel.OtpPost
 import com.example.wetalk.databinding.FragmentTalkOtpBinding
 import com.example.wetalk.ui.viewmodels.OtpViewModel
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Timer
 import java.util.TimerTask
 
@@ -67,9 +64,9 @@ class TalkOtpFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                var userOtpDTO =
-                    UserOtpDTO(email, Integer.parseInt(binding.loginOtp.text.toString()))
-                viewModel.validateOtp(userOtpDTO)
+                var otpPost =
+                    OtpPost(email, Integer.parseInt(binding.loginOtp.text.toString()))
+                viewModel.validateOtp(otpPost)
             }
         }
     }

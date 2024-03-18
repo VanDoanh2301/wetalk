@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.postmodel.UserPasswordDTO
+import com.example.wetalk.data.model.postmodel.PasswordPost
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.dialog.DialogGravityCenter
@@ -43,7 +43,7 @@ class TalkProfileHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ProfileHomeViewModel by viewModels()
     private lateinit var user: UserInforRequest
-    private lateinit var changePasswordRequest: UserPasswordDTO
+    private lateinit var changePasswordRequest: PasswordPost
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,7 +106,7 @@ class TalkProfileHomeFragment : Fragment() {
         // Kiểm tra nếu giá trị trong "Confirm Password" giống với giá trị trong "New Password"
         if (confirmPassword == newPassword) {
             // Nếu giống nhau, bạn có thể thực hiện các hành động tương ứng ở đây
-            changePasswordRequest = UserPasswordDTO(oldPassword, newPassword)
+            changePasswordRequest = PasswordPost(oldPassword, newPassword)
         } else {
             // Nếu không giống nhau, hiển thị thông báo hoặc thực hiện hành động phù hợp
             edtPassConfim.error = "Mật khẩu xác nhận không khớp"

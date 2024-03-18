@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.wetalk.R
-import com.example.wetalk.data.model.postmodel.UserRegisterDTO
+import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.databinding.FragmentTalkRegisterBinding
 import com.example.wetalk.ui.viewmodels.RegisterViewModel
 import com.example.wetalk.util.Resource
@@ -74,13 +74,13 @@ class TalkRegisterFragment : Fragment() {
                 if (edtPassword.text.toString() != edtConfirm.text.toString()) {
                     edtConfirm.error = "Passwords are not the same";
                 } else {
-                    var userRegisterDTO = UserRegisterDTO(
+                    var userRegisterPost = UserRegisterPost(
                         edtName.text.toString(),
                         edtEmail.text.toString(),
                         edtPassword.text.toString(),
                         "USER"
                     );
-                    viewModel.generateOtp(userRegisterDTO)
+                    viewModel.generateOtp(userRegisterPost)
                     binding.rlProgress.visibility = View.VISIBLE
                 }
             }

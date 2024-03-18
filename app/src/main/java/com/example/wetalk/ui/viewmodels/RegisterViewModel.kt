@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.postmodel.UserRegisterDTO
+import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil
@@ -31,15 +31,15 @@ class RegisterViewModel @Inject constructor(
     private val hostResponse: HostResponse? = null
 
     // Function to generate OTP for user registration
-    fun generateOtp(userRegisterDTO: UserRegisterDTO) = viewModelScope.launch {
-        safeGetAllUsers(userRegisterDTO)
+    fun generateOtp(userRegisterPost: UserRegisterPost) = viewModelScope.launch {
+        safeGetAllUsers(userRegisterPost)
     }
 
     // Function to safely generate OTP and register user
-    private suspend fun safeGetAllUsers(userRegisterDTO: UserRegisterDTO) {
+    private suspend fun safeGetAllUsers(userRegisterPost: UserRegisterPost) {
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
-                val response = repository.generateOtp(userRegisterDTO)
+                val response = repository.generateOtp(userRegisterPost)
                 _registerResponseStateFlow.value = handleGetAllUsersResponse(response)
             } else {
                 _registerResponseStateFlow.value = Resource.Error("Lost Internet Connection")

@@ -11,15 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
-import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.postmodel.LoginDTO
+import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.databinding.FragmentTalkLoginBinding
 import com.example.wetalk.ui.viewmodels.LoginViewModel
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
-import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -142,8 +138,8 @@ class TalkLoginFragment : Fragment() {
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            val userLoginDTO = LoginDTO(email, password)
-            viewModel.login(userLoginDTO)
+            val userLoginPost = LoginPost(email, password)
+            viewModel.login(userLoginPost)
             observeLoginResponse()
         } else {
             Toast.makeText(requireContext(), "Email Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show()

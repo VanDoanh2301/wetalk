@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -28,6 +30,7 @@ import com.example.wetalk.data.local.VideoBody
 import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.DialogTagAdapter
@@ -82,6 +85,7 @@ class TalkProvideVideoFragment : Fragment() {
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
     private var vocabulariesRequest: TopicRequest? = null
     private val TAG = "TalkProvideVideoFragment"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -99,7 +103,6 @@ class TalkProvideVideoFragment : Fragment() {
         val currentDate = LocalDate.now().format(originalFormat)
         binding.tvDate.text = currentDate.toString()
 
-
         init()
         initDataTopic()
         onClickView()
@@ -109,6 +112,7 @@ class TalkProvideVideoFragment : Fragment() {
         onUploadVideo();
         openStarVideo()
         onFolder()
+
     }
     private fun onClickView() {
         binding.btHistoryView.setOnClickListener {
@@ -144,9 +148,11 @@ class TalkProvideVideoFragment : Fragment() {
                 alertDialog.dismiss()
             }
         }
+
         dialogTagAdapter.setData(dataList)
         recyclerView.adapter = dialogTagAdapter
         builder.setView(recyclerView)
+        builder.setTitle("Chủ đề")
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()
         alertDialog.show()
@@ -172,6 +178,7 @@ class TalkProvideVideoFragment : Fragment() {
         dialogTagAdapter.setData(dataList)
         recyclerView.adapter = dialogTagAdapter
         builder.setView(recyclerView)
+        builder.setTitle("Từ vựng theo chủ đề")
         builder.setPositiveButton("Đóng", null)
         alertDialog = builder.create()
         alertDialog.show()
@@ -191,7 +198,6 @@ class TalkProvideVideoFragment : Fragment() {
 
                         }
                     }
-
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG)
                             .show()
@@ -261,17 +267,12 @@ class TalkProvideVideoFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     val urlStr = it.data.toString()
-                    Log.d("TAG", urlStr)
                     val progressDialog = ProgressDialog(requireContext())
-                    progressDialog.setTitle("Đang tải video lên")
+                    progressDialog.setTitle("Vui lòng chờ xác thực")
                     progressDialog.setMessage("Xin chờ...")
                     progressDialog.show()
-                    lifecycleScope.launch {
-                        delay(3000)
-                        progressDialog.dismiss()
-                        Toast.makeText(requireContext(), "Đăng video thành công", Toast.LENGTH_SHORT).show()
 
-                    }
+                    val validatePost = MediaValidatePost(urlStr, "")
                 }
 
                 is Resource.Error -> {
@@ -330,6 +331,8 @@ class TalkProvideVideoFragment : Fragment() {
                 val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 viewModel.uploadVideo(filePart)
+
+
 
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Đã xảy ra lỗi khi xử lý tệp", Toast.LENGTH_LONG).show()

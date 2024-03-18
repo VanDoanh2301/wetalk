@@ -30,7 +30,7 @@ import com.example.wetalk.R
 import com.example.wetalk.WeTalkApp
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.postmodel.UserUpdateDTO
+import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.databinding.FragmentTalkProfileEditBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
@@ -60,7 +60,7 @@ class TalkProfileEditFragment : Fragment() {
     private var _binding: FragmentTalkProfileEditBinding? = null
     private val binding get() = _binding!!
     private lateinit var user: UserInforRequest
-    private lateinit var userUpdateDTO: UserUpdateDTO
+    private lateinit var updateUserPost: UpdateUserPost
     private val viewModel: ProfileHomeViewModel by viewModels()
     private var imagePickLauncher: ActivityResultLauncher<Intent>? = null
     private var selectedImageUri: Uri? = null
@@ -133,23 +133,23 @@ class TalkProfileEditFragment : Fragment() {
 
     private fun updateUser() {
         if (binding.txtName.text != null) {
-            userUpdateDTO.name = binding.txtName.text.toString()
+            updateUserPost.name = binding.txtName.text.toString()
         }
         if (binding.txtDate.text != null) {
-            userUpdateDTO.birthDay = binding.txtDate.text.toString()
+            updateUserPost.birthDay = binding.txtDate.text.toString()
         }
         if (binding.txtPhone.text != null) {
-            userUpdateDTO.phoneNumber = binding.txtPhone.text.toString()
+            updateUserPost.phoneNumber = binding.txtPhone.text.toString()
         }
         if (binding.txtGender.text != null) {
             if (binding.txtGender.text.toString().equals("Nam")) {
-                userUpdateDTO.gender = "MALE"
+                updateUserPost.gender = "MALE"
             } else {
-                userUpdateDTO.gender = "FEMALE"
+                updateUserPost.gender = "FEMALE"
             }
         }
         if (binding.txtAddress.text != null) {
-            userUpdateDTO.address = binding.txtAddress.text.toString()
+            updateUserPost.address = binding.txtAddress.text.toString()
         }
         if (binding.txtDate.text == null
             || binding.txtPhone.text == null
@@ -160,7 +160,7 @@ class TalkProfileEditFragment : Fragment() {
                 .show()
         } else {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.updateInforUser(userUpdateDTO)
+                viewModel.updateInforUser(updateUserPost)
                 viewModel.updateUser.collect {
                     when (it) {
                         is Resource.Loading -> {}
@@ -210,7 +210,7 @@ class TalkProfileEditFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI(user: UserInforRequest) {
-        userUpdateDTO = UserUpdateDTO(
+        updateUserPost = UpdateUserPost(
             user.name,
             user.phoneNumber ?: "",
             user.address ?: "",

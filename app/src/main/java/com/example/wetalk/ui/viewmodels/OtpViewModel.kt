@@ -3,7 +3,7 @@ package com.example.wetalk.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.postmodel.UserOtpDTO
+import com.example.wetalk.data.model.postmodel.OtpPost
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
@@ -31,17 +31,17 @@ class OtpViewModel @Inject constructor(
     private var res: HostResponse? = null
 
     // Function to validate OTP
-    fun validateOtp(userOtpDTO: UserOtpDTO) = viewModelScope.launch {
-        onValidateOtp(userOtpDTO)
+    fun validateOtp(otpPost: OtpPost) = viewModelScope.launch {
+        onValidateOtp(otpPost)
     }
 
     // Function to handle OTP validation
-    private suspend fun onValidateOtp(userOtpDTO: UserOtpDTO) {
+    private suspend fun onValidateOtp(otpPost: OtpPost) {
         _otpResponseStateFlow.value = Resource.Loading() // Set loading state
         try {
             // Check for internet connection
             if (NetworkUtil.hasInternetConnection(context)) {
-                val response = mRepository.validateOtp(userOtpDTO)
+                val response = mRepository.validateOtp(otpPost)
                 // Handle OTP validation response
                 _otpResponseStateFlow.value = handleValidOtpResponse(response)
             } else {

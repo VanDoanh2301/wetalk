@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UserUpdateDTO(
+data class UpdateUserPost(
     @SerializedName("name")
     var name: String,
     @SerializedName("phoneNumber")

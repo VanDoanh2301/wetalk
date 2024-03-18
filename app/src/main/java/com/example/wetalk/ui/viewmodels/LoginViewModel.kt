@@ -3,7 +3,7 @@ package com.example.wetalk.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.postmodel.LoginDTO
+import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
@@ -34,13 +34,13 @@ class LoginViewModel @Inject constructor(
 
 
     /** Login */
-    fun login(post: LoginDTO) = viewModelScope.launch {
+    fun login(post: LoginPost) = viewModelScope.launch {
         safeLogin(post)
 
     }
 
     /** Check networking */
-    private suspend fun safeLogin(post: LoginDTO) {
+    private suspend fun safeLogin(post: LoginPost) {
         _loginResponseStateFlow.value = Resource.Loading()
         try {
             if (hasInternetConnection(context)) {

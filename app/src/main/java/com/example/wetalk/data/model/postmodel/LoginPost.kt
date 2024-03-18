@@ -2,8 +2,8 @@ package com.example.wetalk.data.model.postmodel
 
 import com.google.gson.annotations.SerializedName
 
-data  class LoginDTO(@SerializedName("email")
+data  class LoginPost(@SerializedName("email")
                       val email: String,
-                     @SerializedName("password")
+                      @SerializedName("password")
                       val password: String) {
 }

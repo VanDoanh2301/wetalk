@@ -10,8 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.postmodel.UserPasswordDTO
-import com.example.wetalk.data.model.postmodel.UserUpdateDTO
+import com.example.wetalk.data.model.postmodel.PasswordPost
+import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.LogUtils
 import com.example.wetalk.util.NetworkUtil
@@ -91,12 +91,12 @@ class ProfileHomeViewModel @Inject constructor(
     }
 
     // Function to update user information
-    fun updateInforUser(userRequest: UserUpdateDTO) = viewModelScope.launch {
+    fun updateInforUser(userRequest: UpdateUserPost) = viewModelScope.launch {
         safeUpdateUser(userRequest)
     }
 
     // Function to safely update user information
-    private suspend fun safeUpdateUser(userRequest: UserUpdateDTO) {
+    private suspend fun safeUpdateUser(userRequest: UpdateUserPost) {
         try {
             if (hasInternetConnection(context)) {
                 val response = repository.updateUser(userRequest)
@@ -196,15 +196,15 @@ class ProfileHomeViewModel @Inject constructor(
     }
 
     // Function to change password
-    fun changePassword(userPasswordDTO: UserPasswordDTO) = viewModelScope.launch {
-        safeChangePassword(userPasswordDTO)
+    fun changePassword(passwordPost: PasswordPost) = viewModelScope.launch {
+        safeChangePassword(passwordPost)
     }
 
     // Function to safely change password
-    private suspend fun safeChangePassword(userPasswordDTO: UserPasswordDTO) {
+    private suspend fun safeChangePassword(passwordPost: PasswordPost) {
         try {
             if (hasInternetConnection(context)) {
-                val response = repository.changePassword(userPasswordDTO)
+                val response = repository.changePassword(passwordPost)
                 if (response.isSuccessful) {
                     val hostResponse = response.body()
                     if (hostResponse != null) {
