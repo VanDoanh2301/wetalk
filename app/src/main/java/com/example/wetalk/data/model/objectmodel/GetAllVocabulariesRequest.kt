@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class GetAllVocabulariesRequest(
     @SerializedName("page") val page: Int,
     @SerializedName("totalElements") val totalElements: Int,
-    @SerializedName("data") val data: ArrayList<TopicRequest>
+    @SerializedName("data") val data: ArrayList<VocabularyRequest>
 ) : Parcelable

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.wetalk.databinding.FragmentTalkSignNumberBinding
 import com.example.wetalk.ui.adapter.StudyAdapter
-import com.example.wetalk.util.dialog.DialogOpenVideo
+import com.example.wetalk.ui.dialog.DialogOpenVideo
 import com.google.firebase.storage.FirebaseStorage
 
 /**

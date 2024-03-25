@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.databinding.FragmentTalkHistoryVocabulariesBinding
 import com.example.wetalk.ui.adapter.VocabulariesAdapter
 import com.example.wetalk.ui.viewmodels.VocabulariesHistoryViewModel
@@ -26,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HistoryVocabulariesFragment : Fragment() {
     private var _binding: FragmentTalkHistoryVocabulariesBinding? =null
     private val binding get() =  _binding!!
-    private var resultlist: ArrayList<TopicRequest> = ArrayList()
+    private var resultlist: ArrayList<VocabularyRequest> = ArrayList()
     private val TAG = "TalkViewHistoryFragment"
     private val viewModel : VocabulariesHistoryViewModel by viewModels()
     private lateinit var vocabulariesAdapter: VocabulariesAdapter

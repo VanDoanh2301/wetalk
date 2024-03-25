@@ -20,12 +20,12 @@ import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.QueryPageRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.data.model.postmodel.OtpPost
 import com.example.wetalk.data.model.postmodel.PasswordPost
-import com.example.wetalk.data.model.postmodel.TopicPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
@@ -40,8 +40,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.POST
 import retrofit2.http.Path
 import javax.inject.Inject
 
@@ -53,130 +51,96 @@ class TalkRepository @Inject constructor(
     private val mChat: ApiChat,
     private val mValid : ApiValidation
 ) {
-    // Hàm tải lên video
     suspend fun uploadVideo(file: MultipartBody.Part): Response<String> {
         return mUp.uploadVideo(file)
     }
-
-    // Hàm lấy tất cả các chủ đề
     suspend fun getAllTopic(): Response<GetAllTopic> {
         return mTopic.getAllTopic()
     }
-
-    // Hàm lấy tất cả các câu hỏi theo ID chủ đề
     suspend fun getAllQuestionByTopicId(topicId: Int): Response<GetAllQuestion> {
         return mTopic.getAllQuestionByTopicID(topicId)
     }
-
-    suspend fun addTopic(@Body topicPost: TopicPost) : Response<GetAllTopic> {
+    suspend fun addTopic(@Body topicPost: TopicRequest) : Response<GetAllTopic> {
         return mTopic.addTopic(topicPost)
     }
-
     suspend fun deleteTopic(@Path("id")  id:Int) : Response<GetAllTopic> {
         return mTopic.deleteTopic(id)
     }
-
     suspend fun searchTopic(@Body queryPageRequest: QueryPageRequest) : Response<GetAllVocabulariesRequest> {
         return mTopic.searchTopic(queryPageRequest)
     }
-    // Hàm lấy thông tin người dùng
-    suspend fun getUserInfor(): Response<UserInforRequest> {
-        return mUser.geUserInfor()
-    }
-    //User------------------------------------------------------------------------------------------
-    // Hàm đăng nhập người dùng
-    suspend fun userLogin(post: LoginPost): Response<LoginResponse> {
-        return mUser.login(post)
-    }
-
-    // Hàm tạo mã OTP
-    suspend fun generateOtp(userRegisterPost: UserRegisterPost): Response<HostResponse> {
-        return mUser.generateOtp(userRegisterPost)
-    }
-
-    // Hàm xác thực OTP
-    suspend fun validateOtp(otpPost: OtpPost): Response<HostResponse> {
-        return mUser.validateOtp(otpPost)
-    }
-    // Hàm cập nhật thông tin người dùng
-    suspend fun updateUser(userRequest: UpdateUserPost): Response<GetAllUserRequest> {
-        return mUser.updateUser(userRequest)
-    }
-
-    // Hàm lấy tất cả các câu hỏi theo ID chủ đề với kích thước câu hỏi
-    suspend fun getAllQuestionByTopicID(questionSize: QuestionSize): Response<GetAllQuestion> {
-        return mTopic.getAllQuestionByTopicId(questionSize)
-    }
-
-    // Hàm cập nhật ảnh đại diện người dùng
-    suspend fun updateAvata(avatarRequest: AvatarRequest): Response<GetAllUserRequest> {
-        return mUser.updateAvatar(avatarRequest)
-    }
-
-    // Hàm thay đổi mật khẩu người dùng
-    suspend fun changePassword(passwordPost: PasswordPost): Response<HostResponse> {
-        return mUser.changePassword(passwordPost)
-    }
-
-    // Hàm tìm kiếm người dùng
-    suspend fun seacherUser(queryPageRequest: QueryPageRequest): Response<GetAllUserInforRequest> {
-        return mUser.searchUser(queryPageRequest)
-    }
-
-    // Hàm thêm bạn
-    suspend fun addFriend(userId: Int): Response<HostResponse> {
-        return mUser.addFriend(userId)
-    }
-
-    //Lấy ra tất cả bạn bè
-    suspend fun getAllFriend(): Response<GetAllUserFriendRequest> {
-        return mUser.getAllFriend()
-    }
-
-    //Xóa bạn bè
-    suspend fun getCancelFriend(userId: Int): Response<HostResponse> {
-        return mUser.getCancelFriend(userId)
-    }
-
-    //Chấp nhận kết bạn
-    suspend fun acceptFriend(userId: Int): Response<HostResponse>  {
-        return mUser.acceptFriend(userId)
-    }
-
-    //Danh sách chờ kết bạn
-    suspend fun pendingFriend(): Response<GetAllUserFriendRequest> {
-        return mUser.pendingFriend()
-    }
-
-    suspend fun deleteFriend(userId: Int): Response<HostResponse> {
-        return mUser.deleteFriend(userId)
-    }
-
-    //Get User by id
-    suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
-        return mUser.getUserById(userId)
-    }
-
-    suspend fun postVocabularies(topicDTO: TopicRequest): Response<HostResponse> {
-        return mTopic.postVocabularies(topicDTO)
+    suspend fun updateTopic(topicRequest: TopicRequest) : Response<GetAllTopic> {
+        return mTopic.updateTopic(topicRequest)
     }
 
     suspend fun searchVocabularies(vocabulariesDTO: VocabulariesDTO): Response<GetAllVocabulariesRequest> {
         return mTopic.searchVocabularies(vocabulariesDTO)
     }
-
     suspend fun getVocabulariesById(topicId: Int): Response<GetAllVocabulariesByIdRequest> {
         return mTopic.getVocabulariesById(topicId)
     }
-
-    suspend fun deleteVocabularies(id: Int): Response<HostResponse> {
-        return mTopic.deleteVocabularies(id)
-    }
-
     suspend fun getCollectDataHistory(): Response<GetAllVocabulariesByIdRequest> {
         return mTopic.getCollectDataHistory()
     }
+    suspend fun deleteVocabulary(id: Int): Response<HostResponse> {
+        return mTopic.deleteVocabulary(id)
+    }
+    suspend fun addVocabulary(topicRequest: TopicRequest) : Response<GetAllVocabulariesRequest> {
+        return mTopic.addVocabulary(topicRequest)
+    }
+    suspend fun updateVocabulary(topicRequest: VocabularyRequest) : Response<GetAllVocabulariesRequest> {
+        return mTopic.updateVocabulary(topicRequest)
+    }
 
+    //User------------------------------------------------------------------------------------------
+    suspend fun getUserInfor(): Response<UserInforRequest> {
+        return mUser.geUserInfor()
+    }
+    suspend fun userLogin(post: LoginPost): Response<LoginResponse> {
+        return mUser.login(post)
+    }
+    suspend fun generateOtp(userRegisterPost: UserRegisterPost): Response<HostResponse> {
+        return mUser.generateOtp(userRegisterPost)
+    }
+    suspend fun validateOtp(otpPost: OtpPost): Response<HostResponse> {
+        return mUser.validateOtp(otpPost)
+    }
+    suspend fun updateUser(userRequest: UpdateUserPost): Response<GetAllUserRequest> {
+        return mUser.updateUser(userRequest)
+    }
+    suspend fun getAllQuestionByTopicID(questionSize: QuestionSize): Response<GetAllQuestion> {
+        return mTopic.getAllQuestionByTopicId(questionSize)
+    }
+    suspend fun updateAvata(avatarRequest: AvatarRequest): Response<GetAllUserRequest> {
+        return mUser.updateAvatar(avatarRequest)
+    }
+    suspend fun changePassword(passwordPost: PasswordPost): Response<HostResponse> {
+        return mUser.changePassword(passwordPost)
+    }
+    suspend fun seacherUser(queryPageRequest: QueryPageRequest): Response<GetAllUserInforRequest> {
+        return mUser.searchUser(queryPageRequest)
+    }
+    suspend fun addFriend(userId: Int): Response<HostResponse> {
+        return mUser.addFriend(userId)
+    }
+    suspend fun getAllFriend(): Response<GetAllUserFriendRequest> {
+        return mUser.getAllFriend()
+    }
+    suspend fun getCancelFriend(userId: Int): Response<HostResponse> {
+        return mUser.getCancelFriend(userId)
+    }
+    suspend fun acceptFriend(userId: Int): Response<HostResponse>  {
+        return mUser.acceptFriend(userId)
+    }
+    suspend fun pendingFriend(): Response<GetAllUserFriendRequest> {
+        return mUser.pendingFriend()
+    }
+    suspend fun deleteFriend(userId: Int): Response<HostResponse> {
+        return mUser.deleteFriend(userId)
+    }
+    suspend fun getUserById(userId: Int): Response<GetAllUserInforRequest> {
+        return mUser.getUserById(userId)
+    }
     //Chat message----------------------------------------------------------------------------------
     suspend fun createRoom(roomConversation: RoomConversation) : Response<HostResponse> {
         return mChat.createGroup(roomConversation)
@@ -197,7 +161,6 @@ class TalkRepository @Inject constructor(
         config = PagingConfig(pageSize = 10, maxSize = 100),
         pagingSourceFactory = { MessagePagingSource(mChat, messagePaging) }
     ).liveData
-
     //Ai Validation---------------------------------------------------------------------------------
     suspend fun validationMedia(mediaValidatePost: MediaValidatePost) : Response<ValidationResponse> {
         return mValid.validationMedia(mediaValidatePost)

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -23,16 +22,18 @@ import com.example.wetalk.data.local.VideoBody
 import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.databinding.DialogTopicBinding
 import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.DialogTagAdapter
+import com.example.wetalk.ui.adapter.DialogVocabularyAdapter
 import com.example.wetalk.ui.customview.TalkBodyEditView
 import com.example.wetalk.ui.viewmodels.TopicViewModel
 import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.ui.viewmodels.VocabulariesViewModel
-import com.example.wetalk.util.dialog.DialogOpenVideo
+import com.example.wetalk.ui.dialog.DialogOpenVideo
 import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
@@ -48,7 +49,6 @@ import com.permissionx.guolindev.callback.RequestCallback
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.Request
 import okhttp3.RequestBody
 import java.io.File
 import java.time.LocalDate
@@ -77,10 +77,10 @@ class ProvideVideoFragment : Fragment() {
     private var uri: Uri? = null
     private var topicId = 0
     private var resultTopics: ArrayList<TopicRequest> = ArrayList()
-    private var resultVocabularies: ArrayList<TopicRequest> = ArrayList()
+    private var resultVocabularies: ArrayList<VocabularyRequest> = ArrayList()
     private lateinit var talkImageItems: ArrayList<StorageImageItem>
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
-    private var vocabulariesRequest: TopicRequest? = null
+    private var vocabulariesRequest: VocabularyRequest? = null
     private val TAG = "TalkProvideVideoFragment"
 
     override fun onCreateView(
@@ -166,9 +166,9 @@ class ProvideVideoFragment : Fragment() {
         val dialogLayout = DialogTopicBinding.inflate(inflater)
         val recyclerView = dialogLayout.recyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        val dataList = ArrayList<TopicRequest>()
+        val dataList = ArrayList<VocabularyRequest>()
         dataList.addAll(resultVocabularies)
-        val dialogTagAdapter = object : DialogTagAdapter(requireContext()) {
+        val dialogTagAdapter = object : DialogVocabularyAdapter(requireContext()) {
             override fun OnClickItemTag(position: Int) {
                 val item = dataList[position]
                 vocabulariesRequest = item

@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkAdminBinding
-import com.example.wetalk.ui.viewmodels.AdminViewModel
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
@@ -22,7 +21,7 @@ import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TalkAdminFragment : Fragment() {
+class AdminFragment : Fragment() {
     private val viewModel: ProfileHomeViewModel by viewModels()
 
     private var _binding: FragmentTalkAdminBinding? = null
@@ -47,7 +46,6 @@ class TalkAdminFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
         onClickView()
     }
 
@@ -96,7 +94,10 @@ class TalkAdminFragment : Fragment() {
             val bundle = bundleOf(
               "isAdmin" to isAdmin
             )
-            findNavController().navigate(R.id.action_talkAdminFragment_to_talkTopicFragment, bundle)
+            findNavController().navigate(R.id.action_talkAdminFragment_to_talkSignFragment, bundle)
+        }
+        btHome.setOnClickListener {
+            findNavController().navigate(R.id.action_talkAdminFragment_to_talkHomeFragment)
         }
     }
 
@@ -105,7 +106,7 @@ class TalkAdminFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            TalkAdminFragment().apply {
+            AdminFragment().apply {
                 arguments = Bundle().apply {
 
                 }

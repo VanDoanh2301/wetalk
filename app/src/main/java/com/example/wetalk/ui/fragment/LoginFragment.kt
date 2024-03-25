@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Fragment for user login.
  */
 @AndroidEntryPoint
-class TalkLoginFragment : Fragment() {
+class LoginFragment : Fragment() {
     // View model initialization using Hilt's viewModels delegate
     private val viewModel: LoginViewModel by viewModels()
     private val viewModelProfile: ProfileHomeViewModel by viewModels()

@@ -5,10 +5,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TopicRequest(
-    @SerializedName("topicId") var id: Int,
+data class VocabularyRequest(
+    @SerializedName("vocabularyId") var id: Int,
     @SerializedName("content") var content: String,
     @SerializedName("imageLocation") var imageLocation: String,
-    @SerializedName("videoLocation") var videoLocation: String
+    @SerializedName("videoLocation") var videoLocation: String,
+    @SerializedName("topicId") var topicId: Int,
 ) : Parcelable {
 }

@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.databinding.ItemTagBinding
 
-abstract class DialogTagAdapter(
+abstract class DialogVocabularyAdapter(
     var context: Context) :
-    RecyclerView.Adapter<DialogTagAdapter.ViewHolder>() {
-    private var dataList : ArrayList<TopicRequest>? = null
-    fun setData(dataList: ArrayList<TopicRequest>) {
+    RecyclerView.Adapter<DialogVocabularyAdapter.ViewHolder>() {
+    private var dataList : ArrayList<VocabularyRequest>? = null
+    fun setData(dataList: ArrayList<VocabularyRequest>) {
         this.dataList = dataList
         notifyDataSetChanged()
     }

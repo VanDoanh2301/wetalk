@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.databinding.FragmentTalkSearchVocabulariesBinding
 import com.example.wetalk.ui.activity.MainActivity
@@ -34,7 +35,7 @@ class TalkVocabulariesSearchFragment : Fragment() {
     private var _binding: FragmentTalkSearchVocabulariesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VocabulariesSearchViewModel by viewModels()
-    private var resultlist: ArrayList<TopicRequest> = ArrayList()
+    private var resultlist: ArrayList<VocabularyRequest> = ArrayList()
     private var isFocus = false
     private val TAG = "TalkVocabulariesSearchFragment"
     private lateinit var vocabulariesAdapter: VocabulariesAdapter
@@ -75,7 +76,7 @@ class TalkVocabulariesSearchFragment : Fragment() {
 
     private fun onClickView() {
         vocabulariesAdapter.setOnItemClick(object  : VocabulariesAdapter.OnItemClick{
-            override fun onItem(position: Int, topicRequest: TopicRequest) {
+            override fun onItem(position: Int, topicRequest: VocabularyRequest) {
                 BaseDialogFragment.add(
                     (activity as MainActivity), TalkPlayVideoFragment.newInstance()
                         .setVideoPath(topicRequest.videoLocation,topicRequest.imageLocation, if (topicRequest.videoLocation.equals("")) 1 else 2)

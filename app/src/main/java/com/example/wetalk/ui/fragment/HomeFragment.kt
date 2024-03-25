@@ -24,6 +24,7 @@ import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.ImageAdapter
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.EMAIL_USER
+import com.example.wetalk.util.ROLE_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,19 +63,24 @@ class HomeFragment : Fragment() {
         configViewPager()
         slideBar();
         initSearch()
-        binding.textView2.text = "Người Dùng Ẩn Danh"
-        //Role
-        if (isUser) {
-            binding.btnChat.visibility = View.VISIBLE
-            binding.btnHistory.visibility = View.VISIBLE
-            binding.imgKey1.visibility = View.GONE
-            binding.imgKey2.visibility = View.GONE
-            initView()
-        } else {
-            binding.btnChat.visibility = View.GONE
-            binding.btnHistory.visibility = View.GONE
-            binding.imgKey1.visibility = View.VISIBLE
-            binding.imgKey2.visibility = View.VISIBLE
+        val strRole = SharedPreferencesUtils.getString(ROLE_USER)
+
+        when (strRole) {
+            "USER", "ADMIN" -> {
+                binding.btnChat.visibility = View.VISIBLE
+                binding.btnHistory.visibility = View.VISIBLE
+                binding.imgKey1.visibility = View.GONE
+                binding.imgKey2.visibility = View.GONE
+                initView()
+            }
+
+            else -> {
+                binding.textView2.text = "Người Dùng Ẩn Danh"
+                binding.btnChat.visibility = View.GONE
+                binding.btnHistory.visibility = View.GONE
+                binding.imgKey1.visibility = View.VISIBLE
+                binding.imgKey2.visibility = View.VISIBLE
+            }
         }
         //Click button
         binding.rltChat.setOnClickListener {
@@ -96,13 +102,16 @@ class HomeFragment : Fragment() {
 
     private fun initSearch() {
         binding.edtSearch.setOnClickListener {
-             BaseDialogFragment.add(activity as MainActivity, TalkVocabulariesSearchFragment.newInstance().setFocus(true))
+            BaseDialogFragment.add(
+                activity as MainActivity,
+                TalkVocabulariesSearchFragment.newInstance().setFocus(true)
+            )
         }
     }
+
     private fun initView() {
         //Job when start lifecycle
         lifecycleScope.launchWhenStarted {
-            val isAccess = SharedPreferencesUtils.getString("isLogin")
             viewModel.getUser()
             viewModel.getInforUser.collect {
                 when (it) {
@@ -125,7 +134,17 @@ class HomeFragment : Fragment() {
 
 
                     is Resource.Error -> {
-                        user = UserInforRequest(0, "Người dùng ẩn danh","abcxz@gmail.com","000000000","HN", "USER", "18", "MALE", R.drawable.ic_avatar_error.toString())
+                        user = UserInforRequest(
+                            0,
+                            "Người dùng ẩn danh",
+                            "abcxz@gmail.com",
+                            "000000000",
+                            "HN",
+                            "USER",
+                            "18",
+                            "MALE",
+                            R.drawable.ic_avatar_error.toString()
+                        )
                         binding.textView2.text = user?.name
                         binding.imgAvata.setImageResource(R.drawable.ic_avatar_error)
                     }
@@ -146,11 +165,7 @@ class HomeFragment : Fragment() {
             //Go to study character
             btnCharac.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment) }
             //Go to test
-            btnTest.setOnClickListener {
-                val bundle = bundleOf(
-                    "isAdmin" to isAdmin
-                )
-                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment, bundle) }
+            btnTest.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment) }
             //Go to up video
             btnProvide.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment) }
             //Go to logout

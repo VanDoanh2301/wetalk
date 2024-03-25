@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.TalkSignFragment"
+    tools:context=".ui.fragment.TopicStudyFragment"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -34,7 +34,19 @@
                 android:textColor="@color/white"
                 android:layout_gravity="center_horizontal"/>
 
-
+            <com.rey.material.widget.ImageView
+                android:id="@+id/bt_add_topic"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                style="@style/ripple_btn_tab_widget_normal_10"
+                android:background="@drawable/bg_bt_button"
+                android:padding="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_baseline_add"
+                android:tint="@color/white"
+                />
 
         </androidx.appcompat.widget.Toolbar>
 

@@ -1,23 +1,50 @@
 package com.example.wetalk.ui.fragment
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.ContextMenu
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
+import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.databinding.AddTopicDialogBinding
 import com.example.wetalk.databinding.FragmentVocabulariesHomeBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.VocabulariesAdapter
+import com.example.wetalk.ui.adapter.VocabularyArrayAdapter
+import com.example.wetalk.ui.dialog.DialogBottom
+import com.example.wetalk.ui.viewmodels.AdminViewModel
+import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.ui.viewmodels.VocabulariesViewModel
+import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.showToast
+import com.permissionx.guolindev.PermissionX
+import com.permissionx.guolindev.callback.RequestCallback
+import com.rey.material.widget.ImageView
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 @AndroidEntryPoint
 class VocabulariesHomeFragment : Fragment() {
@@ -25,8 +52,14 @@ class VocabulariesHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var id = 0
     private val viewModel: VocabulariesViewModel by viewModels()
-    private var resultlist: ArrayList<TopicRequest> = ArrayList()
+    private var resultlist: ArrayList<VocabularyRequest> = ArrayList()
     private lateinit var vocabulariesAdapter: VocabulariesAdapter
+    private val adminViewModel: AdminViewModel by viewModels()
+    private val videoViewModel: VideoUpViewModel by viewModels()
+    private lateinit var imgTopicView: ImageView
+    private var isVideo = false
+    private var imgUrl: String? = null
+    private var urlResponse = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -86,7 +119,7 @@ class VocabulariesHomeFragment : Fragment() {
             (activity as MainActivity).onBackPressed()
         }
         vocabulariesAdapter.setOnItemClick(object : VocabulariesAdapter.OnItemClick {
-            override fun onItem(position: Int, topicRequest: TopicRequest) {
+            override fun onItem(position: Int, topicRequest: VocabularyRequest) {
                 BaseDialogFragment.add(
                     (activity as MainActivity), TalkPlayVideoFragment.newInstance()
                         .setVideoPath(
@@ -95,6 +128,21 @@ class VocabulariesHomeFragment : Fragment() {
                             if (topicRequest.videoLocation.equals("")) 1 else 2
                         )
                 )
+            }
+
+        })
+        vocabulariesAdapter.setOnMoreItem(object : VocabulariesAdapter.OnItemClick {
+            override fun onItem(position: Int, topicRequest: VocabularyRequest) {
+                DialogBottom.Builder(requireContext())
+                    .setTextMore("Chỉnh sửa")
+                    .setTextReport("Xóa")
+                    .onMoreTip {
+                        showUpdateDialog(position,topicRequest.id)
+                    }
+                    .onReport {
+                        showDeleteDialog(position, topicRequest.id)
+                    }
+                    .show()
             }
 
         })
@@ -134,6 +182,182 @@ class VocabulariesHomeFragment : Fragment() {
         }
     }
 
+
+    private fun showUpdateDialog(position:Int ,groupId: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Thêm từ vựng")
+        val bindingDialog = AddTopicDialogBinding.inflate(layoutInflater)
+        builder.setView(bindingDialog.root)
+        bindingDialog.apply {
+            imgTopicView = imgLocation
+
+            imgOpen.setOnClickListener {
+                openImage()
+            }
+            imgRecord.setOnClickListener {
+                openVideo()
+            }
+        }
+        val selectedCategory = bindingDialog.spTopic.selectedItem as TopicRequest
+        val topicId = selectedCategory.id
+        builder.setPositiveButton("Đồng ý",
+            DialogInterface.OnClickListener { dialog, which ->
+                if (bindingDialog.edTopic.text != null) {
+                    if (isVideo) {
+                        val vocabularyRequest  =
+                            VocabularyRequest(
+                                groupId,
+                                bindingDialog.edTopic.text.toString(),
+                                "",
+                                urlResponse,id
+                            )
+                        adminViewModel.updateVocabulary(vocabularyRequest).observe(viewLifecycleOwner) {
+                            if (it.isSuccessful) {
+                                vocabulariesAdapter.updateItem(position, vocabularyRequest)
+                            }
+                        }
+                    } else {
+                        val vocabularyRequest=
+                            VocabularyRequest(
+                                groupId,
+                                bindingDialog.edTopic.text.toString(),
+                                urlResponse,
+                                "", id
+                            )
+                        adminViewModel.updateVocabulary(vocabularyRequest).observe(viewLifecycleOwner) {
+                            if (it.isSuccessful) {
+                                vocabulariesAdapter.updateItem(position, vocabularyRequest)
+                            }
+                        }
+                    }
+
+                }
+            })
+        builder.setNegativeButton("Hủy bỏ",
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+            })
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showDeleteDialog(position: Int,groupId: Int) {
+           adminViewModel.deleteVocabulary(groupId).observe(viewLifecycleOwner) {
+               if (it.isSuccessful) {
+                   vocabulariesAdapter.removeItem(position)
+               }
+           }
+    }
+
+    private fun openImage() {
+        PermissionX.init(this@VocabulariesHomeFragment)
+            .permissions(
+                Manifest.permission.READ_MEDIA_IMAGES
+            )
+            .request(object : RequestCallback {
+                override fun onResult(
+                    allGranted: Boolean,
+                    grantedList: MutableList<String>,
+                    deniedList: MutableList<String>
+                ) {
+                    if (allGranted) {
+                        val intent =
+                            Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            )
+                        startActivityForResult(
+                            intent,
+                            TopicStudyFragment.PICK_IMAGE_REQUEST
+                        )
+
+                    } else {
+                        requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                    }
+                }
+            })
+    }
+
+    private fun openVideo() {
+        PermissionX.init(this@VocabulariesHomeFragment)
+            .permissions(
+                Manifest.permission.READ_MEDIA_VIDEO
+            )
+            .request(object : RequestCallback {
+                override fun onResult(
+                    allGranted: Boolean,
+                    grantedList: MutableList<String>,
+                    deniedList: MutableList<String>
+                ) {
+                    if (allGranted) {
+                        val intent =
+                            Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                            )
+                        startActivityForResult(
+                            intent,
+                            TopicStudyFragment.PICK_VIDEO_REQUEST
+                        )
+
+                    } else {
+                        requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                    }
+                }
+            })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == TopicStudyFragment.PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
+            Glide.with(requireContext()).load(imageUri).into(imgTopicView)
+            isVideo = false
+
+        }
+        if (requestCode == TopicStudyFragment.PICK_VIDEO_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
+            Glide.with(requireContext()).load(imageUri).into(imgTopicView)
+            isVideo = true
+
+        }
+        if (imgUrl != null) {
+            getUrlFile(imgUrl!!)
+        }
+
+    }
+    private fun getUrlFile(devicePath: String) {
+        try {
+            if (devicePath.isNullOrEmpty()) {
+                return
+            }
+            val file = File(devicePath)
+            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            videoViewModel.uploadVideo(filePart)
+        } catch (e: Exception) {
+            requireContext().showToast()
+
+        }
+        lifecycleScope.launchWhenResumed {
+            videoViewModel.uploadResult.observe(
+                viewLifecycleOwner
+            ) {
+                when (it) {
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        urlResponse = it.data.toString()
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -142,5 +366,9 @@ class VocabulariesHomeFragment : Fragment() {
 
                 }
             }
+
+        const val PICK_IMAGE_REQUEST = 1
+        const val PICK_VIDEO_REQUEST = 2
+
     }
 }

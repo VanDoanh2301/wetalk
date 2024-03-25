@@ -17,7 +17,7 @@ import com.example.wetalk.ui.adapter.FriendAdapter
 import com.example.wetalk.ui.adapter.PendingAdapter
 import com.example.wetalk.ui.viewmodels.FriendTabViewModel
 import com.example.wetalk.util.Resource
-import com.example.wetalk.util.dialog.DialogInformUser
+import com.example.wetalk.ui.dialog.DialogInformUser
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 

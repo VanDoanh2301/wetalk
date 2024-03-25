@@ -1,4 +1,4 @@
-package com.example.wetalk.util.dialog;
+package com.example.wetalk.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -14,7 +14,6 @@ import androidx.annotation.UiThread;
 
 import com.example.wetalk.R;
 import com.rey.material.widget.Button;
-import com.rey.material.widget.RelativeLayout;
 import com.rey.material.widget.TextView;
 
 

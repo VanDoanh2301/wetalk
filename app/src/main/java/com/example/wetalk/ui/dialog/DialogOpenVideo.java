@@ -1,4 +1,4 @@
-package com.example.wetalk.util.dialog;
+package com.example.wetalk.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkLoginFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkLoginFragment"
+        android:name="com.example.wetalk.ui.fragment.LoginFragment"
         android:label="fragment_talk_login"
         tools:layout="@layout/fragment_talk_login" >
         <action
@@ -114,7 +114,7 @@
         tools:layout="@layout/fragment_talk_select_video" />
     <fragment
         android:id="@+id/talkProfileEditFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkProfileEditFragment"
+        android:name="com.example.wetalk.ui.fragment.ProfileEditFragment"
         android:label="fragment_talk_profile_edit"
         tools:layout="@layout/fragment_talk_profile_edit" />
     <fragment
@@ -141,7 +141,7 @@
         tools:layout="@layout/fragment_talk_sign_number" />
     <fragment
         android:id="@+id/talkSignFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkSignFragment"
+        android:name="com.example.wetalk.ui.fragment.TopicStudyFragment"
         android:label="fragment_talk_sign"
         tools:layout="@layout/fragment_talk_sign" >
         <action
@@ -160,7 +160,7 @@
 
     <fragment
         android:id="@+id/talkTopicFragment"
-        android:name="com.example.wetalk.ui.fragment.TopicFragment"
+        android:name="com.example.wetalk.ui.fragment.TopicPracticeFragment"
         android:label="fragment_talk_topic"
         tools:layout="@layout/fragment_talk_topic" >
         <action
@@ -231,11 +231,14 @@
         tools:layout="@layout/fragment_talk_history_vocabularies" />
     <fragment
         android:id="@+id/talkAdminFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkAdminFragment"
+        android:name="com.example.wetalk.ui.fragment.AdminFragment"
         android:label="fragment_talk_admin"
         tools:layout="@layout/fragment_talk_admin" >
         <action
-            android:id="@+id/action_talkAdminFragment_to_talkTopicFragment"
-            app:destination="@id/talkTopicFragment" />
+            android:id="@+id/action_talkAdminFragment_to_talkSignFragment"
+            app:destination="@id/talkSignFragment" />
+        <action
+            android:id="@+id/action_talkAdminFragment_to_talkHomeFragment"
+            app:destination="@id/talkHomeFragment" />
     </fragment>
 </navigation>

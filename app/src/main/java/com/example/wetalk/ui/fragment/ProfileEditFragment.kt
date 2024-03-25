@@ -52,11 +52,11 @@ import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkProfileEditFragment.newInstance] factory method to
+ * Use the [ProfileEditFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkProfileEditFragment : Fragment() {
+class ProfileEditFragment : Fragment() {
     private var _binding: FragmentTalkProfileEditBinding? = null
     private val binding get() = _binding!!
     private lateinit var user: UserInforRequest
