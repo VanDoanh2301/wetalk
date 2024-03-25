@@ -65,12 +65,10 @@
                 android:id="@+id/img_dialog_2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="4dp"
                 android:adjustViewBounds="true"
                 android:padding="10dp"
-                app:srcCompat="@drawable/ic_home_1"
                 android:tint="@color/black"
-                />
+                app:srcCompat="@drawable/ic_home_1" />
 
             <com.rey.material.widget.TextView
                 android:id="@+id/tv_dialog_2"

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 import com.example.wetalk.R;
+import com.rey.material.widget.ImageView;
 import com.rey.material.widget.RelativeLayout;
 import com.rey.material.widget.TextView;
 
@@ -34,6 +35,21 @@ public class DialogBottom {
         final RelativeLayout btn_report = (RelativeLayout) dialog.findViewById(R.id.bt_report);
         final TextView tvReport  = (TextView) dialog.findViewById(R.id.tv_dialog_2);
         final TextView tvMore = (TextView) dialog.findViewById(R.id.tv_dialog_1);
+        final ImageView imgMore = (ImageView) dialog.findViewById(R.id.img_dialog_1);
+        final ImageView imgReport = (ImageView) dialog.findViewById(R.id.img_dialog_2);
+
+        if(builder.imgMore !=null){
+            imgMore.setVisibility(View.VISIBLE);
+            imgMore.setImageResource(builder.imgMore);
+        }else{
+            imgMore.setVisibility(View.GONE);
+        }
+        if(builder.imgReport !=null){
+            imgReport.setVisibility(View.VISIBLE);
+            imgReport.setImageResource(builder.imgMore);
+        }else{
+            imgReport.setVisibility(View.GONE);
+        }
 
         if(builder.tvMore !=null && !builder.tvMore.isEmpty()){
             btn_more.setVisibility(View.VISIBLE);
@@ -95,6 +111,8 @@ public class DialogBottom {
         private boolean canceledOnTouchOutside = true;
         private String tvMore;
         private String tvReport;
+        private Integer imgMore;
+        private Integer imgReport;
         private SingleButtonCallback moreTipClick;
         private SingleButtonCallback reportClick;
         private boolean isHaveDone;
@@ -105,7 +123,14 @@ public class DialogBottom {
             this.isHaveDone = false;
             this.customView = null;
         }
-
+        public Builder setImageMore(Integer imgMore) {
+            this.imgMore = imgMore;
+            return this;
+        }
+        public Builder setImageReport(Integer imgReport) {
+            this.imgReport= imgReport;
+            return this;
+        }
         public Builder setTextMore(String tvMore) {
             this.tvMore = tvMore;
             return this;

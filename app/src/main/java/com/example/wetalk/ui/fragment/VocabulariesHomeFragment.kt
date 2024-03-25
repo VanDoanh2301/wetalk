@@ -34,8 +34,10 @@ import com.example.wetalk.ui.dialog.DialogBottom
 import com.example.wetalk.ui.viewmodels.AdminViewModel
 import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.ui.viewmodels.VocabulariesViewModel
+import com.example.wetalk.util.ROLE_USER
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
 import com.example.wetalk.util.showToast
 import com.permissionx.guolindev.PermissionX
 import com.permissionx.guolindev.callback.RequestCallback
@@ -60,6 +62,7 @@ class VocabulariesHomeFragment : Fragment() {
     private var isVideo = false
     private var imgUrl: String? = null
     private var urlResponse = ""
+    private var isAdmin = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -80,6 +83,7 @@ class VocabulariesHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         id = arguments?.getInt("id", -1)!!
         vocabulariesAdapter = VocabulariesAdapter(requireContext())
+        isAdmin = SharedPreferencesUtils.getString(ROLE_USER).equals("ADMIN")
         init()
         initView()
         initSearch()
@@ -133,21 +137,42 @@ class VocabulariesHomeFragment : Fragment() {
         })
         vocabulariesAdapter.setOnMoreItem(object : VocabulariesAdapter.OnItemClick {
             override fun onItem(position: Int, topicRequest: VocabularyRequest) {
-                DialogBottom.Builder(requireContext())
-                    .setTextMore("Chỉnh sửa")
-                    .setTextReport("Xóa")
-                    .onMoreTip {
-                        showUpdateDialog(position,topicRequest.id)
-                    }
-                    .onReport {
-                        showDeleteDialog(position, topicRequest.id)
-                    }
-                    .show()
+                if (isAdmin) {
+                    DialogBottom.Builder(requireContext())
+                        .setTextMore("Chỉnh sửa")
+                        .setTextReport("Xóa")
+                        .onMoreTip {
+                            showUpdateDialog(position,topicRequest.id)
+                        }
+                        .onReport {
+                            showDeleteDialog(position, topicRequest.id)
+                        }
+                        .show()
+                } else {
+                    DialogBottom.Builder(requireContext())
+                        .setTextMore("Chia sẻ")
+                        .setImageMore(R.drawable.setting_share)
+                        .onMoreTip {
+                            try {
+                                val i = Intent(Intent.ACTION_SEND)
+                                i.setType("text/plain")
+                                i.putExtra(Intent.EXTRA_SUBJECT, "We talk")
+                                var sAux = "\n\"We talk\n\n"
+                                sAux =
+                                    sAux + "https://play.google.com/store/apps/details?id=" + ""
+                                i.putExtra(Intent.EXTRA_TEXT, sAux)
+                                i.putExtra("position", position)
+                                startActivityForResult(Intent.createChooser(i, "Share App"), SHARE_REQUEST_CODE)
+                            } catch (e: java.lang.Exception) {
+                            }
+                        }
+                        .show()
+                }
+
             }
 
         })
     }
-
 
     private fun init() {
         lifecycleScope.launchWhenStarted {
@@ -369,6 +394,7 @@ class VocabulariesHomeFragment : Fragment() {
 
         const val PICK_IMAGE_REQUEST = 1
         const val PICK_VIDEO_REQUEST = 2
+        const val SHARE_REQUEST_CODE = 3
 
     }
 }
