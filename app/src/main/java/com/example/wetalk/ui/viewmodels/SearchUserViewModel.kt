@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
-import com.example.wetalk.data.model.objectmodel.UserQueryRequest
+import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil
@@ -42,15 +42,15 @@ class SearchUserViewModel @Inject constructor(
     // Variable to store the response from adding a friend operation (if needed)
     private var userIDRespone: GetAllUserInforRequest? = null
     /**
-     * Initiates a user search based on the provided [userQueryRequest].
+     * Initiates a user search based on the provided [queryPageRequest].
      * Updates the [_getInforUser] StateFlow with the result of the search operation.
      */
-    fun searchUser(userQueryRequest: UserQueryRequest) = viewModelScope.launch {
+    fun searchUser(queryPageRequest: QueryPageRequest) = viewModelScope.launch {
         try {
             // Check for internet connection before making the API call
             _getInforUser.value = if (NetworkUtil.hasInternetConnection(context)) {
                 // If there is an internet connection, handle the API response
-                handleSearchUserResponse(repository.seacherUser(userQueryRequest))
+                handleSearchUserResponse(repository.seacherUser(queryPageRequest))
             } else {
                 // If there is no internet connection, update the StateFlow with an error
                 Resource.Error("Mất Kết Nối Internet")

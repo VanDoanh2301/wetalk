@@ -87,9 +87,9 @@
                     android:id="@+id/edt_search"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="-32dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_custom_home"
                     android:drawableEnd="@drawable/search_icon"
                     android:drawablePadding="8dp"
@@ -132,6 +132,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraint_1">
 
                     <com.rey.material.widget.LinearLayout
+                        android:id="@+id/bt_topic"
                         style="@style/ripple_btn_tab_widget_normal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -160,7 +161,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Thêm\nchủ đề"
+                            android:text="Chủ đề"
                             android:textColor="#2e3d6d"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -194,7 +195,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Thêm\ntừ vựng"
+                            android:text="Từ vựng"
                             android:textColor="#2e3d6d"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -230,7 +231,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Duyệt\nvideo"
+                            android:text="Duyệt Video"
                             android:textColor="#2e3d6d"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -243,7 +244,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="horizontal"
                     android:weightSum="2"

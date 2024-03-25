@@ -4,16 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.TalkTopicFragment">
+    tools:context=".ui.fragment.TopicFragment">
 
-  <LinearLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
+      android:layout_height="match_parent"
+      >
       <com.google.android.material.appbar.AppBarLayout
           android:id="@+id/action_view"
           android:layout_width="match_parent"
-          android:layout_height="?actionBarSize">
+          android:layout_height="?actionBarSize"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          >
           <androidx.appcompat.widget.Toolbar
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -37,15 +41,32 @@
                   android:textColor="@color/white"
                   android:layout_gravity="center_horizontal"
                   android:fontFamily="@font/roboto_medium"/>
+
+              <com.rey.material.widget.ImageView
+                  android:id="@+id/bt_add_topic"
+                  android:layout_width="?actionBarSize"
+                  android:layout_height="?actionBarSize"
+                  style="@style/ripple_btn_tab_widget_normal_10"
+                  android:background="@drawable/bg_bt_button"
+                  android:padding="16dp"
+                  android:visibility="gone"
+                  android:layout_gravity="right"
+                  android:src="@drawable/ic_baseline_add"
+                  android:tint="@color/white"
+                  />
           </androidx.appcompat.widget.Toolbar>
 
       </com.google.android.material.appbar.AppBarLayout>
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rcv_view"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="match_parent"
+          app:layout_constraintTop_toBottomOf="@+id/action_view"
+          android:layout_marginTop="?actionBarSize"
           />
 
-  </LinearLayout>
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

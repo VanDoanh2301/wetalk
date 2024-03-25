@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rey.material.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+
+
+    <com.rey.material.widget.LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog"
+        android:minWidth="360.0dip"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <com.rey.material.widget.ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="16dp"
+            app:srcCompat="@drawable/ic_line" />
+
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/bt_more_tips"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/background_row_main"
+            style="@style/ripple_btn_tab_widget_normal_10"
+            android:gravity="center_vertical">
+
+            <com.rey.material.widget.ImageView
+                android:id="@+id/img_dialog_1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:adjustViewBounds="true"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_topic" />
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/tv_dialog_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/img_dialog_1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Thêm chủ đề"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+
+        </com.rey.material.widget.RelativeLayout>
+
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/bt_report"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            style="@style/btn_ripple_normal_12"
+            android:background="@drawable/background_row_main"
+            android:gravity="center_vertical">
+
+            <com.rey.material.widget.ImageView
+                android:id="@+id/img_dialog_2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:adjustViewBounds="true"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_home_1"
+                android:tint="@color/black"
+                />
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/tv_dialog_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/img_dialog_2"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Thêm từ vựng"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+
+        </com.rey.material.widget.RelativeLayout>
+
+
+
+
+    </com.rey.material.widget.LinearLayout>
+</com.rey.material.widget.LinearLayout>

@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.databinding.FragmentTalkHistoryVocabulariesBinding
 import com.example.wetalk.ui.adapter.VocabulariesAdapter
@@ -20,11 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkHistoryVocabulariesFragment.newInstance] factory method to
+ * Use the [HistoryVocabulariesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkHistoryVocabulariesFragment : Fragment() {
+class HistoryVocabulariesFragment : Fragment() {
     private var _binding: FragmentTalkHistoryVocabulariesBinding? =null
     private val binding get() =  _binding!!
     private var resultlist: ArrayList<TopicRequest> = ArrayList()
@@ -91,7 +90,7 @@ class TalkHistoryVocabulariesFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TalkHistoryVocabulariesFragment().apply {
+            HistoryVocabulariesFragment().apply {
                 arguments = Bundle().apply {
 
                 }

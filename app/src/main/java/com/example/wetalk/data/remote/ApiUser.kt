@@ -6,7 +6,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
 import com.example.wetalk.data.model.objectmodel.GetAllUserRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.objectmodel.UserQueryRequest
+import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.OtpPost
@@ -48,7 +48,7 @@ interface ApiUser {
     suspend fun changePassword(@Body passwordPost: PasswordPost) : Response<HostResponse>
     //Search user
     @POST("users/search")
-    suspend fun searchUser(@Body userQueryRequest: UserQueryRequest) : Response<GetAllUserInforRequest>
+    suspend fun searchUser(@Body queryPageRequest: QueryPageRequest) : Response<GetAllUserInforRequest>
     //Get find friend and add friend
     @POST("friend-ship/add-friend/{userId}")
     suspend fun addFriend(@Path("userId") userId:Int) : Response<HostResponse>

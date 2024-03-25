@@ -1,23 +1,17 @@
 package com.example.wetalk.ui.viewmodels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetalk.data.model.objectmodel.GetAllUserInforRequest
-import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
-import com.example.wetalk.data.model.objectmodel.UserQueryRequest
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil
 import com.example.wetalk.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject

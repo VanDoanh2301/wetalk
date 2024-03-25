@@ -82,7 +82,8 @@ class TalkProfileEditFragment : Fragment() {
                 requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
-        ) { } else {
+        ) {
+        } else {
             // Request the READ_EXTERNAL_STORAGE permission
             ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -184,7 +185,7 @@ class TalkProfileEditFragment : Fragment() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun initData() {
         lifecycleScope.launchWhenStarted {
             val isAccess = SharedPreferencesUtils.getString("isLogin")
@@ -208,7 +209,6 @@ class TalkProfileEditFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI(user: UserInforRequest) {
         updateUserPost = UpdateUserPost(
             user.name,
@@ -241,10 +241,9 @@ class TalkProfileEditFragment : Fragment() {
             binding.txtGender.setText("Nữ")
         }
 
-        binding.txtGender.setText(user.gender ?: "")
+//        binding.txtGender.setText(user.gender ?: "")
         binding.txtAddress.setText(user.address ?: "")
-        binding.txtPhone.hint =
-            if (user.phoneNumber == null) "Số điện thoại" else ""
+        binding.txtPhone.hint = if (user.phoneNumber == null) "Số điện thoại" else ""
         binding.txtGender.hint = if (user.gender == null) "Giới tính" else ""
         binding.txtAddress.hint = if (user.address == null) "Quê quán" else ""
 

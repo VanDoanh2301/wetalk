@@ -16,6 +16,7 @@ import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.databinding.FragmentTalkLoginBinding
 import com.example.wetalk.ui.viewmodels.LoginViewModel
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
+import com.example.wetalk.util.ROLE_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +64,6 @@ class TalkLoginFragment : Fragment() {
     }
     private fun getDataUser() {
         lifecycleScope.launchWhenStarted {
-            val isAccess = SharedPreferencesUtils.getString("isLogin")
             viewModelProfile.getUser()
             viewModelProfile.getInforUser.collect {
                 when (it) {
@@ -73,8 +73,10 @@ class TalkLoginFragment : Fragment() {
                     is Resource.Success -> {
                         val newUser = it.data!!
                         val role = newUser.role
+                        SharedPreferencesUtils.setString(ROLE_USER, role)
                         if (role.equals("ADMIN")) {
-
+                            findNavController().navigate(R.id.action_talkLoginFragment_to_talkAdminFragment)
+                            findNavController().popBackStack(R.id.talkAdminFragment, false)
                         } else {
                             val bundle = bundleOf("isUser" to true)
                             findNavController().navigate(R.id.action_talkLoginFragment_to_talkHomeFragment, bundle)

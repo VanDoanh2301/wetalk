@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.example.wetalk.R
+import com.example.wetalk.util.ROLE_USER
 import com.example.wetalk.util.SharedPreferencesUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,8 +22,6 @@ import kotlinx.coroutines.launch
  * create an instance of this fragment.
  */
 class TalkSplashFragment : Fragment() {
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +39,13 @@ class TalkSplashFragment : Fragment() {
             delay(2000L)
 
             if (SharedPreferencesUtils.getToken() != null) {
-                val bundle = bundleOf("isUser" to true)
-                findNavController().navigate(R.id.talkHomeFragment, bundle)
+                if (SharedPreferencesUtils.getString(ROLE_USER).equals("ADMIN")) {
+                    findNavController().navigate(R.id.talkAdminFragment)
+                } else {
+                    val bundle = bundleOf("isUser" to true)
+                    findNavController().navigate(R.id.talkHomeFragment, bundle)
+                }
+
             } else {
                 findNavController().navigate(R.id.action_talkSplashFragment_to_talkLoginFragment)
             }

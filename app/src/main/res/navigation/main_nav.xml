@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkHomeFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkHomeFragment"
+        android:name="com.example.wetalk.ui.fragment.HomeFragment"
         android:label="fragment_talk_home"
         tools:layout="@layout/fragment_talk_home" >
         <action
@@ -97,7 +97,7 @@
         tools:layout="@layout/fragment_talk_chat_home" />
     <fragment
         android:id="@+id/talkVocabularyUpFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkProvideVideoFragment"
+        android:name="com.example.wetalk.ui.fragment.ProvideVideoFragment"
         android:label="fragment_talk_vocabulary_up"
         tools:layout="@layout/fragment_talk_vocabulary_up" >
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkSelectVideoFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkSelectVideoDialogFragment"
+        android:name="com.example.wetalk.ui.fragment.SelectVideoFragment"
         android:label="fragment_talk_select_video"
         tools:layout="@layout/fragment_talk_select_video" />
     <fragment
@@ -150,7 +150,7 @@
     </fragment>
     <fragment
         android:id="@+id/talkProfileHomeFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkProfileHomeFragment"
+        android:name="com.example.wetalk.ui.fragment.ProfileHomeFragment"
         android:label="fragment_talk_profile_home"
         tools:layout="@layout/fragment_talk_profile_home" >
         <action
@@ -160,7 +160,7 @@
 
     <fragment
         android:id="@+id/talkTopicFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTopicFragment"
+        android:name="com.example.wetalk.ui.fragment.TopicFragment"
         android:label="fragment_talk_topic"
         tools:layout="@layout/fragment_talk_topic" >
         <action
@@ -226,12 +226,16 @@
         tools:layout="@layout/fragment_vocabularies_home" />
     <fragment
         android:id="@+id/talkHistoryVocabulariesFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkHistoryVocabulariesFragment"
+        android:name="com.example.wetalk.ui.fragment.HistoryVocabulariesFragment"
         android:label="fragment_talk_history_vocabularies"
         tools:layout="@layout/fragment_talk_history_vocabularies" />
     <fragment
         android:id="@+id/talkAdminFragment"
         android:name="com.example.wetalk.ui.fragment.TalkAdminFragment"
         android:label="fragment_talk_admin"
-        tools:layout="@layout/fragment_talk_admin" />
+        tools:layout="@layout/fragment_talk_admin" >
+        <action
+            android:id="@+id/action_talkAdminFragment_to_talkTopicFragment"
+            app:destination="@id/talkTopicFragment" />
+    </fragment>
 </navigation>

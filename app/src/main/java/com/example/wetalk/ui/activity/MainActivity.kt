@@ -3,10 +3,8 @@ package com.example.wetalk.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.wetalk.R
-import com.example.wetalk.ui.fragment.TalkHomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -19,12 +19,13 @@ import com.example.wetalk.data.model.objectmodel.RoomConversation
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.postmodel.UserRegisterPost
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.objectmodel.UserQueryRequest
+import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.data.model.postmodel.OtpPost
 import com.example.wetalk.data.model.postmodel.PasswordPost
+import com.example.wetalk.data.model.postmodel.TopicPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
@@ -39,6 +40,9 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.POST
+import retrofit2.http.Path
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -64,6 +68,17 @@ class TalkRepository @Inject constructor(
         return mTopic.getAllQuestionByTopicID(topicId)
     }
 
+    suspend fun addTopic(@Body topicPost: TopicPost) : Response<GetAllTopic> {
+        return mTopic.addTopic(topicPost)
+    }
+
+    suspend fun deleteTopic(@Path("id")  id:Int) : Response<GetAllTopic> {
+        return mTopic.deleteTopic(id)
+    }
+
+    suspend fun searchTopic(@Body queryPageRequest: QueryPageRequest) : Response<GetAllVocabulariesRequest> {
+        return mTopic.searchTopic(queryPageRequest)
+    }
     // Hàm lấy thông tin người dùng
     suspend fun getUserInfor(): Response<UserInforRequest> {
         return mUser.geUserInfor()
@@ -104,8 +119,8 @@ class TalkRepository @Inject constructor(
     }
 
     // Hàm tìm kiếm người dùng
-    suspend fun seacherUser(userQueryRequest: UserQueryRequest): Response<GetAllUserInforRequest> {
-        return mUser.searchUser(userQueryRequest)
+    suspend fun seacherUser(queryPageRequest: QueryPageRequest): Response<GetAllUserInforRequest> {
+        return mUser.searchUser(queryPageRequest)
     }
 
     // Hàm thêm bạn

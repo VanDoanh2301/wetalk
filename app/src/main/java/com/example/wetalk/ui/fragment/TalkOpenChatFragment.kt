@@ -110,14 +110,7 @@ class TalkOpenChatFragment : Fragment() {
                             chatRecyclerView.layoutManager = linearLayoutManager
                             chatRecyclerView.adapter = chatMessageAdapter
                             chatRecyclerView.setHasFixedSize(true)
-
-
                         }
-
-//                        chatMessageAdapter.submitList(resultList)
-//                        binding.chatRecyclerView.adapter = chatMessageAdapter
-//                        val lastPosition = resultList.size - 1
-//                        binding.chatRecyclerView.scrollToPosition(lastPosition)
 
 
                     }
@@ -127,26 +120,6 @@ class TalkOpenChatFragment : Fragment() {
                     }
                 }
             }
-//            viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-//                if (isLoading) {
-//                    binding.progress.visibility = View.VISIBLE
-//                } else {
-//                    // Ẩn ProgressBar
-//                    binding.progress.visibility = View.GONE
-//                }
-//            }
-//            val messagePaging = MessagePaging(1, 10, conversations.conversationId)
-//
-//            viewModel.loadMore(messagePaging).observe(requireActivity(), Observer {
-//                binding.apply {
-//                    val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
-//                    chatMessageAdapter.submitData(lifecycle, it)
-//                    chatRecyclerView.layoutManager = linearLayoutManager
-//                    chatRecyclerView.adapter = chatMessageAdapter
-//                    chatRecyclerView.setHasFixedSize(true)
-//
-//                }
-//            })
         }
 
 

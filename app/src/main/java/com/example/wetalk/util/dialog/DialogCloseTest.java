@@ -15,11 +15,11 @@ import com.example.wetalk.R;
 import com.rey.material.widget.TextView;
 
 
-public class DialogClose {
+public class DialogCloseTest {
     private Dialog dialog;
 
     @SuppressLint("InflateParams")
-    protected  DialogClose (final Builder builder) {
+    protected DialogCloseTest(final Builder builder) {
         dialog = new Dialog(builder.mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -222,13 +222,13 @@ public class DialogClose {
         }
 
         @UiThread
-        public DialogClose build() {
-            return new DialogClose(this);
+        public DialogCloseTest build() {
+            return new DialogCloseTest(this);
         }
 
         @UiThread
-        public DialogClose show() {
-            DialogClose dialog = build();
+        public DialogCloseTest show() {
+            DialogCloseTest dialog = build();
             dialog.show();
             return dialog;
         }

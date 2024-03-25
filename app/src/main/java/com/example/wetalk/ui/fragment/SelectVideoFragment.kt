@@ -20,10 +20,10 @@ import java.io.File
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkSelectVideoDialogFragment.newInstance] factory method to
+ * Use the [SelectVideoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TalkSelectVideoDialogFragment : BaseDialogFragment() {
+class SelectVideoFragment : BaseDialogFragment() {
     private var videoTask: Task<ArrayList<StorageImageItem>>? = null
     private var _binding: FragmentTalkSelectVideoBinding? =null
     private val binding get() =  _binding!!
@@ -33,14 +33,14 @@ class TalkSelectVideoDialogFragment : BaseDialogFragment() {
         return paths
     }
     companion object {
-        fun newInstance(): TalkSelectVideoDialogFragment {
+        fun newInstance(): SelectVideoFragment {
             val args = Bundle()
-            val fragment = TalkSelectVideoDialogFragment()
+            val fragment = SelectVideoFragment()
             fragment.arguments = args
             return fragment
         }
     }
-    fun setVideoTask(videoTask: Task<ArrayList<StorageImageItem>>): TalkSelectVideoDialogFragment{
+    fun setVideoTask(videoTask: Task<ArrayList<StorageImageItem>>): SelectVideoFragment{
         this.videoTask = videoTask
         return this
     }

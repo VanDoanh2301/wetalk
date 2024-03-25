@@ -4,8 +4,10 @@ import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
+import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.postmodel.TopicPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.HostResponse
 import retrofit2.Response
@@ -32,5 +34,11 @@ interface ApiTopicStudy {
     suspend fun deleteVocabularies(@Path("Id") id:Int) : Response<HostResponse>
     @GET("collect-data/all-me")
     suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest>
+    @POST("topics")
+    suspend fun addTopic(@Body topicPost: TopicPost) : Response<GetAllTopic>
+    @DELETE("topics/{id}")
+    suspend fun deleteTopic(@Path("id")  id:Int) : Response<GetAllTopic>
+    @POST("topics/search")
+    suspend fun searchTopic(@Body queryPageRequest: QueryPageRequest) : Response<GetAllVocabulariesRequest>
 
 }

@@ -71,9 +71,8 @@ class TalkTestFragment : Fragment() {
             viewModel.questions.collect {
                 when (it) {
                     is Resource.Success -> {
-
                         val questions = it.data!!.data
-                        if (questions.size > 0) {
+                        if (questions != null) {
                             for (q in questions) {
                                 val questionType = QuestionType(
                                     question = q.content,

@@ -4,7 +4,6 @@ package com.example.wetalk.ui.fragment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,15 +18,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
-import com.example.wetalk.data.model.objectmodel.UserQueryRequest
+import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.databinding.FragmentTalkSearchUserBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.UserSearchAdapter
 import com.example.wetalk.ui.viewmodels.SearchUserViewModel
-import com.example.wetalk.ui.viewmodels.TabFriendViewModel
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +40,6 @@ class TalkSearchUserFragment : Fragment() {
     private var _binding: FragmentTalkSearchUserBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchUserViewModel by viewModels()
-    private val friendViewModel: TabFriendViewModel by viewModels()
     private lateinit var adapter: UserSearchAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,12 +61,9 @@ class TalkSearchUserFragment : Fragment() {
 
     private fun initSearch() {
         binding.rcvUser.layoutManager = LinearLayoutManager(requireContext())
-        // Configuring focus for the search user EditText and displaying the keyboard
         binding.seachUsernameInput.requestFocus() // Set focus on the search EditText
         showKeyboard(binding.seachUsernameInput) // Show the keyboard for the search EditText
-        // Handling the back button click
         binding.btBack.setOnClickListener {
-            // Calling MainActivity's onBackPressed function
             requireActivity().onBackPressed()
         }
         binding.seachUsernameInput.addTextChangedListener(object : TextWatcher {
@@ -80,9 +73,9 @@ class TalkSearchUserFragment : Fragment() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val userStr = p0.toString()
-                val userQueryRequest = UserQueryRequest(1, 10, userStr, true, "")
+                val queryPageRequest = QueryPageRequest(1, 10, userStr, true, "")
                 lifecycleScope.launchWhenStarted {
-                    viewModel.searchUser(userQueryRequest)
+                    viewModel.searchUser(queryPageRequest)
                     viewModel.getInforUser.collect {
                         when (it) {
                             is Resource.Loading -> { Log.d("TextWatcher", "Loading") }

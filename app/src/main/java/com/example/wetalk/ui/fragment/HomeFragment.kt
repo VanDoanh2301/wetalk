@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,11 +33,11 @@ import java.util.TimerTask
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkHomeFragment.newInstance] factory method to
+ * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkHomeFragment : Fragment() {
+class HomeFragment : Fragment() {
     private var _binding: FragmentTalkHomeBinding? = null
     private val binding get() = _binding!!
     private var isUser = false
@@ -46,6 +45,7 @@ class TalkHomeFragment : Fragment() {
     private var user: UserInforRequest? = null
     private var images: List<ImageHome> = ArrayList()
     private var timer: Timer? = null
+    private var isAdmin = false
     private lateinit var adapterImage: ImageAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +113,7 @@ class TalkHomeFragment : Fragment() {
                         val newUser = it.data!!
                         user = newUser
                         binding.textView2.text = user?.name
+                        isAdmin = user?.role.equals("ADMIN")
                         Glide.with(requireContext())
                             .load(user?.avatarLocation)
                             .apply(RequestOptions.circleCropTransform())
@@ -145,7 +146,11 @@ class TalkHomeFragment : Fragment() {
             //Go to study character
             btnCharac.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkSignFragment) }
             //Go to test
-            btnTest.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment) }
+            btnTest.setOnClickListener {
+                val bundle = bundleOf(
+                    "isAdmin" to isAdmin
+                )
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTopicFragment, bundle) }
             //Go to up video
             btnProvide.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkVocabularyUpFragment) }
             //Go to logout

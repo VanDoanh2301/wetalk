@@ -22,7 +22,6 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.postmodel.PasswordPost
 import com.example.wetalk.databinding.FragmentTalkProfileHomeBinding
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
-import com.example.wetalk.util.dialog.DialogGravityCenter
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SharedPreferencesUtils
 import com.google.android.material.textfield.TextInputEditText
@@ -34,11 +33,11 @@ import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkProfileHomeFragment.newInstance] factory method to
+ * Use the [ProfileHomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkProfileHomeFragment : Fragment() {
+class ProfileHomeFragment : Fragment() {
     private var _binding: FragmentTalkProfileHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ProfileHomeViewModel by viewModels()
@@ -53,7 +52,7 @@ class TalkProfileHomeFragment : Fragment() {
         _binding = FragmentTalkProfileHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
@@ -103,22 +102,17 @@ class TalkProfileHomeFragment : Fragment() {
         val oldPassword = edtPassOld.text.toString()
         val newPassword = edtPassNew.text.toString()
         val confirmPassword = edtPassConfim.text.toString()
-        // Kiểm tra nếu giá trị trong "Confirm Password" giống với giá trị trong "New Password"
         if (confirmPassword == newPassword) {
-            // Nếu giống nhau, bạn có thể thực hiện các hành động tương ứng ở đây
             changePasswordRequest = PasswordPost(oldPassword, newPassword)
         } else {
-            // Nếu không giống nhau, hiển thị thông báo hoặc thực hiện hành động phù hợp
             edtPassConfim.error = "Mật khẩu xác nhận không khớp"
         }
         builder.setPositiveButton("Đồng ý",
             DialogInterface.OnClickListener { dialog, which ->
-                // Xử lý khi người dùng nhấn nút Đồng ý
                 viewModel.changePassword(changePasswordRequest)
             })
         builder.setNegativeButton("Hủy bỏ",
             DialogInterface.OnClickListener { dialog, which ->
-                // Xử lý khi người dùng nhấn nút Hủy bỏ
                 dialog.dismiss()
             })
         val dialog: AlertDialog = builder.create()

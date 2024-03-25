@@ -9,7 +9,6 @@
     <com.rey.material.widget.LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/img_background_user"
         android:minWidth="460.0dip"
         android:orientation="vertical"
         android:padding="16dp">
