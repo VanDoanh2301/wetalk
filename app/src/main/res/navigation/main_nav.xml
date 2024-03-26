@@ -119,7 +119,7 @@
         tools:layout="@layout/fragment_talk_profile_edit" />
     <fragment
         android:id="@+id/talkTestFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTestFragment"
+        android:name="com.example.wetalk.ui.fragment.TestFragment"
         android:label="fragment_talk_test"
         tools:layout="@layout/fragment_talk_test" >
         <action
@@ -248,5 +248,9 @@
         android:id="@+id/createTestFragment"
         android:name="com.example.wetalk.ui.fragment.CreateTestFragment"
         android:label="fragment_create_test"
-        tools:layout="@layout/fragment_create_test" />
+        tools:layout="@layout/fragment_create_test" >
+        <action
+            android:id="@+id/action_createTestFragment_to_talkTestFragment"
+            app:destination="@id/talkTestFragment" />
+    </fragment>
 </navigation>

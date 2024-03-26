@@ -25,28 +25,35 @@ import com.example.wetalk.databinding.FragmentTalkTestBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.MenuPracticeAdapter
 import com.example.wetalk.ui.adapter.ViewPagerPracticeAdapter
+import com.example.wetalk.ui.viewmodels.AdminViewModel
 import com.example.wetalk.ui.viewmodels.TestTopicViewModel
+import com.example.wetalk.util.ROLE_USER
 import com.example.wetalk.util.Resource
+import com.example.wetalk.util.SharedPreferencesUtils
+import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkTestFragment.newInstance] factory method to
+ * Use the [TestFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTestFragment : Fragment() {
+class TestFragment : Fragment() {
     private var _binding: FragmentTalkTestBinding? = null
     private val binding get() = _binding!!
     private var currentIndex = 0
     private var practiceQuests: ArrayList<PracticeQuest>? = null
     private var id = 0
+    private val adminViewModel: AdminViewModel by viewModels()
     private lateinit var test: TestTopic
     private var questions: ArrayList<Question>? = null
     private var testQuests: ArrayList<TestQuest> = ArrayList()
     private val viewModel: TestTopicViewModel by viewModels()
     private var viewPager: ViewPager? = null
+    private var questionId = -1;
     private lateinit var menuTestHardAdapter: MenuPracticeAdapter
+    private var isAdmin = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,11 +67,40 @@ class TalkTestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         id = arguments?.getInt("id", -1)!!
-        val questionSize = QuestionSize(1, 10, id)
         binding.mainContent.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        init()
+        initAdmin()
+    }
 
+    private fun initAdmin() {
+        isAdmin = SharedPreferencesUtils.getString(ROLE_USER).equals("ADMIN")
+        binding.mainContent.apply {
+            if (isAdmin) {
+                icUp.visibility = View.VISIBLE
+                icDelete.visibility = View.VISIBLE
+            } else {
+                icUp.visibility = View.GONE
+                icDelete.visibility = View.GONE
+            }
+        }
+        onViewAdmin()
+    }
+
+    private fun onViewAdmin() {
+        binding.mainContent.icDelete.setOnClickListener {
+            adminViewModel.deleteQuestion(questionId).observe(viewLifecycleOwner) {
+                if (it.isSuccessful) {
+                    requireContext().showToast("Xóa bài kiểm tra thành công")
+
+                }
+            }
+        }
+    }
+
+    private fun init() {
+        val questionSize = QuestionSize(1, 10, id)
         lifecycleScope.launchWhenStarted {
             viewModel.getAllQuestionPageByTopicId(questionSize)
             viewModel.questions.collect {
@@ -75,10 +111,13 @@ class TalkTestFragment : Fragment() {
                             for (q in questions) {
                                 val answerA = if (q.answers.size > 0) q.answers[0].content else null
                                 val answerB = if (q.answers.size > 1) q.answers[1].content else null
-                                val answerC = if (q.answers.size > 2 && q.answers[2] != null) q.answers[2].content else null
-                                val answerD = if (q.answers.size > 3 && q.answers[3] != null) q.answers[3].content else null
+                                val answerC =
+                                    if (q.answers.size > 2 && q.answers[2] != null) q.answers[2].content else null
+                                val answerD =
+                                    if (q.answers.size > 3 && q.answers[3] != null) q.answers[3].content else null
 
                                 val questionType = QuestionType(
+                                    q.questionId,
                                     question = q.content,
                                     answer_a = answerA,
                                     answer_b = answerB,
@@ -104,9 +143,7 @@ class TalkTestFragment : Fragment() {
                                 initPagerHome();
 
                             }
-                        }
-
-                        else {
+                        } else {
                             val questionType = QuestionType(
                                 question = "Đây là chữ gì ?",
                                 answer_a = "A",
@@ -149,6 +186,7 @@ class TalkTestFragment : Fragment() {
                             initPagerHome();
 
                         }
+                        questionId = testQuests[0].question.id
                     }
 
                     is Resource.Loading -> {
@@ -162,8 +200,6 @@ class TalkTestFragment : Fragment() {
             }
 
         }
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -226,6 +262,7 @@ class TalkTestFragment : Fragment() {
             if (currentIndex != position) {
 
             }
+            questionId = testQuests[position].question.id
             currentIndex = position
             menuTestHardAdapter.setIndexSelection(position)
             binding.mainContent.bottomTitle.text =
@@ -268,12 +305,11 @@ class TalkTestFragment : Fragment() {
     }
 
 
-
     private fun finishTest() {
-       val bundle = bundleOf(
-           "test" to test,
-           "testQuest" to testQuests
-       )
+        val bundle = bundleOf(
+            "test" to test,
+            "testQuest" to testQuests
+        )
         findNavController().navigate(R.id.action_talkTestFragment_to_testResultFragment, bundle)
 
 

@@ -89,7 +89,6 @@ class TopicPracticeFragment : Fragment() {
                 val bundle = bundleOf(
                     "id" to topicRequests!![position].id,
                 )
-                Log.d("id", topicRequests!![position].id.toString())
                 findNavController().navigate(R.id.action_talkTopicFragment_to_talkTestFragment, bundle)
             }
 

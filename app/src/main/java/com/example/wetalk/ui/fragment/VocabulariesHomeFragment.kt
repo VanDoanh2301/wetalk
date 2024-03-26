@@ -127,8 +127,8 @@ class VocabulariesHomeFragment : Fragment() {
                 BaseDialogFragment.add(
                     (activity as MainActivity), TalkPlayVideoFragment.newInstance()
                         .setVideoPath(
-                            topicRequest.videoLocation,
-                            topicRequest.imageLocation,
+                            topicRequest.videoLocation!!,
+                            topicRequest.imageLocation!!,
                             if (topicRequest.videoLocation.equals("")) 1 else 2
                         )
                 )

@@ -135,10 +135,11 @@ class TopicStudyFragment : Fragment() {
                 openVideo()
             }
         }
-        val selectedCategory =bindingDialog.spTopic.selectedItem as TopicRequest
-        val topicId = selectedCategory.id
+
         builder.setPositiveButton("Đồng ý",
             DialogInterface.OnClickListener { dialog, which ->
+                val selectedCategory =bindingDialog.spTopic.selectedItem as TopicRequest
+                val topicId = selectedCategory.id
                     if (bindingDialog.edTopic.text != null) {
                         if (isVideo) {
                             val topicPost =

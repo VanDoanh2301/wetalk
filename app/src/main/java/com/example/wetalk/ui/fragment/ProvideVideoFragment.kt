@@ -388,8 +388,10 @@ class ProvideVideoFragment : Fragment() {
                     .show()
             }
         } else {
-            DialogOpenVideo.Builder(requireContext()).title("Chữ ${vocabulariesRequest!!.content}")
-                .urlVideo(vocabulariesRequest!!.videoLocation).show()
+            vocabulariesRequest!!.videoLocation?.let {
+                DialogOpenVideo.Builder(requireContext()).title("Chữ ${vocabulariesRequest!!.content}")
+                    .urlVideo(it).show()
+            }
         }
         progressDialog.dismiss()
     }

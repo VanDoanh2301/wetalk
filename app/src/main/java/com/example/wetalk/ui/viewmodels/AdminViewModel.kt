@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.data.model.postmodel.QuestionPost
 import com.example.wetalk.repository.TalkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     fun deleteVocabulary(id: Int) = liveData {
         emit(repository.deleteVocabulary(id))
     }
-    fun addQuestion(question: Question) = liveData {
+    fun addQuestion(question: QuestionPost) = liveData {
         emit(repository.createQuestion(question))
     }
     fun updateQuestion(question: Question) = liveData {

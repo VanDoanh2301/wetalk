@@ -8,8 +8,8 @@ import kotlinx.parcelize.Parcelize
 data class VocabularyRequest(
     @SerializedName("vocabularyId") var id: Int,
     @SerializedName("content") var content: String,
-    @SerializedName("imageLocation") var imageLocation: String,
-    @SerializedName("videoLocation") var videoLocation: String,
+    @SerializedName("imageLocation") var imageLocation: String?,
+    @SerializedName("videoLocation") var videoLocation: String?,
     @SerializedName("topicId") var topicId: Int,
 ) : Parcelable {
 }

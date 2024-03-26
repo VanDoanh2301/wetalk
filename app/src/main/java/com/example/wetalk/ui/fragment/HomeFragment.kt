@@ -178,7 +178,7 @@ class HomeFragment : Fragment() {
             //Go to profile
             btnHistory.setOnClickListener { findNavController().navigate(R.id.action_talkHomeFragment_to_talkProfileHomeFragment) }
             btnHand.setOnClickListener {
-//                findNavController().navigate(R.id.action_talkHomeFragment_to_talkTrainHandFragment)
+//                findNavController().navigate(R.questionId.action_talkHomeFragment_to_talkTrainHandFragment)
                 startActivity(Intent(requireActivity(), DetectorActivity::class.java))
             }
 

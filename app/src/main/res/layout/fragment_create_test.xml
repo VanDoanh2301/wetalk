@@ -17,7 +17,7 @@
             android:background="#3262DC"
             android:id="@+id/main_toolbar">
             <com.rey.material.widget.ImageView
-                android:id="@+id/btn_menu"
+                android:id="@+id/btn_back"
                 android:layout_width="?actionBarSize"
                 android:layout_height="?actionBarSize"
                 android:clickable="true"
@@ -53,25 +53,49 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                >
-
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/textViewTitle"
+                <com.rey.material.widget.TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="8dp"
-                    android:background="@color/transparent"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
+                    android:text="Lựa chọn chủ đề"
                     android:textSize="16sp"
                     android:textColor="#3262DC"
-                    android:text="Đây là kí tự gì?"
-                    android:fontFamily="@font/roboto_medium"
+                    android:layout_marginTop="16dp"
                     />
+                <Spinner
+                    android:id="@+id/sp_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_tittle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Câu hỏi">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Giải thích">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tv_explain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <com.rey.material.widget.RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -396,6 +420,34 @@
                 />
 
         </LinearLayout>
+        <com.rey.material.widget.RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+           >
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                android:outlineAmbientShadowColor="#2F80ED"
+                android:outlineSpotShadowColor="#2F80ED"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true">
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/btn_save"
+                    style="@style/btn_ripple_normal_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/background_row_main"
+                    android:text="Lưu"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+        </com.rey.material.widget.RelativeLayout>
     </com.rey.material.widget.LinearLayout>
 </ScrollView>

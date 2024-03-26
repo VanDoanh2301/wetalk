@@ -42,7 +42,7 @@ class TestTopicViewModel @Inject constructor(private val repository: TalkReposit
                 return Resource.Success(hostResponse ?: resultResponse)
             }
         } else {
-            Log.e("GETALLQUESTION_RETROFIT_ERROR", response.toString())
+
         }
         return Resource.Error((hostResponse ?: response.message()).toString())
     }

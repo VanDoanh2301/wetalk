@@ -79,7 +79,7 @@ class TalkVocabulariesSearchFragment : Fragment() {
             override fun onItem(position: Int, topicRequest: VocabularyRequest) {
                 BaseDialogFragment.add(
                     (activity as MainActivity), TalkPlayVideoFragment.newInstance()
-                        .setVideoPath(topicRequest.videoLocation,topicRequest.imageLocation, if (topicRequest.videoLocation.equals("")) 1 else 2)
+                        .setVideoPath(topicRequest.videoLocation!!,topicRequest.imageLocation!!, if (topicRequest.videoLocation.equals("")) 1 else 2)
                 )
             }
 

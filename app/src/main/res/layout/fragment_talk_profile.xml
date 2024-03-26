@@ -21,7 +21,7 @@
                 app:contentInsetStart="0dp"
                 >
 <!--                <androidx.appcompat.widget.AppCompatImageView-->
-<!--                    android:id="@+id/bt_back"-->
+<!--                    android:questionId="@+questionId/bt_back"-->
 <!--                    android:layout_width="?actionBarSize"-->
 <!--                    android:layout_height="?actionBarSize"-->
 <!--                    android:background="@drawable/bg_bt_button"-->

@@ -193,7 +193,7 @@
     <!--        android:orientation="vertical"-->
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/toolbarMain"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+questionId/toolbarMain"-->
     <!--        >-->
     <!--        <com.rey.material.widget.LinearLayout-->
     <!--            android:layout_width="match_parent"-->
@@ -224,21 +224,21 @@
     <!--                        tools:text="User name"-->
     <!--                        android:textSize="18sp"-->
     <!--                        android:textStyle="bold"-->
-    <!--                        android:id="@+id/user_name_text"/>-->
+    <!--                        android:questionId="@+questionId/user_name_text"/>-->
     <!--                    <TextView-->
     <!--                        android:layout_width="wrap_content"-->
     <!--                        android:layout_height="wrap_content"-->
     <!--                        tools:text="10:00"-->
     <!--                        android:layout_alignParentEnd="true"-->
     <!--                        android:layout_marginEnd="10dp"-->
-    <!--                        android:id="@+id/last_message_time_text"/>-->
+    <!--                        android:questionId="@+questionId/last_message_time_text"/>-->
     <!--                </RelativeLayout>-->
 
     <!--                <TextView-->
     <!--                    android:layout_width="wrap_content"-->
     <!--                    android:layout_height="wrap_content"-->
     <!--                    tools:text="+000000000000"-->
-    <!--                    android:id="@+id/last_message_text"/>-->
+    <!--                    android:questionId="@+questionId/last_message_text"/>-->
     <!--            </LinearLayout>-->
     <!--        </com.rey.material.widget.LinearLayout>-->
     <!--        <com.rey.material.widget.LinearLayout-->
@@ -475,13 +475,13 @@
     <!--    </com.rey.material.widget.LinearLayout>-->
 
     <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/recyler_view"-->
+    <!--        android:questionId="@+questionId/recyler_view"-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="wrap_content"-->
     <!--        android:layout_margin="8dp"-->
     <!--        android:padding="8dp"-->
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
     <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/toolbarMain" />-->
+    <!--        app:layout_constraintTop_toBottomOf="@+questionId/toolbarMain" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

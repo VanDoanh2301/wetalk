@@ -138,28 +138,29 @@
                     app:tint="@color/white" />
 
                 <com.rey.material.widget.ImageView
-                    android:id="@+id/ic_bookmark"
+                    android:id="@+id/ic_delete"
                     style="@style/ripple_btn_tab_widget_light"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@+id/bottomTitle"
                     android:padding="12dp"
-                    android:rotation="180"
-                    android:scaleY="-1"
                     app:tint="@color/white"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_delete_diary_white"
                     />
                 <com.rey.material.widget.ImageView
-                    android:id="@+id/ic_none"
+                    android:id="@+id/ic_up"
                     style="@style/ripple_btn_tab_widget_light"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="16dp"
                     android:layout_toLeftOf="@+id/bottomTitle"
                     android:padding="12dp"
-                    android:rotation="180"
                     android:scaleY="-1"
                     app:tint="@color/white"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_up_video"
                     />
                 <TextView
                     android:id="@+id/bottomTitle"

@@ -27,6 +27,7 @@ import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.data.model.postmodel.OtpPost
 import com.example.wetalk.data.model.postmodel.PasswordPost
+import com.example.wetalk.data.model.postmodel.QuestionPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.LoginResponse
 import com.example.wetalk.data.model.responsemodel.HostResponse
@@ -41,8 +42,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 import javax.inject.Inject
 
@@ -110,7 +109,7 @@ class TalkRepository @Inject constructor(
         return mTopic.getAllQuestionPageByTopicId(questionSize)
     }
 
-    suspend fun createQuestion(question: Question): Response<GetAllQuestion> {
+    suspend fun createQuestion(question: QuestionPost): Response<GetAllQuestion> {
         return mTopic.createQuestion(question)
     }
 

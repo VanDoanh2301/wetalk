@@ -142,7 +142,7 @@ class TalkTabFriendFragment : Fragment() {
 //             val singleConversation = RoomConversation(
 //                 conversationName = user!!.name,
 //                 conversationType = ConversationType.SINGLE.name,
-//                 contactIds = arrayListOf(currentUserID, user.id!!)
+//                 contactIds = arrayListOf(currentUserID, user.questionId!!)
 //             )
 //             viewModel.postCreateRoom(singleConversation)
 //             viewModel.createRoom.collect {

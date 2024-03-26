@@ -11,12 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wetalk.R
+import com.example.wetalk.data.model.objectmodel.AnswerRequest
+import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.TopicRequest
+import com.example.wetalk.data.model.postmodel.QuestionPost
 import com.example.wetalk.databinding.FragmentCreateTestBinding
 import com.example.wetalk.ui.adapter.VocabularyArrayAdapter
 import com.example.wetalk.ui.viewmodels.AdminViewModel
@@ -41,8 +45,10 @@ class CreateTestFragment : Fragment() {
     private var choose2 = false
     private var choose3 = false
     private var choose4 = false
+    private var isSelected = false
     private var imgUrl = ""
     private var isVideo = false
+    private var topicId = 1
     private val adminViewModel : AdminViewModel by viewModels()
     private val videoViewModel: VideoUpViewModel by viewModels()
     private val viewModel: TopicViewModel by viewModels()
@@ -67,20 +73,73 @@ class CreateTestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         initTopic()
-        initSpin()
         onEditView()
-        onUpload()
+
     }
 
-    private fun initSpin() {
-        binding.apply {
 
-
-//            val selectedCategory =spTopic.selectedItem as TopicRequest
-//            val topicId = selectedCategory.id
-        }
-    }
     private fun onUpload() {
+        binding.apply {
+            val selectedCategory =binding.spTopic.selectedItem as TopicRequest
+            topicId = selectedCategory.id
+            val answers: ArrayList<AnswerRequest> = ArrayList()
+            if (textOption1.text!!.isNotEmpty() && textOption1.text != null) {
+                answers.add(AnswerRequest(
+                    answerId = -1,
+                    content = textOption1.text.toString(),
+                    imageLocation = " " ,
+                    videoLocation =  " ",
+                    correct = choose1
+                ))
+            }
+            if (textOption2.text!!.isNotEmpty() && textOption2.text != null) {
+                answers.add(AnswerRequest(
+                    answerId = -1,
+                    content = textOption2.text.toString(),
+                    imageLocation = " " ,
+                    videoLocation =  " ",
+                    correct = choose2
+                ))
+            }
+            if (textOption3.text!!.isNotEmpty() && textOption3.text != null) {
+                answers.add(AnswerRequest(
+                    answerId = -1,
+                    content = textOption3.text.toString(),
+                    imageLocation = " " ,
+                    videoLocation =  " ",
+                    correct = choose3
+                ))
+            }
+            if (textOption4.text!!.isNotEmpty() && textOption4.text != null) {
+                answers.add(AnswerRequest(
+                    answerId = -1,
+                    content = textOption4.text.toString(),
+                    imageLocation = " " ,
+                    videoLocation =  " ",
+                    correct = choose4
+                ))
+            }
+
+            val question = QuestionPost(
+                questionId = -1,
+                content =textViewTitle.text.toString(),
+                explanation = " ",
+                imageLocation = if (isVideo) " " else urlResponse,
+                videoLocation = if (isVideo) urlResponse else " ",
+                topicId = topicId,
+                answers = answers
+
+            )
+            adminViewModel.addQuestion(question).observe(viewLifecycleOwner) {
+                if (it.isSuccessful) {
+                    requireContext().showToast("Thêm kiểm tra thành công")
+                    val bundle = bundleOf(
+                        "id" to topicId
+                    )
+                    findNavController().navigate(R.id.action_createTestFragment_to_talkTestFragment, bundle)
+                }
+            }
+        }
 
     }
     private fun onEditView() {
@@ -91,6 +150,18 @@ class CreateTestFragment : Fragment() {
          imgRecord.setOnClickListener {
              openVideo()
          }
+         btnSave.setOnClickListener {
+             if (isSelected) {
+                 onUpload()
+             } else {
+                 requireContext().showToast("Vui lòng chọn đáp án đúng")
+             }
+
+         }
+         btnBack.setOnClickListener {
+             requireActivity().onBackPressed()
+         }
+
      }
     }
 
@@ -158,6 +229,7 @@ class CreateTestFragment : Fragment() {
                 chooseAtIndex(1)
                 tnIndex1.setBackgroundResource(R.drawable.circle_number_select)
                 tnIndex1.setTextColor(Color.parseColor("#FFFFFF"))
+                isSelected = true
 
             }
             tnIndex2.setOnClickListener {
@@ -165,18 +237,21 @@ class CreateTestFragment : Fragment() {
                 chooseAtIndex(2)
                 tnIndex2.setBackgroundResource(R.drawable.circle_number_select)
                 tnIndex2.setTextColor(Color.parseColor("#FFFFFF"))
+                isSelected = true
             }
             tnIndex3.setOnClickListener {
                 updateBackground()
                 chooseAtIndex(3)
                 tnIndex3.setBackgroundResource(R.drawable.circle_number_select)
                 tnIndex3.setTextColor(Color.parseColor("#FFFFFF"))
+                isSelected = true
             }
             tnIndex4.setOnClickListener {
                 updateBackground()
                 chooseAtIndex(4)
                 tnIndex4.setBackgroundResource(R.drawable.circle_number_select)
                 tnIndex4.setTextColor(Color.parseColor("#FFFFFF"))
+                isSelected = true
             }
 
 
@@ -279,6 +354,7 @@ class CreateTestFragment : Fragment() {
                                 val vocabularyArrayAdapter = VocabularyArrayAdapter(requireContext(), spTopics)
                                 vocabularyArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                                 spTopic.adapter = vocabularyArrayAdapter
+
                             }
                         }
 
