@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AnswerRequest(
+    @SerializedName("answerId") var answerId:Int,
     @SerializedName("content") val content: String,
     @SerializedName("imageLocation") val imageLocation: String,
     @SerializedName("videoLocation") val videoLocation: String,

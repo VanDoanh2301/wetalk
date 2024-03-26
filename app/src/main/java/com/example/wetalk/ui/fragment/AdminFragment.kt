@@ -99,6 +99,10 @@ class AdminFragment : Fragment() {
         btHome.setOnClickListener {
             findNavController().navigate(R.id.action_talkAdminFragment_to_talkHomeFragment)
         }
+        btTest.setOnClickListener {
+            findNavController().navigate(R.id.action_talkAdminFragment_to_createTestFragment)
+        }
+
     }
 
     }

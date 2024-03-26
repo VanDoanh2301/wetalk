@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -61,29 +60,34 @@ class TalkTestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         id = arguments?.getInt("id", -1)!!
-        val questionSize = QuestionSize(0, 10, id)
+        val questionSize = QuestionSize(1, 10, id)
         binding.mainContent.btnBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.getAllQuestionByTopicId(questionSize)
+            viewModel.getAllQuestionPageByTopicId(questionSize)
             viewModel.questions.collect {
                 when (it) {
                     is Resource.Success -> {
                         val questions = it.data!!.data
                         if (questions != null) {
                             for (q in questions) {
+                                val answerA = if (q.answers.size > 0) q.answers[0].content else null
+                                val answerB = if (q.answers.size > 1) q.answers[1].content else null
+                                val answerC = if (q.answers.size > 2 && q.answers[2] != null) q.answers[2].content else null
+                                val answerD = if (q.answers.size > 3 && q.answers[3] != null) q.answers[3].content else null
+
                                 val questionType = QuestionType(
                                     question = q.content,
-                                    answer_a = q.answers[0].content,
-                                    answer_b = q.answers[1].content,
-                                    answer_c = q.answers[2].content,
-                                    answer_d = q.answers[3].content,
+                                    answer_a = answerA,
+                                    answer_b = answerB,
+                                    answer_c = answerC,
+                                    answer_d = answerD,
                                     answer_correct = q.answers.find { it.correct }?.content ?: "",
-                                    explain = q.explanation,
-                                    image = q.imageLocation,
-                                    video = q.videoLocation
+                                    explain = q.explanation ?: "",
+                                    image = q.imageLocation ?: "",
+                                    video = q.videoLocation ?: ""
                                 )
                                 Log.d("Quest", questionType.toString())
                                 val testQuest = TestQuest(
@@ -100,7 +104,9 @@ class TalkTestFragment : Fragment() {
                                 initPagerHome();
 
                             }
-                        } else {
+                        }
+
+                        else {
                             val questionType = QuestionType(
                                 question = "Đây là chữ gì ?",
                                 answer_a = "A",

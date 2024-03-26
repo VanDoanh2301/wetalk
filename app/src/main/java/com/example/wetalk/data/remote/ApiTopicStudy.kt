@@ -5,6 +5,7 @@ import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
 import com.example.wetalk.data.model.objectmodel.QueryPageRequest
+import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
@@ -21,10 +22,17 @@ import retrofit2.http.Path
 interface ApiTopicStudy {
     @GET("topics/all")
     suspend fun getAllTopic() : Response<GetAllTopic>
+
     @GET("questions/{topicId}")
     suspend fun getAllQuestionByTopicID(@Path("topicId") topicId:Int) : Response<GetAllQuestion>
+    @POST("questions")
+    suspend fun createQuestion(@Body question: Question) : Response<GetAllQuestion>
+    @PUT("questions")
+    suspend fun updateQuestion(@Body question: Question) : Response<GetAllQuestion>
+    @DELETE("questions/{id}")
+    suspend fun deleteQuestion(@Path("id") id :Int) : Response<GetAllQuestion>
     @POST("questions/limits-topic")
-    suspend fun getAllQuestionByTopicId(@Body questionSize: QuestionSize) : Response<GetAllQuestion>
+    suspend fun getAllQuestionPageByTopicId(@Body questionSize: QuestionSize) : Response<GetAllQuestion>
     @POST("vocabularies/search")
     suspend fun searchVocabularies(@Body vocabulariesDTO: VocabulariesDTO) : Response<GetAllVocabulariesRequest>
     @GET("vocabularies/{topicId}")
@@ -45,5 +53,6 @@ interface ApiTopicStudy {
     suspend fun addVocabulary(@Body topicRequest: TopicRequest) : Response<GetAllVocabulariesRequest>
     @PUT("vocabularies")
     suspend fun updateVocabulary(@Body topicRequest: VocabularyRequest) : Response<GetAllVocabulariesRequest>
+
 
 }

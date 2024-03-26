@@ -240,5 +240,13 @@
         <action
             android:id="@+id/action_talkAdminFragment_to_talkHomeFragment"
             app:destination="@id/talkHomeFragment" />
+        <action
+            android:id="@+id/action_talkAdminFragment_to_createTestFragment"
+            app:destination="@id/createTestFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createTestFragment"
+        android:name="com.example.wetalk.ui.fragment.CreateTestFragment"
+        android:label="fragment_create_test"
+        tools:layout="@layout/fragment_create_test" />
 </navigation>

@@ -2,6 +2,7 @@ package com.example.wetalk.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.repository.TalkRepository
@@ -28,6 +29,15 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     }
     fun deleteVocabulary(id: Int) = liveData {
         emit(repository.deleteVocabulary(id))
+    }
+    fun addQuestion(question: Question) = liveData {
+        emit(repository.createQuestion(question))
+    }
+    fun updateQuestion(question: Question) = liveData {
+        emit(repository.updateQuestion(question))
+    }
+    fun deleteQuestion(id: Int) = liveData {
+        emit(repository.deleteQuestion(id))
     }
     companion object {
         const val TAG = "ADMIN_VIEWMODEL"

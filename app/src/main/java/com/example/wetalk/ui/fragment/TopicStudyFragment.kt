@@ -124,15 +124,6 @@ class TopicStudyFragment : Fragment() {
         bindingDialog.apply {
             imgTopicView = imgLocation
             lnlVocabulary.visibility = View.VISIBLE
-            if (topicSelect.imageLocation != null && topicSelect.videoLocation != null) {
-                if (topicSelect.imageLocation.isNotEmpty()) {
-                    Glide.with(requireContext()).load(topicSelect.imageLocation).into(imgTopicView)
-                }
-                if (topicSelect.videoLocation.isNotEmpty()) {
-                    Glide.with(requireContext()).load(topicSelect.videoLocation).into(imgTopicView)
-                }
-            }
-
             val vocabularyArrayAdapter = VocabularyArrayAdapter(requireContext(), spTopics)
             vocabularyArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spTopic.adapter = vocabularyArrayAdapter

@@ -6,12 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Question(
-    @SerializedName("id") val id: Int,
+    @SerializedName("questionId") val id: Int,
     @SerializedName("content") val content: String,
     @SerializedName("explanation") val explanation: String,
     @SerializedName("imageLocation") val imageLocation: String,
     @SerializedName("videoLocation") val videoLocation: String,
-    @SerializedName("topic_id") val topicId: Int,
-    @SerializedName("answerDTOS") val answers:ArrayList<AnswerRequest>
+    @SerializedName("topicId") val topicId: Int,
+    @SerializedName("answerResList") val answers:ArrayList<AnswerRequest>
 ) : Parcelable{
 }

@@ -1,0 +1,401 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+
+    <com.rey.material.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="#3262DC"
+            android:id="@+id/main_toolbar">
+            <com.rey.material.widget.ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:clickable="true"
+                style="@style/ripple_btn_tab_widget_light"
+                android:padding="18dp"
+                android:src="@drawable/arrow_left"
+                app:tint="@color/white"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="Tạo bài kiểm tra"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="#B0B0B0"
+            android:outlineSpotShadowColor="#B0B0B0"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <com.rey.material.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+               >
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/textViewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp"
+                    android:background="@color/transparent"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="#3262DC"
+                    android:text="Đây là kí tự gì?"
+                    android:fontFamily="@font/roboto_medium"
+                    />
+                <com.rey.material.widget.RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.rey.material.widget.ImageView
+                        android:id="@+id/img_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_below="@+id/bt_more"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_study" />
+
+                    <com.rey.material.widget.ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/baseline_play_circle_outline_24"
+                        app:tint="@color/white" />
+                </com.rey.material.widget.RelativeLayout>
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/img_record"
+                        style="@style/ripple_btn_tab_widget_normal_10"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <com.rey.material.widget.ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:adjustViewBounds="true"
+                            app:srcCompat="@drawable/img_camera" />
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:text="Video"
+                            android:textColor="#3262DC"
+                            android:textSize="16sp" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/img_open"
+                        style="@style/ripple_btn_tab_widget_normal_10"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <com.rey.material.widget.ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:adjustViewBounds="true"
+                            app:srcCompat="@drawable/img_storage" />
+
+                        <com.rey.material.widget.TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:text="Ảnh"
+                            android:textColor="#3262DC"
+                            android:textSize="16sp" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                </com.rey.material.widget.LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.exoplayer2.ui.PlayerView
+                        android:id="@+id/vdQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:padding="1dp"
+                        android:visibility="gone"
+                        android:scaleType="fitCenter"
+                        />
+                    <ImageView
+                        android:id="@+id/imgQuestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter" />
+
+                </RelativeLayout>
+
+            </com.rey.material.widget.LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rltView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tn_index1"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                style="@style/btn_ripple_normal_12"
+                android:background="@drawable/circle_number"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="A" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textOption1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/tn_index1"
+                android:layout_weight="1"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:minHeight="36dp"
+                android:textSize="16sp"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+               android:hint="Đáp án A"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+        </com.rey.material.widget.RelativeLayout>
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rltView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tn_index2"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                style="@style/btn_ripple_normal_12"
+                android:background="@drawable/circle_number"
+                android:gravity="center"
+                android:text="B"
+                android:fontFamily="@font/roboto_medium"
+                />
+
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textOption2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/tn_index2"
+                android:layout_weight="1"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:minHeight="36dp"
+                android:paddingLeft="12dp"
+                android:textSize="16sp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+                android:hint="Đáp án B"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+        </com.rey.material.widget.RelativeLayout>
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rltView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tn_index3"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                style="@style/btn_ripple_normal_12"
+                android:background="@drawable/circle_number"
+                android:gravity="center"
+                android:text="C"
+                android:fontFamily="@font/roboto_medium"
+                />
+
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textOption3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/tn_index3"
+                android:layout_weight="1"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:minHeight="36dp"
+                android:paddingLeft="12dp"
+                android:textSize="16sp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+                android:hint="Đáp án C"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+        </com.rey.material.widget.RelativeLayout>
+        <com.rey.material.widget.RelativeLayout
+            android:id="@+id/rltView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tn_index4"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                style="@style/btn_ripple_normal_12"
+                android:background="@drawable/circle_number"
+                android:gravity="center"
+                android:text="D"
+                android:fontFamily="@font/roboto_medium"
+                />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/textOption4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/tn_index4"
+                android:layout_weight="1"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:minHeight="36dp"
+                android:paddingLeft="12dp"
+                android:textSize="16sp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+                android:hint="Đáp án D"
+                android:fontFamily="@font/roboto_regular"
+                />
+
+        </com.rey.material.widget.RelativeLayout>
+        <LinearLayout
+            android:id="@+id/lnExplain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#9D9D9D" />
+
+            <TextView
+                android:id="@+id/btn_show_explan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:layout_marginTop="12dp"
+                />
+
+            <TextView
+                android:id="@+id/txExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_textview"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                />
+
+        </LinearLayout>
+
+    </com.rey.material.widget.LinearLayout>
+</ScrollView>

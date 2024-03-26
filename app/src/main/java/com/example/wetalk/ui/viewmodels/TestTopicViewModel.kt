@@ -25,9 +25,9 @@ class TestTopicViewModel @Inject constructor(private val repository: TalkReposit
     private var hostResponse: GetAllQuestion? = null
 
     // Function to get all questions by topic ID
-    fun getAllQuestionByTopicId(questionSize: QuestionSize) = viewModelScope.launch {
+    fun getAllQuestionPageByTopicId(questionSize: QuestionSize) = viewModelScope.launch {
         try {
-            val response = repository.getAllQuestionByTopicID(questionSize)
+            val response = repository.getAllQuestionPageByTopicID(questionSize)
             _questions.value = handleGetAllQuestion(response)
         } catch (e: Exception) {
             Log.e("GETALLQUESTION_API_ERROR", e.message.toString())

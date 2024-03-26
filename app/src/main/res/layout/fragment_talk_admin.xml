@@ -169,6 +169,7 @@
                     </com.rey.material.widget.LinearLayout>
 
                     <com.rey.material.widget.LinearLayout
+                        android:id="@+id/bt_test"
                         style="@style/ripple_btn_tab_widget_normal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -195,7 +196,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Từ vựng"
+                            android:text="Kiểm tra"
                             android:textColor="#2e3d6d"
                             android:textSize="14sp"
                             android:textStyle="bold" />

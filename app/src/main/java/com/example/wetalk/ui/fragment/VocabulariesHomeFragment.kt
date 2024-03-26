@@ -334,14 +334,14 @@ class VocabulariesHomeFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == TopicStudyFragment.PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             val imageUri = data.data
             imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
             Glide.with(requireContext()).load(imageUri).into(imgTopicView)
             isVideo = false
 
         }
-        if (requestCode == TopicStudyFragment.PICK_VIDEO_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+        if (requestCode == PICK_VIDEO_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             val imageUri = data.data
             imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
             Glide.with(requireContext()).load(imageUri).into(imgTopicView)

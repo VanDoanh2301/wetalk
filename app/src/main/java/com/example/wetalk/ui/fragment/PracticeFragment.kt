@@ -137,28 +137,28 @@ class PracticeFragment : Fragment() {
                 imgQuestion.visibility = View.GONE
             }
             //check so luong dap an
-            if (question.question.answer_d != null && question.question.answer_d.isNotEmpty()
+            if (question.question.answer_d != null && question.question.answer_d!!.isNotEmpty()
             ) {
                 textOption4.text = question.question.answer_d
                 rltView4.visibility = View.VISIBLE
             } else {
                 rltView4.visibility = View.GONE
             }
-            if (question.question.answer_c != null && question.question.answer_c.isNotEmpty()
+            if (question.question.answer_c != null && question.question.answer_c!!.isNotEmpty()
             ) {
                 textOption3.text = question.question.answer_c
                 rltView3.visibility = View.VISIBLE
             } else {
                 rltView3.visibility = View.GONE
             }
-            if (question.question.answer_b != null && question.question.answer_b.isNotEmpty()
+            if (question.question.answer_b != null && question.question.answer_b!!.isNotEmpty()
             ) {
                 textOption2.text = question.question.answer_b
                 rltView2.visibility = View.VISIBLE
             } else {
                 rltView2.visibility = View.GONE
             }
-            if (question.question.answer_a != null && question.question.answer_a.isNotEmpty()
+            if (question.question.answer_a != null && question.question.answer_a!!.isNotEmpty()
             ) {
                 textOption1.text = question.question.answer_a
                 rltView1.visibility = View.VISIBLE
@@ -318,10 +318,10 @@ class PracticeFragment : Fragment() {
         binding.apply {
             if (choose1 || choose2 || choose3 || choose4) {
                 var questionAns = ""
-                if (choose1) questionAns = question.question.answer_a
-                if (choose2) questionAns = question.question.answer_b
-                if (choose3) questionAns = question.question.answer_c
-                if (choose4) questionAns = question.question.answer_d
+                if (choose1) questionAns = question.question.answer_a.toString()
+                if (choose2) questionAns = question.question.answer_b.toString()
+                if (choose3) questionAns = question.question.answer_c.toString()
+                if (choose4) questionAns = question.question.answer_d.toString()
                 question.answer = questionAns
                 disableClick()
             } else {
