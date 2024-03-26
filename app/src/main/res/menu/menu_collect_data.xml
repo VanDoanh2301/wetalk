@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_1"
+        android:title="Chấp nhận"/>
+    <item
+        android:id="@+id/menu_item_2"
+        android:title="Từ chối"/>
+    <item
+        android:id="@+id/menu_item_3"
+        android:title="Xóa"/>
+
+</menu>

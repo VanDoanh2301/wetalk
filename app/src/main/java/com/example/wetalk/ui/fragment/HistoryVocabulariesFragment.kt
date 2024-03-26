@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.databinding.FragmentTalkHistoryVocabulariesBinding
+import com.example.wetalk.ui.adapter.CollectDataAdapter
 import com.example.wetalk.ui.adapter.VocabulariesAdapter
 import com.example.wetalk.ui.viewmodels.VocabulariesHistoryViewModel
 import com.example.wetalk.util.Resource
@@ -27,10 +28,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class HistoryVocabulariesFragment : Fragment() {
     private var _binding: FragmentTalkHistoryVocabulariesBinding? =null
     private val binding get() =  _binding!!
-    private var resultlist: ArrayList<VocabularyRequest> = ArrayList()
     private val TAG = "TalkViewHistoryFragment"
     private val viewModel : VocabulariesHistoryViewModel by viewModels()
-    private lateinit var vocabulariesAdapter: VocabulariesAdapter
+    private lateinit var collectDataAdapter: CollectDataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +50,7 @@ class HistoryVocabulariesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collectDataAdapter = CollectDataAdapter(requireContext())
         init()
         onView()
     }
@@ -67,15 +68,15 @@ class HistoryVocabulariesFragment : Fragment() {
                     is Resource.Success -> {
                         try {
                             var vocabularies = it.data!!.data
-                            resultlist.addAll(vocabularies)
+
                             binding.apply {
                                 val linearLayoutManager = StaggeredGridLayoutManager(
-                                    2,
+                                    1,
                                     StaggeredGridLayoutManager.VERTICAL
                                 )
                                 rcvView.layoutManager = linearLayoutManager
-                                rcvView.adapter = vocabulariesAdapter
-                                vocabulariesAdapter.submitList(vocabularies)
+                                rcvView.adapter = collectDataAdapter
+                                collectDataAdapter.submitList(vocabularies)
                             }
                         } catch (e: Exception) {
 

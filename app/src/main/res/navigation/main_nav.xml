@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_talkHomeFragment_to_talkMainChatFragment"
             app:destination="@id/talkMainChatFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_talkAdminFragment"
+            app:destination="@id/talkAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkSearchUserFragment"
@@ -128,6 +131,9 @@
             app:popUpTo="@+id/testResultFragment"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_talkTestFragment_to_createTestFragment"
+            app:destination="@id/createTestFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkSignLanguageFragment"
@@ -243,6 +249,9 @@
         <action
             android:id="@+id/action_talkAdminFragment_to_createTestFragment"
             app:destination="@id/createTestFragment" />
+        <action
+            android:id="@+id/action_talkAdminFragment_to_collectDataFragment"
+            app:destination="@id/collectDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/createTestFragment"
@@ -253,4 +262,9 @@
             android:id="@+id/action_createTestFragment_to_talkTestFragment"
             app:destination="@id/talkTestFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/collectDataFragment"
+        android:name="com.example.wetalk.ui.fragment.CollectDataFragment"
+        android:label="fragment_collect_data"
+        tools:layout="@layout/fragment_collect_data" />
 </navigation>

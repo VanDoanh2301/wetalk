@@ -47,7 +47,7 @@ class TestFragment : Fragment() {
     private var id = 0
     private val adminViewModel: AdminViewModel by viewModels()
     private lateinit var test: TestTopic
-    private var questions: ArrayList<Question>? = null
+    private var questions: ArrayList<Question> = ArrayList()
     private var testQuests: ArrayList<TestQuest> = ArrayList()
     private val viewModel: TestTopicViewModel by viewModels()
     private var viewPager: ViewPager? = null
@@ -92,10 +92,17 @@ class TestFragment : Fragment() {
         binding.mainContent.icDelete.setOnClickListener {
             adminViewModel.deleteQuestion(questionId).observe(viewLifecycleOwner) {
                 if (it.isSuccessful) {
-                    requireContext().showToast("Xóa bài kiểm tra thành công")
-
+                    requireContext().showToast("Xóa bài kiểm tra đang được xử lí")
                 }
             }
+        }
+        binding.mainContent.icUp.setOnClickListener {
+            val question = questions.find { it.questionId == questionId }
+            val bundle = bundleOf(
+                "question" to question,
+                "isUpdate" to true
+            )
+            findNavController().navigate(R.id.action_talkTestFragment_to_createTestFragment, bundle)
         }
     }
 
@@ -106,7 +113,7 @@ class TestFragment : Fragment() {
             viewModel.questions.collect {
                 when (it) {
                     is Resource.Success -> {
-                        val questions = it.data!!.data
+                        questions = it.data!!.data
                         if (questions != null) {
                             for (q in questions) {
                                 val answerA = if (q.answers.size > 0) q.answers[0].content else null
@@ -194,7 +201,7 @@ class TestFragment : Fragment() {
                     }
 
                     is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+
                     }
                 }
             }

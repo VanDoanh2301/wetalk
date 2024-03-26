@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
+import com.example.wetalk.data.model.objectmodel.GetAllCollectData
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
@@ -89,7 +90,7 @@ class TalkRepository @Inject constructor(
         return mTopic.getVocabulariesById(topicId)
     }
 
-    suspend fun getCollectDataHistory(): Response<GetAllVocabulariesByIdRequest> {
+    suspend fun getCollectDataHistory(): Response<GetAllCollectData> {
         return mTopic.getCollectDataHistory()
     }
 
@@ -118,6 +119,22 @@ class TalkRepository @Inject constructor(
     }
     suspend fun deleteQuestion(id :Int) : Response<GetAllQuestion> {
         return mTopic.deleteQuestion(id)
+    }
+
+    suspend fun getAllDataPending() : Response<GetAllCollectData> {
+        return mTopic.getAllDataPending()
+    }
+
+    suspend fun getAllDataMe() : Response<GetAllCollectData> {
+        return mTopic.getAllDataMe()
+    }
+
+    suspend fun approveDataById(id:Int) : Response<GetAllCollectData> {
+        return mTopic.approveDataById(id)
+    }
+
+    suspend fun deleteDataById( id:Int) : Response<GetAllCollectData> {
+        return mTopic.deleteDataById(id)
     }
 
     //User------------------------------------------------------------------------------------------

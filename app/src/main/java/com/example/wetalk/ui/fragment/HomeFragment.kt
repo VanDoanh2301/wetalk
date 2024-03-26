@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isUser = arguments?.getBoolean("isUser", false) ?: false
+        isAdmin = SharedPreferencesUtils.getString(ROLE_USER).equals("ADMIN")
         configViewPager()
         slideBar();
         initSearch()
@@ -80,6 +81,12 @@ class HomeFragment : Fragment() {
                 binding.btnHistory.visibility = View.GONE
                 binding.imgKey1.visibility = View.VISIBLE
                 binding.imgKey2.visibility = View.VISIBLE
+            }
+        }
+        if (isAdmin) {
+            binding.btAdmin.visibility = View.VISIBLE
+            binding.btAdmin.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_talkAdminFragment)
             }
         }
         //Click button

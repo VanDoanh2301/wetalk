@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkAdminBinding
+import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.viewmodels.ProfileHomeViewModel
 import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
@@ -101,6 +102,15 @@ class AdminFragment : Fragment() {
         }
         btTest.setOnClickListener {
             findNavController().navigate(R.id.action_talkAdminFragment_to_createTestFragment)
+        }
+        btData.setOnClickListener {
+            findNavController().navigate(R.id.action_talkAdminFragment_to_collectDataFragment)
+        }
+       edtSearch.setOnClickListener {
+            BaseDialogFragment.add(
+                activity as MainActivity,
+                TalkVocabulariesSearchFragment.newInstance().setFocus(true)
+            )
         }
 
     }

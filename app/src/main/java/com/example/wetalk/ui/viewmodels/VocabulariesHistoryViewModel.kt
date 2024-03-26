@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wetalk.data.model.objectmodel.GetAllCollectData
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesRequest
 import com.example.wetalk.repository.TalkRepository
@@ -20,11 +21,11 @@ import javax.inject.Inject
 class VocabulariesHistoryViewModel @Inject constructor(var repository: TalkRepository, @ApplicationContext var context: Context)  :
     ViewModel(){
     // MutableLiveData for storing l vocabularies resource
-    private val _vocabularies: MutableLiveData<Resource<GetAllVocabulariesByIdRequest>> =
+    private val _vocabularies: MutableLiveData<Resource<GetAllCollectData>> =
         MutableLiveData(Resource.Loading())
-    val vocabularies: LiveData<Resource<GetAllVocabulariesByIdRequest>>
+    val vocabularies: LiveData<Resource<GetAllCollectData>>
         get() = _vocabularies
-    private var vocabulariesResponse: GetAllVocabulariesByIdRequest? = null
+    private var vocabulariesResponse:GetAllCollectData? = null
     fun getVocabulariesData() = viewModelScope.launch {
         try {
             // Check for internet connection before making the API call
@@ -40,7 +41,7 @@ class VocabulariesHistoryViewModel @Inject constructor(var repository: TalkRepos
             _vocabularies.value = Resource.Error(e.toString())
         }
     }
-    private fun handleSearchVocabulariesResponse(response: Response<GetAllVocabulariesByIdRequest>): Resource<GetAllVocabulariesByIdRequest> =
+    private fun handleSearchVocabulariesResponse(response: Response<GetAllCollectData>): Resource<GetAllCollectData> =
         if (response.isSuccessful) {
             // If the API call is successful, return a Success resource with the user information
             Resource.Success(vocabulariesResponse ?: response.body()!!)

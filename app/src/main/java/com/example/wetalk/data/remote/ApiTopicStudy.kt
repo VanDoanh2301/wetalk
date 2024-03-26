@@ -1,5 +1,6 @@
 package com.example.wetalk.data.remote
 
+import com.example.wetalk.data.model.objectmodel.GetAllCollectData
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
@@ -23,7 +24,6 @@ import retrofit2.http.Path
 interface ApiTopicStudy {
     @GET("topics/all")
     suspend fun getAllTopic() : Response<GetAllTopic>
-
     @GET("questions/{topicId}")
     suspend fun getAllQuestionByTopicID(@Path("topicId") topicId:Int) : Response<GetAllQuestion>
     @POST("questions")
@@ -40,8 +40,9 @@ interface ApiTopicStudy {
     suspend fun getVocabulariesById(@Path("topicId") topicId:Int)  : Response<GetAllVocabulariesByIdRequest>
     @DELETE("/vocabularies/{id}")
     suspend fun deleteVocabulary(@Path("id") id:Int) : Response<HostResponse>
-    @GET("collect-data/all-me")
-    suspend fun getCollectDataHistory() : Response<GetAllVocabulariesByIdRequest>
+    @GET("data-collection/all-me")
+    suspend fun getCollectDataHistory() : Response<GetAllCollectData>
+
     @POST("topics")
     suspend fun addTopic(@Body topicPost: TopicRequest) : Response<GetAllTopic>
     @DELETE("topics/{questionId}")
@@ -54,6 +55,14 @@ interface ApiTopicStudy {
     suspend fun addVocabulary(@Body topicRequest: TopicRequest) : Response<GetAllVocabulariesRequest>
     @PUT("vocabularies")
     suspend fun updateVocabulary(@Body topicRequest: VocabularyRequest) : Response<GetAllVocabulariesRequest>
+    @GET("data-collection/pending-list-admin")
+    suspend fun getAllDataPending() : Response<GetAllCollectData>
+    @GET("data-collection/all-me")
+    suspend fun getAllDataMe() : Response<GetAllCollectData>
+    @POST("data-collection/approve/{id}")
+    suspend fun approveDataById(@Path("id") id:Int) : Response<GetAllCollectData>
+    @DELETE("data-collection/{id}")
+    suspend fun deleteDataById(@Path("id") id:Int) : Response<GetAllCollectData>
 
 
 }

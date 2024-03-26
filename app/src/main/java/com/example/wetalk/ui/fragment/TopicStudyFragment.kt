@@ -5,6 +5,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -305,61 +306,123 @@ class TopicStudyFragment : Fragment() {
     }
 
     private fun openImage() {
-        PermissionX.init(this@TopicStudyFragment)
-            .permissions(
-                Manifest.permission.READ_MEDIA_IMAGES
-            )
-            .request(object : RequestCallback {
-                override fun onResult(
-                    allGranted: Boolean,
-                    grantedList: MutableList<String>,
-                    deniedList: MutableList<String>
-                ) {
-                    if (allGranted) {
-                        val intent =
-                            Intent(
-                                Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        if (Build.VERSION.SDK_INT > 33) {
+            PermissionX.init(this@TopicStudyFragment)
+                .permissions(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                PICK_IMAGE_REQUEST
                             )
-                        startActivityForResult(
-                            intent,
-                            PICK_IMAGE_REQUEST
-                        )
 
-                    } else {
-                        requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
                     }
-                }
-            })
+                })
+        } else {
+            PermissionX.init(this@TopicStudyFragment)
+                .permissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                PICK_IMAGE_REQUEST
+                            )
+
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
+                    }
+                })
+        }
+
     }
 
     private fun openVideo() {
-        PermissionX.init(this@TopicStudyFragment)
-            .permissions(
-                Manifest.permission.READ_MEDIA_VIDEO
-            )
-            .request(object : RequestCallback {
-                override fun onResult(
-                    allGranted: Boolean,
-                    grantedList: MutableList<String>,
-                    deniedList: MutableList<String>
-                ) {
-                    if (allGranted) {
-                        val intent =
-                            Intent(
-                                Intent.ACTION_PICK,
-                                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        if (Build.VERSION.SDK_INT > 33) {
+            PermissionX.init(this@TopicStudyFragment)
+                .permissions(
+                    Manifest.permission.READ_MEDIA_VIDEO
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                PICK_VIDEO_REQUEST
                             )
-                        startActivityForResult(
-                            intent,
-                            PICK_VIDEO_REQUEST
-                        )
 
-                    } else {
-                        requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
                     }
-                }
-            })
+                })
+        } else {
+            PermissionX.init(this@TopicStudyFragment)
+                .permissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                PICK_VIDEO_REQUEST
+                            )
+
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
+                    }
+                })
+        }
+
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {

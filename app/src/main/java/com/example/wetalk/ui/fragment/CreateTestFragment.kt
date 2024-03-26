@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -54,6 +55,10 @@ class CreateTestFragment : Fragment() {
     private val viewModel: TopicViewModel by viewModels()
     private var spTopics: ArrayList<TopicRequest> = ArrayList()
     private var urlResponse = ""
+    private var question: Question ? = null
+    private var isUpdate = false
+    private lateinit var vocabularyArrayAdapter: VocabularyArrayAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -71,12 +76,61 @@ class CreateTestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        try {
+            question = arguments?.getParcelable("question")!!
+            isUpdate = arguments?.getBoolean("isUpdate")!!
+            Log.d("CreateFragment", question.toString())
+            onUpDate(question!!, isUpdate)
+        } catch (e : Exception) {
+            Log.d("CreateFragment", e.message.toString())
+        }
+
+
         init()
         initTopic()
         onEditView()
 
     }
 
+    private fun onUpDate(question: Question, isUpdate:Boolean) {
+        binding.apply {
+            if (isUpdate) {
+                 textViewTitle.setText(question.content)
+                tvExplain.setText(question.explanation)
+                Glide.with(requireContext()).load(if (question.imageLocation != null && question.imageLocation.isNotEmpty()) question.imageLocation else question.videoLocation).into(imgView)
+                val answerA = if (question.answers.size > 0) question.answers[0].content else ""
+                val answerB = if (question.answers.size > 1) question.answers[1].content else ""
+                val answerC =
+                    if (question.answers.size > 2 && question.answers[2] != null) question.answers[2].content else ""
+                val answerD =
+                    if (question.answers.size > 3 && question.answers[3] != null) question.answers[3].content else ""
+                textOption1.setText(answerA)
+                textOption2.setText(answerB)
+                textOption3.setText(answerC)
+                textOption4.setText(answerD)
+                if (question.answers[0].correct && question.answers.size > 0) {
+                    tnIndex1.setBackgroundResource(R.drawable.circle_number_select)
+                    tnIndex1.setTextColor(Color.parseColor("#FFFFFF"))
+                }
+                if (question.answers[1].correct && question.answers.size > 1) {
+                    tnIndex2.setBackgroundResource(R.drawable.circle_number_select)
+                    tnIndex2.setTextColor(Color.parseColor("#FFFFFF"))
+                }
+                if (question.answers[2].correct && question.answers.size > 2) {
+                    tnIndex3.setBackgroundResource(R.drawable.circle_number_select)
+                    tnIndex3.setTextColor(Color.parseColor("#FFFFFF"))
+                }
+                if (question.answers[3].correct && question.answers.size > 3) {
+                    tnIndex4.setBackgroundResource(R.drawable.circle_number_select)
+                    tnIndex4.setTextColor(Color.parseColor("#FFFFFF"))
+                }
+              btnSave.setOnClickListener {
+                  onUpload()
+              }
+
+            }
+        }
+    }
 
     private fun onUpload() {
         binding.apply {
@@ -351,9 +405,14 @@ class CreateTestFragment : Fragment() {
                         if (topicRequests != null) {
                             spTopics.addAll(topicRequests!!)
                             binding.apply {
-                                val vocabularyArrayAdapter = VocabularyArrayAdapter(requireContext(), spTopics)
+                                vocabularyArrayAdapter = VocabularyArrayAdapter(requireContext(), spTopics)
                                 vocabularyArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                                 spTopic.adapter = vocabularyArrayAdapter
+
+                                if (question != null) {
+                                    val postion = vocabularyArrayAdapter.getPosition(spTopics.find { it.id == question!!.topicId })
+                                    spTopic.setSelection(postion)
+                                }
 
                             }
                         }

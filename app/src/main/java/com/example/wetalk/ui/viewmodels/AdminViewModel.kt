@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminViewModel @Inject constructor(private val repository: TalkRepository) : ViewModel() {
-
+    //Topic---------------------------------------------------------------------------------------
     fun addTopic(topicPost: TopicRequest) = liveData {
         emit(repository.addTopic(topicPost))
     }
@@ -22,6 +22,7 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     fun deleteTopic(id: Int) = liveData {
         emit(repository.deleteTopic(id))
     }
+    //Vocabulary-----------------------------------------------------------------------------------
     fun addVocabulary(topicPost: TopicRequest) = liveData {
         emit(repository.addVocabulary(topicPost))
     }
@@ -31,6 +32,7 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     fun deleteVocabulary(id: Int) = liveData {
         emit(repository.deleteVocabulary(id))
     }
+    //Question------------------------------------------------------------------------------------
     fun addQuestion(question: QuestionPost) = liveData {
         emit(repository.createQuestion(question))
     }
@@ -40,7 +42,21 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     fun deleteQuestion(id: Int) = liveData {
         emit(repository.deleteQuestion(id))
     }
+    //Collect data ---------------------------------------------------------------------------------
+    fun getAllDataPending() = liveData {
+        emit(repository.getAllDataPending())
+    }
+    fun getAllDataMe() = liveData {
+        emit(repository.getAllDataMe())
+    }
+    fun approvedCollectData(id: Int) = liveData {
+        emit(repository.approveDataById(id))
+    }
+    fun deleteCollectData(id: Int) = liveData {
+        emit(repository.deleteDataById(id))
+    }
     companion object {
         const val TAG = "ADMIN_VIEWMODEL"
     }
+
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:padding="8dp"
+    android:background="@drawable/custom_bg_item"
+    android:gravity="center">
+
+    <com.rey.material.widget.RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <com.rey.material.widget.ImageView
+            android:id="@+id/img_avata"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/custom_bg_avatar"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_avatar_error" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_toRightOf="@+id/img_avata"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sans_medium"
+                android:text="Từ vựng"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/sans_regular"
+                android:text="Admin@gamil.com"
+                android:textColor="#000000"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/sans_regular"
+                android:text="Create:"
+                android:textColor="#000000"
+                android:textSize="10sp" />
+        </LinearLayout>
+        <com.rey.material.widget.ImageView
+            android:id="@+id/bt_more"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            style="@style/btn_ripple_normal_12"
+            android:src="@drawable/ic_other"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"
+            />
+    </com.rey.material.widget.RelativeLayout>
+
+    <com.rey.material.widget.ImageView
+        android:id="@+id/img_topic"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:srcCompat="@drawable/img_camera" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
