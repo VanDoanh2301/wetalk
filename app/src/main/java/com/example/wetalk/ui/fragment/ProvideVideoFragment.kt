@@ -10,18 +10,17 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.wetalk.R
-import com.example.wetalk.data.local.StorageImageItem
-import com.example.wetalk.data.local.VideoBody
-import com.example.wetalk.data.local.VideoBodyItem
-import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.data.model.postmodel.DataPost
@@ -31,7 +30,7 @@ import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.DialogTagAdapter
 import com.example.wetalk.ui.adapter.DialogVocabularyAdapter
-import com.example.wetalk.ui.customview.TalkBodyEditView
+import com.example.wetalk.ui.dialog.DialogCloseTest
 import com.example.wetalk.ui.viewmodels.TopicViewModel
 import com.example.wetalk.ui.viewmodels.VideoUpViewModel
 import com.example.wetalk.ui.viewmodels.VocabulariesViewModel
@@ -39,9 +38,6 @@ import com.example.wetalk.ui.dialog.DialogOpenVideo
 import com.example.wetalk.util.FileConfigUtils
 import com.example.wetalk.util.RealPathUtil
 import com.example.wetalk.util.Resource
-import com.example.wetalk.util.Task
-import com.example.wetalk.util.helper.FileHelper
-import com.example.wetalk.util.helper.KeyboardHeightProvider
 import com.example.wetalk.util.helper.permission_utils.Func
 import com.example.wetalk.util.helper.permission_utils.PermissionUtil
 import com.example.wetalk.util.showToast
@@ -67,24 +63,19 @@ class ProvideVideoFragment : Fragment() {
     private val viewModel: VideoUpViewModel by viewModels()
     private val topicViewModel: TopicViewModel by viewModels()
     private val vocabulariesViewModel: VocabulariesViewModel by viewModels()
-    private lateinit var keyboardHeightProvider: KeyboardHeightProvider
-    private lateinit var videoLocal: VideoLocal
-    private lateinit var talkBodyEditView: TalkBodyEditView
-    private lateinit var menuCallback: MenuCallback
     private var _binding: FragmentTalkVocabularyUpBinding? = null
     private val binding get() = _binding!!
     private lateinit var alertDialog: AlertDialog
-    private val paths = ArrayList<String>()
-    private var devicePath: String? = null
-    private var uri: Uri? = null
-    private var topicId = 0
     private var vocabularyId = 0
+    private var urlResponse = ""
+    private var urlLocation :Uri ? = null
+    private var imgUrl = ""
+    private var isVideo = false
     private var resultTopics: ArrayList<TopicRequest> = ArrayList()
     private var resultVocabularies: ArrayList<VocabularyRequest> = ArrayList()
-    private lateinit var talkImageItems: ArrayList<StorageImageItem>
     private lateinit var mRequestObject: PermissionUtil.PermissionRequestObject
     private var vocabulariesRequest: VocabularyRequest? = null
-    private val TAG = "TalkProvideVideoFragment"
+    private val TAG = "ProvideVideoFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -98,58 +89,13 @@ class ProvideVideoFragment : Fragment() {
         val originalFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
         val currentDate = LocalDate.now().format(originalFormat)
         binding.tvDate.text = currentDate.toString()
-
-        initPermisstion()
-        init()
         initDataTopic()
         onClickView()
-        onCallBack()
         onBack();
-        onUploadVideo();
         openStarVideo()
-        onFolder()
 
     }
 
-    private fun initPermisstion() {
-        if (Build.VERSION.SDK_INT > 33) {
-            PermissionX.init(this).permissions(
-                Manifest.permission.READ_MEDIA_VIDEO,
-                Manifest.permission.READ_MEDIA_AUDIO,
-                Manifest.permission.READ_MEDIA_IMAGES
-            ).request(object : RequestCallback {
-                override fun onResult(
-                    allGranted: Boolean,
-                    grantedList: MutableList<String>,
-                    deniedList: MutableList<String>
-                ) {
-                    if (allGranted) {
-
-                    } else {
-                        requireContext().showToast("You should accept all permissions")
-                    }
-                }
-            })
-        } else {
-                PermissionX.init(this).permissions(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).request(object : RequestCallback {
-                    override fun onResult(
-                        allGranted: Boolean,
-                        grantedList: MutableList<String>,
-                        deniedList: MutableList<String>
-                    ) {
-                        if (allGranted) {
-
-                        } else {
-                            requireContext().showToast("You should accept all permissions")
-                        }
-                    }
-                })
-
-        }
-    }
 
     private fun onClickView() {
         binding.btHistoryView.setOnClickListener {
@@ -158,13 +104,28 @@ class ProvideVideoFragment : Fragment() {
         binding.imgOpenTag.setOnClickListener {
             showDialogTag()
         }
-
+        binding.imgOpen.setOnClickListener {
+            openFolder(it)
+        }
+        binding.imgRecord.setOnClickListener {
+            onRecord()
+        }
         binding.imgOpenVocabularies.setOnClickListener {
             if (binding.tvName.text.equals("Chủ đề")) {
                 requireContext().showToast("Vui lòng chọn chủ đề")
             } else {
                 showDialogVocabularies()
             }
+        }
+        binding.cdSave.setOnClickListener {
+            if (imgUrl != null) {
+                getUrlFile(imgUrl!!)
+            }
+        }
+        binding.imgSelect.setOnClickListener {
+            BaseDialogFragment.add(activity as MainActivity, PlayVideoFragment.newInstance().setVideoPath(
+                if (isVideo) imgUrl else "", if (isVideo) "" else  imgUrl, if (isVideo) 2 else 1
+            ))
         }
     }
 
@@ -184,7 +145,6 @@ class ProvideVideoFragment : Fragment() {
                 vocabulariesRequest = item
                 binding.tvTitlle.text = item.content
                 vocabularyId = item.id
-                videoLocal.videoTag = binding.tvName.text.toString()
                 alertDialog.dismiss()
             }
         }
@@ -219,7 +179,6 @@ class ProvideVideoFragment : Fragment() {
             override fun OnClickItemTag(position: Int) {
                 val item = dataList[position]
                 binding.tvName.text = item.content
-                videoLocal.videoTag = binding.tvName.text.toString()
                 initDataVocabularies(item.id)
                 alertDialog.dismiss()
             }
@@ -281,55 +240,6 @@ class ProvideVideoFragment : Fragment() {
         }
     }
 
-    private fun init() {
-        talkBodyEditView = binding.bodyView
-        keyboardHeightProvider = KeyboardHeightProvider(requireActivity());
-        videoLocal = VideoLocal(
-            -1, System.currentTimeMillis(), "", VideoBody(ArrayList<VideoBodyItem>()), "", 1
-        )
-        lifecycleScope.launchWhenStarted {
-            viewModel.videoLocal.collect {
-                // Update UI with the videoLocal data
-                talkBodyEditView.preview((activity as MainActivity), it ?: videoLocal)
-                videoLocal = it
-            }
-
-        }
-        lifecycleScope.launchWhenResumed {
-            viewModel.talkImageItems.collect { talkImageItems ->
-                if (talkImageItems == null) {
-                    talkBodyEditView.visibility = View.GONE
-                } else {
-                    talkBodyEditView.visibility = View.VISIBLE
-                    talkBodyEditView.addImage(talkImageItems)
-                }
-            }
-        }
-        viewModel.uploadResult.observe(
-            viewLifecycleOwner
-        ) {
-            when (it) {
-                is Resource.Loading -> {
-                }
-
-                is Resource.Success -> {
-                    var urlStrResponse = it.data.toString()
-                    val validatePost = MediaValidatePost(urlStrResponse, binding.tvTitlle.text.toString())
-                    viewModel.getValidMedia(validatePost)
-                    onResultValid(urlStrResponse)
-
-                }
-
-                is Resource.Error -> {
-                }
-            }
-        }
-        binding.imgRecord.setOnClickListener {
-            onRecord()
-
-        }
-    }
-
     private fun onResultValid(urlStrResponse:String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Vui lòng chờ xác thực")
@@ -378,7 +288,7 @@ class ProvideVideoFragment : Fragment() {
 
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        startActivityForResult(intent, 1111)
+        startActivityForResult(intent, PICK_CAMERA_REQUEST)
     }
 
     private fun openStarVideo() {
@@ -419,113 +329,248 @@ class ProvideVideoFragment : Fragment() {
         progressDialog.dismiss()
     }
 
-    private fun onUploadVideo() {
-        binding.cvSave.setOnClickListener {
-            try {
-                if (devicePath.isNullOrEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Vui lòng chọn video cung cấp của bạn",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@setOnClickListener
-                }
-                val file = File(devicePath)
-                val requestFile =
-                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-                val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                viewModel.uploadVideo(filePart)
 
-            } catch (e: Exception) {
-                requireContext().showToast()
-            }
-        }
-    }
 
     private fun onBack() {
         binding.btBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            DialogCloseTest.Builder(requireContext())
+                .title("Thoát")
+                .content("Bạn có chắc muốn thoát ?")
+                .positiveText("Đồng ý")
+                .negativeText("Đóng")
+                .onPositive {
+                    requireActivity().onBackPressed()
+                }
+                .onNegative {
+
+                }
+                .show()
+
         }
     }
 
-    private fun onFolder() {
-        binding.imgOpen.setOnClickListener {
-            onOpenFolder()
-        }
-    }
 
-    private fun onOpenFolder() {
+    private fun openFolder(view: View) {
         FileConfigUtils.hideKeyboard(activity)
-        menuCallback.clearCursor()
-        menuCallback.scrollBottom()
-        BaseDialogFragment.add(
-            activity as MainActivity,
-            SelectVideoFragment.newInstance()
-                .setVideoTask(object : Task<ArrayList<StorageImageItem>> {
-                    override fun callback(result: ArrayList<StorageImageItem>) {
-                        menuCallback.addMedia(result)
-                        devicePath = result[0].devicePath
+            val popupMenu = PopupMenu(requireContext(), view)
+            popupMenu.inflate(R.menu.menu_select_folder)
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_item_1 -> {
+                        openImage()
+                        true
+                    }
+
+                    R.id.menu_item_2 -> {
+                        openVideo()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popupMenu.show()
+    }
+    private fun openImage() {
+        if (Build.VERSION.SDK_INT > 33) {
+            PermissionX.init(this@ProvideVideoFragment)
+                .permissions(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                TopicStudyFragment.PICK_IMAGE_REQUEST
+                            )
+
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
                     }
                 })
-        )
+        } else {
+            PermissionX.init(this@ProvideVideoFragment)
+                .permissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                TopicStudyFragment.PICK_IMAGE_REQUEST
+                            )
+
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
+                    }
+                })
+        }
+
     }
 
-    private fun onCallBack() {
-        menuCallback = object : MenuCallback {
-            override fun addMedia(result: ArrayList<StorageImageItem>) {
-                FileHelper.checkAndCopyImage(activity as MainActivity,
-                    result,
-                    object : Task<ArrayList<StorageImageItem>> {
-                        override fun callback(result: ArrayList<StorageImageItem>) {
-                            viewModel.addImageItems(result)
+    private fun openVideo() {
+        if (Build.VERSION.SDK_INT > 33) {
+            PermissionX.init(this@ProvideVideoFragment)
+                .permissions(
+                    Manifest.permission.READ_MEDIA_VIDEO
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                TopicStudyFragment.PICK_VIDEO_REQUEST
+                            )
+
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
                         }
-                    })
-            }
+                    }
+                })
+        } else {
+            PermissionX.init(this@ProvideVideoFragment)
+                .permissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_PICK,
+                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                                )
+                            startActivityForResult(
+                                intent,
+                                TopicStudyFragment.PICK_VIDEO_REQUEST
+                            )
 
-            override fun addTag() {}
-            override fun list(lineType: Int) {}
-            override fun clearCursor() {
-                val result: ArrayList<StorageImageItem> = ArrayList()
-                viewModel.addImageItems(result)
-            }
+                        } else {
+                            requireContext().showToast("Bạn cần chấp nhận tất cả các quyền")
+                        }
+                    }
+                })
+        }
 
-            override fun scrollBottom() {}
+    }
+
+    private fun getUrlFile(devicePath: String) {
+        try {
+            if (devicePath.isNullOrEmpty()) {
+                return
+            }
+            val file = File(devicePath)
+            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            viewModel.uploadVideo(filePart)
+        } catch (e: Exception) {
+            requireContext().showToast()
+
+        }
+        lifecycleScope.launchWhenResumed {
+            viewModel.uploadResult.observe(
+                viewLifecycleOwner
+            ) {
+                when (it) {
+                    is Resource.Loading -> {}
+                    is Resource.Success -> {
+                        urlResponse = it.data.toString()
+                        val validatePost = MediaValidatePost(urlResponse, binding.tvTitlle.text.toString())
+                        viewModel.getValidMedia(validatePost)
+                        onResultValid(urlResponse)
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
+
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        paths.clear()
-        if (requestCode == 1111) {
+        if (requestCode == PICK_CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             try {
-                uri = data!!.data
-                paths.add(data!!.data.toString())
-                talkImageItems = ArrayList<StorageImageItem>()
-                for (devicePath in paths) {
-                    talkImageItems.add(
-                        StorageImageItem(
-                            true,
-                            devicePath,
-                            devicePath,
-                            if (paths.size > 2) 25 else 45,
-                            0
-                        )
-                    )
-                }
-                viewModel.addImageItems(talkImageItems)
-                devicePath = RealPathUtil.getRealPath(requireContext(), uri)
+                val imageUri = data.data
+                urlLocation = imageUri
+                imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
+                isVideo = true
             } catch (e: Exception) {
             }
         }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
+            urlLocation = imageUri
+            Glide.with(requireContext()).load(imageUri).into(binding.imgSelect)
+            isVideo = false
+
+        }
+        if (requestCode == PICK_VIDEO_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            imgUrl = RealPathUtil.getRealPath(requireContext(), imageUri)
+            urlLocation = imageUri
+            Glide.with(requireContext()).load(imageUri).into(binding.imgSelect)
+            isVideo = true
+
+        }
+        if (urlLocation != null) {
+            binding.imgSelect.visibility = View.VISIBLE
+            binding.imgNone.visibility = View.GONE
+            binding.imgPlay.visibility= View.VISIBLE
+            Glide.with(requireContext()).load(urlLocation).into(binding.imgSelect)
+        } else {
+            binding.imgSelect.visibility = View.GONE
+            binding.imgNone.visibility = View.VISIBLE
+            binding.imgPlay.visibility= View.GONE
+
+        }
+
+
     }
 
-    interface MenuCallback {
-        fun addMedia(imageItems: ArrayList<StorageImageItem>)
-        fun addTag()
-        fun list(lineType: Int)
-        fun clearCursor()
-        fun scrollBottom()
-    }
 
     private fun getVideoURL(letter: String, callback: (String) -> Unit) {
         val storage = FirebaseStorage.getInstance()
@@ -538,10 +583,13 @@ class ProvideVideoFragment : Fragment() {
             .addOnFailureListener {
             }
     }
-
+    companion object {
+        const val PICK_IMAGE_REQUEST = 1
+        const val PICK_VIDEO_REQUEST = 2
+        const val PICK_CAMERA_REQUEST = 3
+    }
     override fun onPause() {
         super.onPause()
-        keyboardHeightProvider.setKeyboardHeightObserver(null)
     }
 
 }

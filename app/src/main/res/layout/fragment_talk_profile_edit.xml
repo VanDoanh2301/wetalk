@@ -95,142 +95,144 @@
 
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="?actionBarSize">
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/txt_name"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
-                            android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/img_b1"
-                            android:fontFamily="@font/roboto_medium"
-                            android:gravity="center_vertical"
-                            android:paddingStart="2dp"
-                            android:text="Name"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:hint="Tên người dùng">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.rey.material.widget.ImageView
                             android:id="@+id/img_b1"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_alignParentRight="true"
-                            android:padding="10dp"
+                            android:padding="14dp"
+                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_edit_diary_white" />
 
                     </com.rey.material.widget.RelativeLayout>
 
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
+                        android:layout_height="?actionBarSize">
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/txt_date"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
-                            android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/img_b2"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/roboto_medium"
-                            android:gravity="center_vertical"
-                            android:paddingStart="2dp"
-                            android:text="1/1/2024"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:hint="Ngày sinh">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.rey.material.widget.ImageView
                             android:id="@+id/img_b2"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_alignParentRight="true"
-                            android:padding="10dp"
+                            android:padding="14dp"
+                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_edit_diary_white" />
 
                     </com.rey.material.widget.RelativeLayout>
 
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
+                        android:layout_height="?actionBarSize">
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/txt_address"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
-                            android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/img_b6"
-                            android:fontFamily="@font/roboto_medium"
-                            android:gravity="center_vertical"
-                            android:paddingStart="2dp"
-                            android:hint="Quê quán"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:hint="Quê quán">
 
-                        <com.rey.material.widget.ImageView
-                            android:id="@+id/img_b6"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_alignParentRight="true"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_edit_diary_white" />
-
-                    </com.rey.material.widget.RelativeLayout>
-
-                    <com.rey.material.widget.RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/txt_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/img_b3"
-                            android:fontFamily="@font/roboto_medium"
-                            android:gravity="center_vertical"
-                            android:paddingStart="2dp"
-                            android:hint="0327872131"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.rey.material.widget.ImageView
                             android:id="@+id/img_b3"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_alignParentRight="true"
-                            android:padding="10dp"
+                            android:padding="14dp"
+                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_edit_diary_white" />
 
                     </com.rey.material.widget.RelativeLayout>
 
                     <com.rey.material.widget.RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
+                        android:layout_height="?actionBarSize">
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/txt_gender"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_gravity="center"
-                            android:layout_toLeftOf="@+id/img_b4"
-                            android:focusable="false"
-                            android:fontFamily="@font/roboto_medium"
-                            android:gravity="center_vertical"
-                            android:paddingStart="2dp"
-                            android:text="Nam"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:hint="Số điện thoại">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.rey.material.widget.ImageView
-                            android:id="@+id/img_b4"
+                            android:id="@+id/img_b5"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_alignParentRight="true"
-                            android:padding="10dp"
+                            android:padding="14dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/ic_edit_diary_white" />
+
+                    </com.rey.material.widget.RelativeLayout>
+
+                    <com.rey.material.widget.RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?actionBarSize">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:hint="Giới tính">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txt_gender"
+                                android:layout_width="match_parent"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:layout_height="match_parent"
+                                android:inputType="text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.rey.material.widget.ImageView
+                            android:id="@+id/img_b7"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_alignParentRight="true"
+                            android:padding="14dp"
+                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_edit_diary_white" />
 
                     </com.rey.material.widget.RelativeLayout>

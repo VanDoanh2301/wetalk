@@ -87,10 +87,16 @@
         <action
             android:id="@+id/action_talkHomeFragment_to_talkAdminFragment"
             app:destination="@id/talkAdminFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_talkHomeFragment_to_feedBackFragment"
+            app:destination="@id/feedBackFragment" />
     </fragment>
     <fragment
         android:id="@+id/talkSearchUserFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkSearchUserFragment"
+        android:name="com.example.wetalk.ui.fragment.SearchUserFragment"
         android:label="fragment_talk_search_user"
         tools:layout="@layout/fragment_talk_search_user" />
     <fragment
@@ -217,7 +223,7 @@
         tools:layout="@layout/fragment_talk_tab_phone_book" />
     <fragment
         android:id="@+id/talkTabProfileFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTabProfileFragment"
+        android:name="com.example.wetalk.ui.fragment.ProfileFragment"
         android:label="fragment_talk_tab_profile"
         tools:layout="@layout/fragment_talk_tab_profile" />
     <fragment
@@ -267,4 +273,14 @@
         android:name="com.example.wetalk.ui.fragment.CollectDataFragment"
         android:label="fragment_collect_data"
         tools:layout="@layout/fragment_collect_data" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.wetalk.ui.fragment.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/feedBackFragment"
+        android:name="com.example.wetalk.ui.fragment.FeedBackFragment"
+        android:label="fragment_feed_back"
+        tools:layout="@layout/fragment_feed_back" />
 </navigation>

@@ -32,11 +32,6 @@ import java.util.Timer
 import java.util.TimerTask
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentTalkHomeBinding? = null
@@ -190,6 +185,13 @@ class HomeFragment : Fragment() {
 //                findNavController().navigate(R.questionId.action_talkHomeFragment_to_talkTrainHandFragment)
                 startActivity(Intent(requireActivity(), DetectorActivity::class.java))
             }
+            btnSetting.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_settingFragment)
+            }
+            btNoti.setOnClickListener {
+                findNavController().navigate(R.id.action_talkHomeFragment_to_feedBackFragment)
+            }
+
 
         }
     }

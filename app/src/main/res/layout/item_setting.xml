@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="66dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.rey.material.widget.RelativeLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/btn_ripple_normal_12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.rey.material.widget.ImageView
+            android:id="@+id/line_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            />
+        <com.rey.material.widget.ImageView
+            android:id="@+id/img_topic"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:padding= "22dp"
+           />
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/tv_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/img_topic"
+            android:fontFamily="@font/sans_medium"
+            android:gravity="center"
+            android:text="Select Language"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.rey.material.widget.ImageView
+            style="@style/btn_ripple_normal_12"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="22dp"
+            app:srcCompat="@drawable/ic_arrow_right" />
+
+        <com.rey.material.widget.ImageView
+            android:id="@+id/line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="#AFAFAF"
+            android:layout_alignParentBottom="true"
+            />
+    </com.rey.material.widget.RelativeLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

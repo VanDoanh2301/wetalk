@@ -119,11 +119,11 @@ class ProfileEditFragment : Fragment() {
                     when (it) {
                         is Resource.Loading -> {}
                         is Resource.Success -> {
-                            Log.d("UPAVATAR", "UP SUCCESS")
+
                         }
 
                         is Resource.Error -> {
-                            Log.d("UserRegisterDTO", it.message.toString())
+
                         }
                     }
                 }
@@ -316,7 +316,6 @@ class ProfileEditFragment : Fragment() {
 
     private fun getUrlFile() {
         try {
-            // Kiểm tra xem đường dẫn tệp có tồn tại hay không
             if (devicePath.isNullOrEmpty()) {
                 Toast.makeText(
                     requireContext(),
@@ -325,11 +324,9 @@ class ProfileEditFragment : Fragment() {
                 ).show()
                 return
             }
-            // Tạo Multipart Request
             val file = File(devicePath)
             val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-            // Tải Lên Tệp
             viewModel.uploadVideo(filePart)
         } catch (e: Exception) {
             Toast.makeText(

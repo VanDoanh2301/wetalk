@@ -64,7 +64,7 @@ class TalkHomeChatFragment : Fragment() {
                     return when (position) {
                         0 -> TabChatFragment()
                         1 -> TabFriendFragment()
-                        2 -> TalkTabProfileFragment()
+                        2 -> ProfileFragment()
                         else -> throw IllegalArgumentException("Invalid position: $position")
                     }
                 }

@@ -114,6 +114,7 @@
                         style="@style/ripple_btn_tab_widget_normal"
                         android:layout_width="0dp"
                         android:layout_height="96dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_home_custom">
@@ -185,7 +186,7 @@
                         style="@style/ripple_btn_tab_widget_normal"
                         android:layout_width="0dp"
                         android:layout_height="96dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_home_custom">
 
@@ -324,7 +325,7 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/btn_athen"
-                            style="@style/ripple_btn_tab_widget_normal"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -359,10 +360,11 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/numberBtn"
-                            style="@style/ripple_btn_tab_widget_normal"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
+
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -396,12 +398,12 @@
                             android:id="@+id/btn_charac"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_marginEnd="16dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                style="@style/ripple_btn_tab_widget_normal"
                                 android:layout_width="match_parent"
                                 android:layout_height="70dp">
 
@@ -443,7 +445,7 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/btn_test"
-                            style="@style/ripple_btn_tab_widget_normal"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -452,7 +454,7 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="70dp">
+                                android:layout_height="62dp">
 
                                 <com.rey.material.widget.ImageView
                                     android:layout_width="wrap_content"
@@ -478,7 +480,7 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/btn_hand"
-                            style="@style/ripple_btn_tab_widget_normal"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -559,7 +561,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraint_1">
 
                         <com.rey.material.widget.LinearLayout
-                            style="@style/ripple_btn_tab_widget_normal"
+                            android:id="@+id/bt_noti"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -593,7 +596,8 @@
                         </com.rey.material.widget.LinearLayout>
 
                         <com.rey.material.widget.LinearLayout
-                            style="@style/ripple_btn_tab_widget_normal"
+                            android:id="@+id/btn_setting"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -628,7 +632,7 @@
 
                         <com.rey.material.widget.LinearLayout
                             android:id="@+id/btn_log_out"
-                            style="@style/ripple_btn_tab_widget_normal"
+                            style="@style/btn_ripple_normal_12"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
@@ -640,8 +644,8 @@
                                 android:layout_height="70dp">
 
                                 <com.rey.material.widget.ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="34dp"
+                                    android:layout_height="31dp"
                                     android:layout_margin="16dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"

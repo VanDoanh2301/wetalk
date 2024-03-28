@@ -26,7 +26,7 @@
         android:fontFamily="@font/avertabold"
         android:gravity="center"
         android:singleLine="true"
-        android:text="@string/Play"
+        android:text="Xem"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/black" />
 

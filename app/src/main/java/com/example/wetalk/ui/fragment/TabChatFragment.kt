@@ -59,7 +59,7 @@ class TabChatFragment() : Fragment() {
 
     private fun onView() {
         binding.edtSearch.setOnClickListener {
-            BaseDialogFragment.add(activity as MainActivity, TalkSearchUserFragment.newInstance())
+            BaseDialogFragment.add(activity as MainActivity, SearchUserFragment.newInstance())
         }
         conversationAdapter.setOnClickItem(object : ConversationAdapter.OnClickItem{
             override fun onClickItem(

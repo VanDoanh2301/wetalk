@@ -41,7 +41,7 @@ interface ApiUser {
     suspend fun updateUser(@Body userRequest: UpdateUserPost
     ) : Response<GetAllUserRequest>
     //Upload Avatar
-    @POST("users/uploadAvatar")
+    @POST("users/upload-avatar")
     suspend fun updateAvatar(@Body avatarRequest: AvatarRequest) : Response<GetAllUserRequest>
     //Change Password
     @POST("users/changePassword")

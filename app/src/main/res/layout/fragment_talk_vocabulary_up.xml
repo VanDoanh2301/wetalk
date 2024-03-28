@@ -233,6 +233,24 @@
                                     android:adjustViewBounds="true"
                                     android:src="@drawable/img_up" />
 
+
+                                <com.rey.material.widget.ImageView
+                                    android:id="@+id/img_select"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="126dp"
+                                    android:layout_marginTop="16dp"
+                                    android:visibility="gone"
+                                    android:adjustViewBounds="true"
+                                    android:src="@drawable/bg1" />
+                                <com.rey.material.widget.ImageView
+                                    android:id="@+id/img_play"
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:layout_centerInParent="true"
+                                    android:adjustViewBounds="true"
+                                    android:visibility="gone"
+                                    android:src="@drawable/baseline_play_circle_outline_24"
+                                    app:tint="@color/white" />
                                 <com.example.wetalk.ui.customview.TalkBodyEditView
                                     android:id="@+id/body_view"
                                     android:layout_width="match_parent"

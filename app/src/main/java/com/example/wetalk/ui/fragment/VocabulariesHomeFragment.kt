@@ -8,18 +8,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ContextMenu
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wetalk.R
@@ -29,7 +25,6 @@ import com.example.wetalk.databinding.AddTopicDialogBinding
 import com.example.wetalk.databinding.FragmentVocabulariesHomeBinding
 import com.example.wetalk.ui.activity.MainActivity
 import com.example.wetalk.ui.adapter.VocabulariesAdapter
-import com.example.wetalk.ui.adapter.VocabularyArrayAdapter
 import com.example.wetalk.ui.dialog.DialogBottom
 import com.example.wetalk.ui.viewmodels.AdminViewModel
 import com.example.wetalk.ui.viewmodels.VideoUpViewModel
@@ -125,7 +120,7 @@ class VocabulariesHomeFragment : Fragment() {
         vocabulariesAdapter.setOnItemClick(object : VocabulariesAdapter.OnItemClick {
             override fun onItem(position: Int, topicRequest: VocabularyRequest) {
                 BaseDialogFragment.add(
-                    (activity as MainActivity), TalkPlayVideoFragment.newInstance()
+                    (activity as MainActivity), PlayVideoFragment.newInstance()
                         .setVideoPath(
                             topicRequest.videoLocation!!,
                             topicRequest.imageLocation!!,

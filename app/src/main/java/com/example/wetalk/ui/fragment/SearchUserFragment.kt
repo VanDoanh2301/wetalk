@@ -32,11 +32,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkSearchUserFragment.newInstance] factory method to
+ * Use the [SearchUserFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkSearchUserFragment : Fragment() {
+class SearchUserFragment : Fragment() {
     private var _binding: FragmentTalkSearchUserBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchUserViewModel by viewModels()
@@ -167,7 +167,7 @@ class TalkSearchUserFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
-            TalkSearchUserFragment().apply {
+            SearchUserFragment().apply {
                 arguments = Bundle().apply {
 
                 }

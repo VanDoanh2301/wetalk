@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.databinding.FragmentTalkSearchVocabulariesBinding
@@ -78,7 +77,7 @@ class TalkVocabulariesSearchFragment : Fragment() {
         vocabulariesAdapter.setOnItemClick(object  : VocabulariesAdapter.OnItemClick{
             override fun onItem(position: Int, topicRequest: VocabularyRequest) {
                 BaseDialogFragment.add(
-                    (activity as MainActivity), TalkPlayVideoFragment.newInstance()
+                    (activity as MainActivity), PlayVideoFragment.newInstance()
                         .setVideoPath(topicRequest.videoLocation!!,topicRequest.imageLocation!!, if (topicRequest.videoLocation.equals("")) 1 else 2)
                 )
             }
