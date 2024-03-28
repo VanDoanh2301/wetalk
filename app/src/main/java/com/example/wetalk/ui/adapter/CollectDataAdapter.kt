@@ -2,11 +2,19 @@ package com.example.wetalk.ui.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.CollectData
 import com.example.wetalk.databinding.ItemCollectDataBinding
@@ -28,7 +36,33 @@ class CollectDataAdapter(var context: Context) :
 
         fun bind(collectData: CollectData, position: Int) {
             binding.apply {
-                Glide.with(context).load(collectData.dataLocation).into(imgTopic)
+                progressBar.visibility = View.VISIBLE
+                Glide.with(context).load(collectData.dataLocation)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            progressBar.visibility = View.GONE
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            progressBar.visibility = View.GONE
+                           return false
+                        }
+
+                    })
+                    .into(imgTopic)
+                tvContent.text = "Content: " + collectData.vocabularyContent
                 tvEmail.text = "Editor: " + collectData.editor
                 val dateTime = OffsetDateTime.parse(
                     collectData.created,
@@ -38,10 +72,25 @@ class CollectDataAdapter(var context: Context) :
                     DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
                 val dateString: String = formatter.format(dateTime.toLocalDate())
                 tvTime.text = "Created: "+ dateString
+                val statusText = when (collectData.status) {
+                    100 -> "Đang chờ duyệt"
+                    200 -> "Đã được duyệt"
+                    300 -> "Từ chối"
+                    else -> "Trạng thái không xác định"
+                }
+
+                tvStatus.text = "Status: $statusText"
+
+                when (collectData.status) {
+                    100 -> tvStatus.setTextColor(Color.parseColor("#FFEB3B"))
+                    200 -> tvStatus.setTextColor(Color.parseColor("#4CAF50"))
+                    300 -> tvStatus.setTextColor(Color.parseColor("#D32F2F"))
+                    else -> tvStatus.setTextColor(Color.parseColor("#D32F2F"))
+                }
 
                 btMore.setOnClickListener {
                     if (onClickItem != null) {
-                        onClickItem!!.onClickItem(position, collectData)
+                        onClickItem!!.onClickItem(position, collectData, it)
                     }
                 }
             }
@@ -116,6 +165,6 @@ class CollectDataAdapter(var context: Context) :
         }
     }
     interface OnClickItem {
-        fun onClickItem(position: Int, collectData: CollectData)
+        fun onClickItem(position: Int, collectData: CollectData, view:View)
     }
 }

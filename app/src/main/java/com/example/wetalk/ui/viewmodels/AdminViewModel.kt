@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.data.model.postmodel.DataApprovedPost
 import com.example.wetalk.data.model.postmodel.QuestionPost
 import com.example.wetalk.repository.TalkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,9 @@ class AdminViewModel @Inject constructor(private val repository: TalkRepository)
     }
     fun deleteCollectData(id: Int) = liveData {
         emit(repository.deleteDataById(id))
+    }
+    fun rejectCollectData(dataApprovedPost: DataApprovedPost) = liveData{
+        emit(repository.rejectCollectData(dataApprovedPost))
     }
     companion object {
         const val TAG = "ADMIN_VIEWMODEL"

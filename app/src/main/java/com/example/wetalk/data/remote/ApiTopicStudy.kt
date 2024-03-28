@@ -1,6 +1,7 @@
 package com.example.wetalk.data.remote
 
 import com.example.wetalk.data.model.objectmodel.GetAllCollectData
+import com.example.wetalk.data.model.objectmodel.GetAllCollectDataSearch
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
 import com.example.wetalk.data.model.objectmodel.GetAllVocabulariesByIdRequest
@@ -10,6 +11,9 @@ import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.QuestionSize
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.data.model.postmodel.DataApprovedPost
+import com.example.wetalk.data.model.postmodel.DataPost
+import com.example.wetalk.data.model.postmodel.DataPostSearch
 import com.example.wetalk.data.model.postmodel.QuestionPost
 import com.example.wetalk.data.model.postmodel.VocabulariesDTO
 import com.example.wetalk.data.model.responsemodel.HostResponse
@@ -38,14 +42,13 @@ interface ApiTopicStudy {
     suspend fun searchVocabularies(@Body vocabulariesDTO: VocabulariesDTO) : Response<GetAllVocabulariesRequest>
     @GET("vocabularies/{topicId}")
     suspend fun getVocabulariesById(@Path("topicId") topicId:Int)  : Response<GetAllVocabulariesByIdRequest>
-    @DELETE("/vocabularies/{id}")
+    @DELETE("vocabularies/{id}")
     suspend fun deleteVocabulary(@Path("id") id:Int) : Response<HostResponse>
     @GET("data-collection/all-me")
-    suspend fun getCollectDataHistory() : Response<GetAllCollectData>
-
+    suspend fun getCollectDataMe() : Response<GetAllCollectData>
     @POST("topics")
     suspend fun addTopic(@Body topicPost: TopicRequest) : Response<GetAllTopic>
-    @DELETE("topics/{questionId}")
+    @DELETE("topics/{id}")
     suspend fun deleteTopic(@Path("id")  id:Int) : Response<GetAllTopic>
     @PUT("topics")
     suspend fun updateTopic(@Body topicRequest: TopicRequest) : Response<GetAllTopic>
@@ -63,6 +66,16 @@ interface ApiTopicStudy {
     suspend fun approveDataById(@Path("id") id:Int) : Response<GetAllCollectData>
     @DELETE("data-collection/{id}")
     suspend fun deleteDataById(@Path("id") id:Int) : Response<GetAllCollectData>
+    @POST("data-collection/reject")
+    suspend fun rejectCollectData(@Body dataApprovedPost: DataApprovedPost) : Response<GetAllCollectData>
+    @GET("data-collection/approved-list-me")
+    suspend fun getAllApprovedListMe() : Response<GetAllCollectData>
+    @GET("data-collection/reject-list-me")
+    suspend fun getAllRejectListMe() : Response<GetAllCollectData>
+    @POST("data-collection")
+    suspend fun postDataCollection(@Body dataPost: DataPost) : Response<GetAllCollectData>
+    @POST("data-collection/search-for-me")
+    suspend fun searchDataCollectionMe(@Body dataPostSearch: DataPostSearch) : Response<GetAllCollectDataSearch>
 
 
 }

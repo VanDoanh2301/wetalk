@@ -2,6 +2,7 @@ package com.example.wetalk.ui.fragment
 
 import TopicAdapter
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -117,6 +118,7 @@ class TopicStudyFragment : Fragment() {
             .show()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun addVocabulary() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         val bindingDialog = AddTopicDialogBinding.inflate(layoutInflater)
@@ -454,6 +456,7 @@ class TopicStudyFragment : Fragment() {
         adminViewModel.deleteTopic(topicSelect.id).observe(viewLifecycleOwner) {
             if (it.isSuccessful) {
                 adapter.removeItem(groupId)
+                requireContext().showToast("Xóa chủ đề thành công")
             }
         }
     }

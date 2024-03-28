@@ -64,6 +64,16 @@
                 android:text="Create:"
                 android:textColor="#000000"
                 android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/sans_regular"
+                android:text="Status:"
+                android:textColor="#000000"
+                android:textSize="10sp" />
         </LinearLayout>
         <com.rey.material.widget.ImageView
             android:id="@+id/bt_more"
@@ -87,7 +97,18 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:srcCompat="@drawable/img_camera" />
 
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:visibility="gone"
+        android:indeterminateTint="@color/white"
+        />
 
 
 

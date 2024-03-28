@@ -232,7 +232,7 @@
         tools:layout="@layout/fragment_vocabularies_home" />
     <fragment
         android:id="@+id/talkHistoryVocabulariesFragment"
-        android:name="com.example.wetalk.ui.fragment.HistoryVocabulariesFragment"
+        android:name="com.example.wetalk.ui.fragment.CollectDataMeFragment"
         android:label="fragment_talk_history_vocabularies"
         tools:layout="@layout/fragment_talk_history_vocabularies" />
     <fragment

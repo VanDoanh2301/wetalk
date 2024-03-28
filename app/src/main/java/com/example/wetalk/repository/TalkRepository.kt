@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
 import com.example.wetalk.data.model.objectmodel.GetAllCollectData
+import com.example.wetalk.data.model.objectmodel.GetAllCollectDataSearch
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GetAllQuestion
 import com.example.wetalk.data.model.objectmodel.GetAllTopic
@@ -23,6 +24,9 @@ import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.data.model.objectmodel.QueryPageRequest
 import com.example.wetalk.data.model.objectmodel.Question
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.data.model.postmodel.DataApprovedPost
+import com.example.wetalk.data.model.postmodel.DataPost
+import com.example.wetalk.data.model.postmodel.DataPostSearch
 import com.example.wetalk.data.model.postmodel.UpdateUserPost
 import com.example.wetalk.data.model.postmodel.LoginPost
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
@@ -90,10 +94,12 @@ class TalkRepository @Inject constructor(
         return mTopic.getVocabulariesById(topicId)
     }
 
-    suspend fun getCollectDataHistory(): Response<GetAllCollectData> {
-        return mTopic.getCollectDataHistory()
+    suspend fun getCollectDataMe(): Response<GetAllCollectData> {
+        return mTopic.getCollectDataMe()
     }
-
+    suspend fun postDataCollection(dataPost: DataPost) : Response<GetAllCollectData> {
+        return mTopic.postDataCollection(dataPost)
+    }
     suspend fun deleteVocabulary(id: Int): Response<HostResponse> {
         return mTopic.deleteVocabulary(id)
     }
@@ -135,6 +141,18 @@ class TalkRepository @Inject constructor(
 
     suspend fun deleteDataById( id:Int) : Response<GetAllCollectData> {
         return mTopic.deleteDataById(id)
+    }
+    suspend fun getAllApprovedListMe() : Response<GetAllCollectData> {
+        return mTopic.getAllApprovedListMe()
+    }
+    suspend fun getAllRejectListMe() : Response<GetAllCollectData> {
+        return mTopic.getAllRejectListMe()
+    }
+    suspend fun rejectCollectData(dataApprovedPost: DataApprovedPost) : Response<GetAllCollectData> {
+        return mTopic.rejectCollectData(dataApprovedPost)
+    }
+    suspend fun searchDataCollectionMe(dataPostSearch: DataPostSearch) : Response<GetAllCollectDataSearch> {
+        return mTopic.searchDataCollectionMe(dataPostSearch)
     }
 
     //User------------------------------------------------------------------------------------------

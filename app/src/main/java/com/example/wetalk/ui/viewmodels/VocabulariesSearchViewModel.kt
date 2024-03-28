@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VocabulariesSearchViewModel @Inject constructor(var repository: TalkRepository, @ApplicationContext var context: Context)  :ViewModel(){
-    // MutableLiveData for storing l vocabularies resource
+    // MutableLiveData for storing l collectDatas resource
     private val _searchVocabularies: MutableLiveData<Resource<GetAllVocabulariesRequest>> =
         MutableLiveData(Resource.Loading())
     val searchVocabularies: LiveData<Resource<GetAllVocabulariesRequest>>

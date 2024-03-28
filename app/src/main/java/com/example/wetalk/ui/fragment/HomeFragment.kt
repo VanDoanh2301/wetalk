@@ -88,6 +88,8 @@ class HomeFragment : Fragment() {
             binding.btAdmin.setOnClickListener {
                 findNavController().navigate(R.id.action_talkHomeFragment_to_talkAdminFragment)
             }
+        } else {
+            binding.btAdmin.visibility = View.GONE
         }
         //Click button
         binding.rltChat.setOnClickListener {

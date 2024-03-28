@@ -15,12 +15,21 @@ data class CollectData(
     @SerializedName("modified") val modified: String,
     @SerializedName("status") val status: Int,
     @SerializedName("vocabularyId") val vocabularyId: Int,
-    @SerializedName("volunteerEmail") val volunteerEmail: String
+    @SerializedName("volunteerEmail") val volunteerEmail: String,
+    @SerializedName("vocabularyContent") val vocabularyContent:String
 ) : Parcelable
 @Parcelize
 data class GetAllCollectData(
     @SerializedName("message") val message: String?,
     @SerializedName("code") val code: Int?,
+    @SerializedName("data") val data: ArrayList<CollectData>
+
+)  : Parcelable
+
+@Parcelize
+data class GetAllCollectDataSearch(
+    @SerializedName("page") val page: Int,
+    @SerializedName("totalElements") val totalElements: Int,
     @SerializedName("data") val data: ArrayList<CollectData>
 
 )  : Parcelable

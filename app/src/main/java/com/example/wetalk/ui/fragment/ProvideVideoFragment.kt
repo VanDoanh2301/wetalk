@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.example.wetalk.data.local.VideoBodyItem
 import com.example.wetalk.data.local.VideoLocal
 import com.example.wetalk.data.model.objectmodel.TopicRequest
 import com.example.wetalk.data.model.objectmodel.VocabularyRequest
+import com.example.wetalk.data.model.postmodel.DataPost
 import com.example.wetalk.data.model.postmodel.MediaValidatePost
 import com.example.wetalk.databinding.DialogTopicBinding
 import com.example.wetalk.databinding.FragmentTalkVocabularyUpBinding
@@ -76,6 +78,7 @@ class ProvideVideoFragment : Fragment() {
     private var devicePath: String? = null
     private var uri: Uri? = null
     private var topicId = 0
+    private var vocabularyId = 0
     private var resultTopics: ArrayList<TopicRequest> = ArrayList()
     private var resultVocabularies: ArrayList<VocabularyRequest> = ArrayList()
     private lateinit var talkImageItems: ArrayList<StorageImageItem>
@@ -109,36 +112,43 @@ class ProvideVideoFragment : Fragment() {
     }
 
     private fun initPermisstion() {
-        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
-            Manifest.permission.CAMERA
-        ).onAllGranted(object : Func() {
-            override fun call() {
-            }
-        }).ask(12)
-        PermissionX.init(this).permissions(
-            Manifest.permission.READ_MEDIA_VIDEO,
-            Manifest.permission.READ_MEDIA_AUDIO,
-            Manifest.permission.READ_MEDIA_IMAGES
-        ).request(object : RequestCallback {
-            override fun onResult(
-                allGranted: Boolean,
-                grantedList: MutableList<String>,
-                deniedList: MutableList<String>
-            ) {
-                if (allGranted) {
+        if (Build.VERSION.SDK_INT > 33) {
+            PermissionX.init(this).permissions(
+                Manifest.permission.READ_MEDIA_VIDEO,
+                Manifest.permission.READ_MEDIA_AUDIO,
+                Manifest.permission.READ_MEDIA_IMAGES
+            ).request(object : RequestCallback {
+                override fun onResult(
+                    allGranted: Boolean,
+                    grantedList: MutableList<String>,
+                    deniedList: MutableList<String>
+                ) {
+                    if (allGranted) {
 
-                } else {
-                    requireContext().showToast("You should accept all permissions")
+                    } else {
+                        requireContext().showToast("You should accept all permissions")
+                    }
                 }
-            }
-        })
-        mRequestObject = PermissionUtil.with(activity as MainActivity).request(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ).onAllGranted(object : Func() {
-            override fun call() {
-            }
-        }).ask(12)
+            })
+        } else {
+                PermissionX.init(this).permissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).request(object : RequestCallback {
+                    override fun onResult(
+                        allGranted: Boolean,
+                        grantedList: MutableList<String>,
+                        deniedList: MutableList<String>
+                    ) {
+                        if (allGranted) {
+
+                        } else {
+                            requireContext().showToast("You should accept all permissions")
+                        }
+                    }
+                })
+
+        }
     }
 
     private fun onClickView() {
@@ -173,6 +183,7 @@ class ProvideVideoFragment : Fragment() {
                 val item = dataList[position]
                 vocabulariesRequest = item
                 binding.tvTitlle.text = item.content
+                vocabularyId = item.id
                 videoLocal.videoTag = binding.tvName.text.toString()
                 alertDialog.dismiss()
             }
@@ -236,8 +247,7 @@ class ProvideVideoFragment : Fragment() {
                     }
 
                     is Resource.Error -> {
-                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG)
-                            .show()
+
                     }
                 }
             }
@@ -303,13 +313,14 @@ class ProvideVideoFragment : Fragment() {
                 }
 
                 is Resource.Success -> {
-                    val urlStr = it.data.toString()
-                    val validatePost = MediaValidatePost(urlStr, binding.tvTitlle.text.toString())
+                    var urlStrResponse = it.data.toString()
+                    val validatePost = MediaValidatePost(urlStrResponse, binding.tvTitlle.text.toString())
                     viewModel.getValidMedia(validatePost)
+                    onResultValid(urlStrResponse)
+
                 }
 
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -319,7 +330,7 @@ class ProvideVideoFragment : Fragment() {
         }
     }
 
-    private fun onResultValid() {
+    private fun onResultValid(urlStrResponse:String) {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setTitle("Vui lòng chờ xác thực")
         progressDialog.setMessage("Xin chờ...")
@@ -328,6 +339,18 @@ class ProvideVideoFragment : Fragment() {
                 is Resource.Success -> {
                     progressDialog.dismiss()
                     requireContext().showToast(it.data!!.message)
+                    if (vocabularyId > 0 ) {
+                        val postData = DataPost(
+                            dataCollection = urlStrResponse,
+                            vocabularyId = vocabularyId
+                        )
+                        vocabulariesViewModel.postDataCollection(postData).observe(viewLifecycleOwner) {
+                            if (it.isSuccessful) {
+                                requireContext().showToast("Dữ liệu được cung câp. Chờ phê duyệt của quản trị viên")
+                            }
+                        }
+                    }
+
                 }
 
                 is Resource.Error -> {
@@ -412,7 +435,7 @@ class ProvideVideoFragment : Fragment() {
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
                 viewModel.uploadVideo(filePart)
-                onResultValid()
+
             } catch (e: Exception) {
                 requireContext().showToast()
             }

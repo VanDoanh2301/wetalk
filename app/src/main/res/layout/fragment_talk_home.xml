@@ -65,7 +65,7 @@
                     android:layout_height="?actionBarSize"
                     android:src="@drawable/baseline_admin_panel_settings_24"
                     android:tint="@color/white"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="2dp"
                     android:padding="12dp"
                     app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintBottom_toTopOf="@+id/text_view_1"
