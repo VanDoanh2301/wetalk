@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.wetalk.data.model.objectmodel.GetAllCollectData
+import com.example.wetalk.data.model.postmodel.DataPostSearch
 import com.example.wetalk.repository.TalkRepository
 import com.example.wetalk.util.NetworkUtil
 import com.example.wetalk.util.Resource
@@ -55,6 +56,9 @@ class CollectDataMeViewModel @Inject constructor(var repository: TalkRepository,
     }
     fun getCollectDataApprovedMe() = liveData {
         emit(repository.getAllApprovedListMe())
+    }
+    fun searchCollectData(postSearch: DataPostSearch) = liveData{
+        emit(repository.searchDataCollectionMe(postSearch))
     }
 
 }

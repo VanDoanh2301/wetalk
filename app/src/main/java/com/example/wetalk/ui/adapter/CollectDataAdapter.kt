@@ -124,6 +124,10 @@ class CollectDataAdapter(var context: Context) :
         listTest = newList
         diffResult.dispatchUpdatesTo(this)
     }
+    fun submitListClear(newList: List<CollectData>) {
+        listTest = newList
+        notifyDataSetChanged()
+    }
     fun updateItem(position: Int, newItem: CollectData) {
         if (position in 0 until listTest.size) {
             val newList = listTest.toMutableList()

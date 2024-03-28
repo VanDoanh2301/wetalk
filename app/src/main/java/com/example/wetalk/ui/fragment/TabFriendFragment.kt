@@ -20,15 +20,19 @@ import com.example.wetalk.util.Resource
 import com.example.wetalk.ui.dialog.DialogInformUser
 import com.example.wetalk.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.NullPointerException
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkTabFriendFragment.newInstance] factory method to
+ * Use the [TabFriendFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTabFriendFragment : Fragment() {
+class TabFriendFragment : Fragment() {
     private var _binding: FragmentTalkTabPhoneBookBinding? = null
     private val binding get() = _binding!!
     private lateinit var friendAdapter: FriendAdapter
@@ -101,19 +105,33 @@ class TalkTabFriendFragment : Fragment() {
             }
 
             override fun onUser(position: Int, user: UserInforRequest) {
-                DialogInformUser.Builder(requireContext())
-                    .onName(user.name)
-                    .onDate(if (user.age != null) user.age else "")
-                    .onAddress(if (user.address != null) user.address else "")
-                    .onPhone(if (user.phoneNumber != null) user.phoneNumber else "")
-                    .onGender(if (user.gender.equals("MALE")) "Name" else "Nữ")
-                    .onDelete {
-                        deleteFriend(user, position)
-                    }
-                    .onChat {
-                        joinRoom(user.id!!)
-                    }
-                    .show()
+               try {
+                   val dateTime = OffsetDateTime.parse(
+                       user.age,
+                       DateTimeFormatter.ISO_OFFSET_DATE_TIME
+                   )
+                   val formatter =
+                       DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                   val dateString: String = formatter.format(dateTime.toLocalDate())
+
+                   DialogInformUser.Builder(requireContext())
+                       .onImage(user.avatarLocation)
+                       .onName(user.name)
+                       .onDate(if (user.age != null) dateString else "")
+                       .onAddress(if (user.address != null) user.address else "")
+                       .onPhone(if (user.phoneNumber != null) user.phoneNumber else "")
+                       .onGender(if (user.gender != null && user.gender.equals("MALE")) "Name" else "Nữ")
+                       .onDelete {
+                           deleteFriend(user, position)
+                       }
+                       .onChat {
+                           joinRoom(user.id!!)
+                       }
+                       .show()
+               } catch (e : NullPointerException) {
+
+               }
+
             }
 
         })
@@ -125,7 +143,7 @@ class TalkTabFriendFragment : Fragment() {
             viewModel.conversionsContact.observe(viewLifecycleOwner) {
                 when(it) {
                     is Resource.Success -> {
-                        var conversations = it.data!!
+                        var conversations = it.data?.data
                         val bundle = bundleOf("conversationId" to conversations)
                         findNavController().navigate(R.id.action_talkMainChatFragment_to_talkChatHomeFragment, bundle)
                     }
@@ -236,7 +254,7 @@ class TalkTabFriendFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            TalkTabFriendFragment().apply {
+            TabFriendFragment().apply {
                 arguments = Bundle().apply {
 
                 }

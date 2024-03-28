@@ -1,5 +1,6 @@
 package com.example.wetalk.data.remote
 
+import com.example.wetalk.data.model.objectmodel.GetAllChatMessage
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.Message
 import com.example.wetalk.data.model.objectmodel.MessagePaging
@@ -16,13 +17,13 @@ interface ApiChat {
     suspend fun createGroup(@Body roomConversation: RoomConversation) : Response<HostResponse>
 
     @GET("conversations/all-me")
-    suspend fun getAllConversations() : Response<List<GetAllListConversations>>
+    suspend fun getAllConversations() : Response<GetAllListConversations>
 
     @GET("conversations/{contactId}")
     suspend fun roomChat(@Path("contactId") contactId:Int) : Response<GetAllListConversations>
 
     @GET("messages/{conversationId}")
-    suspend fun getAllMessage(@Path("conversationId") conversationId:Int) : Response<List<Message>>
+    suspend fun getAllMessage(@Path("conversationId") conversationId:Int) : Response<GetAllChatMessage>
 
     @POST("messages/limits-conversation")
     suspend fun getMessagesLimit(@Body messagePaging: MessagePaging) : Response<List<Message>>

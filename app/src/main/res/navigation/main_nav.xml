@@ -95,7 +95,7 @@
         tools:layout="@layout/fragment_talk_search_user" />
     <fragment
         android:id="@+id/talkChatHomeFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkOpenChatFragment"
+        android:name="com.example.wetalk.ui.fragment.ChatOnlineFragment"
         android:label="fragment_talk_chat_home"
         tools:layout="@layout/fragment_talk_chat_home" />
     <fragment
@@ -207,12 +207,12 @@
     </fragment>
     <fragment
         android:id="@+id/talkTabChatFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTabChatFragment"
+        android:name="com.example.wetalk.ui.fragment.TabChatFragment"
         android:label="fragment_talk_tab_chat"
         tools:layout="@layout/fragment_talk_tab_chat" />
     <fragment
         android:id="@+id/talkTabPhoneBookFragment"
-        android:name="com.example.wetalk.ui.fragment.TalkTabFriendFragment"
+        android:name="com.example.wetalk.ui.fragment.TabFriendFragment"
         android:label="fragment_talk_tab_phone_book"
         tools:layout="@layout/fragment_talk_tab_phone_book" />
     <fragment

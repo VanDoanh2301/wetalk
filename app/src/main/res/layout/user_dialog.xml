@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-
+    android:background="@drawable/background_row_main"
+    android:layout_marginStart="36dp"
+    android:layout_marginEnd="16dp"
     android:orientation="vertical">
 
     <com.rey.material.widget.LinearLayout
@@ -11,6 +13,7 @@
         android:layout_height="wrap_content"
         android:minWidth="460.0dip"
         android:orientation="vertical"
+        android:layout_marginEnd="16dp"
         android:padding="16dp">
 
         <com.rey.material.widget.LinearLayout
@@ -31,7 +34,7 @@
                         android:layout_height="68dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="12dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="32dp"
                         android:background="@color/white"
                         android:elevation="8dp"
                         android:padding="4dp"
@@ -59,7 +62,7 @@
                         <com.rey.material.widget.TextView
                             android:id="@+id/txt_name"
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
+                            android:layout_height="38dp"
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_b1"
                             android:fontFamily="@font/roboto_medium"
@@ -73,7 +76,7 @@
                         <com.rey.material.widget.TextView
                             android:id="@+id/txt_date"
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
+                            android:layout_height="38dp"
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_b2"
                             android:focusable="false"
@@ -89,7 +92,7 @@
                         <com.rey.material.widget.TextView
                             android:id="@+id/txt_address"
                             android:layout_width="match_parent"
-                            android:layout_height="49dp"
+                            android:layout_height="38dp"
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_b6"
                             android:fontFamily="@font/roboto_medium"
@@ -103,12 +106,12 @@
                         <com.rey.material.widget.RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
+                            >
 
                             <com.rey.material.widget.TextView
                                 android:id="@+id/txt_phone"
                                 android:layout_width="match_parent"
-                                android:layout_height="48dp"
+                                android:layout_height="38dp"
                                 android:layout_gravity="center"
                                 android:layout_toLeftOf="@+id/img_b3"
                                 android:fontFamily="@font/roboto_medium"
@@ -125,7 +128,7 @@
                         <com.rey.material.widget.TextView
                             android:id="@+id/txt_gender"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
+                            android:layout_height="38dp"
                             android:layout_gravity="center"
                             android:layout_toLeftOf="@+id/img_b4"
                             android:focusable="false"

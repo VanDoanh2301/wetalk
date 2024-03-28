@@ -12,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 
+import com.bumptech.glide.Glide;
 import com.example.wetalk.R;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.ImageView;
 import com.rey.material.widget.TextView;
 
 
@@ -39,6 +41,7 @@ public class DialogInformUser {
         final TextView  tvAddress = (TextView ) dialog.findViewById(R.id.txt_address);
         final TextView tvPhoneNumber = (TextView ) dialog.findViewById(R.id.txt_phone);
         final TextView tvGender= (TextView ) dialog.findViewById(R.id.txt_gender);
+        final ImageView tvImage= (ImageView) dialog.findViewById(R.id.img_avata);
 
         btn_chat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +73,11 @@ public class DialogInformUser {
             }
         });
 
+        if(builder.tvImage !=null && !builder.tvImage.isEmpty()){
+            Glide.with(builder.mContext).load(builder.tvImage).into(tvImage);
+        }else{
+
+        }
         if(builder.tvName !=null && !builder.tvName.isEmpty()){
             tvName.setText(builder.tvName);
         }else{
@@ -111,6 +119,7 @@ public class DialogInformUser {
         private boolean canceledOnTouchOutside = true;
         private SingleButtonCallback openChat;
         private SingleButtonCallback openDelete;
+        private String tvImage;
         private String tvName;
         private String tvDate;
         private String tvAddress;
@@ -137,6 +146,10 @@ public class DialogInformUser {
 
         public Builder onName (String tvName) {
             this.tvName = tvName;
+            return this;
+        }
+        public Builder onImage(String tvImage) {
+            this.tvImage = tvImage;
             return this;
         }
         public Builder onDate (String tvDate) {

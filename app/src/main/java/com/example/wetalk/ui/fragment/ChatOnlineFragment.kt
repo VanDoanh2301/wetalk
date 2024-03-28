@@ -1,24 +1,19 @@
 package com.example.wetalk.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wetalk.R
 import com.example.wetalk.data.model.objectmodel.ChatMessage
-import com.example.wetalk.data.model.objectmodel.GetAllListConversations
-import com.example.wetalk.data.model.objectmodel.MessagePaging
+import com.example.wetalk.data.model.objectmodel.Conversations
 import com.example.wetalk.databinding.FragmentTalkChatHomeBinding
 import com.example.wetalk.ui.adapter.ChatMessageAdapter
-import com.example.wetalk.ui.adapter.MessagePagingAdapter
 import com.example.wetalk.ui.viewmodels.ChatHomeViewModel
 import com.example.wetalk.ui.viewmodels.ChatStatus
 import com.example.wetalk.util.AVATAR_SENDER
@@ -26,21 +21,15 @@ import com.example.wetalk.util.EMAIL_USER
 import com.example.wetalk.util.Resource
 import com.example.wetalk.util.SEND_STATUS
 import com.example.wetalk.util.SharedPreferencesUtils
-import com.google.android.exoplayer2.C
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import okhttp3.Interceptor
-import okhttp3.Response
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class TalkOpenChatFragment : Fragment() {
+class ChatOnlineFragment : Fragment() {
     private var _binding: FragmentTalkChatHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var chatMessageAdapter: ChatMessageAdapter
     private var resultList: ArrayList<ChatMessage> = ArrayList()
-    private lateinit var conversations: GetAllListConversations
+    private lateinit var conversations: Conversations
     private var TAG = "TalkOpenChatFragment"
     private val viewModel: ChatHomeViewModel by viewModels()
 
@@ -68,7 +57,8 @@ class TalkOpenChatFragment : Fragment() {
         initMessage()
         viewModel.connectSocket()
         viewModel.chatMessages.observe(viewLifecycleOwner) {
-
+            chatMessageAdapter.addItem(it)
+            binding.chatRecyclerView.scrollToPosition(0)
         }
         binding.messageSendBtn.setOnClickListener {
             var chatMessage = ChatMessage(
@@ -93,7 +83,7 @@ class TalkOpenChatFragment : Fragment() {
             viewModel.messages.observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Success -> {
-                        var messages = it.data
+                        var messages = it.data?.data
                         messages!!.forEach { message ->
                             val chatMessage = ChatMessage(
                                 message.contactId ?: -1,
@@ -196,13 +186,5 @@ class TalkOpenChatFragment : Fragment() {
         viewModel.onDestroy()
     }
 
-    class TokenInterceptor(private val authToken: String) : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val originalRequest = chain.request()
-            val requestWithToken = originalRequest.newBuilder()
-                .header("Authorization", "Bearer $authToken")
-                .build()
-            return chain.proceed(requestWithToken)
-        }
-    }
+
 }

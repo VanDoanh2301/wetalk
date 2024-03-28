@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wetalk.R
+import com.example.wetalk.data.model.objectmodel.Conversations
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
 import com.example.wetalk.data.model.objectmodel.GroupAttachmentConversation
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
@@ -18,7 +19,7 @@ import com.example.wetalk.util.SharedPreferencesUtils
 
 class ConversationAdapter(var context: Context) :
     RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
-    private var users: List<GetAllListConversations> = emptyList()
+    private var users: List<Conversations> = emptyList()
 
     private var onClickItem : OnClickItem ?= null
     fun setOnClickItem(onClickItem: OnClickItem) {
@@ -26,7 +27,7 @@ class ConversationAdapter(var context: Context) :
     }
     inner class ViewHolder(var binding: ItemConversationBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: GetAllListConversations, position: Int) {
+        fun bind(user: Conversations, position: Int) {
             binding.apply {
                 var groupAttachmentConversations = user.grouAttachConvResList.filter {
                     it.email != SharedPreferencesUtils.getString(
@@ -82,7 +83,7 @@ class ConversationAdapter(var context: Context) :
     }
 
 
-    fun submitList(newList: List<GetAllListConversations>) {
+    fun submitList(newList: List<Conversations>) {
         val diffCallback = ResultPregnancyDiffCallback(users!!, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         users = newList
@@ -91,8 +92,8 @@ class ConversationAdapter(var context: Context) :
 
 
     inner class ResultPregnancyDiffCallback(
-        private val oldList: List<GetAllListConversations>,
-        private val newList: List<GetAllListConversations>
+        private val oldList: List<Conversations>,
+        private val newList: List<Conversations>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int {
@@ -113,6 +114,6 @@ class ConversationAdapter(var context: Context) :
     }
 
     interface OnClickItem{
-        fun onClickItem(position: Int, getAllListConversations: GetAllListConversations)
+        fun onClickItem(position: Int, getAllListConversations: Conversations)
     }
 }

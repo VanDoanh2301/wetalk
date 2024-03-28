@@ -1,14 +1,22 @@
 package com.example.wetalk.data.model.objectmodel
 
 import android.os.Parcelable
+import com.google.android.exoplayer2.C
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GetAllListConversations(
+    @SerializedName("message") val message: String?,
+    @SerializedName("code") val code: Int?,
+    @SerializedName("data") val data: ArrayList<Conversations>
+) : Parcelable
+@Parcelize
+data class Conversations(
     @SerializedName("conversationId") val conversationId: Int,
     @SerializedName("grouAttachConvResList") val grouAttachConvResList: List<GroupAttachmentConversation>
 ) : Parcelable
+
 
 @Parcelize
 data class LastMessage(

@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.AvatarRequest
+import com.example.wetalk.data.model.objectmodel.GetAllChatMessage
 import com.example.wetalk.data.model.objectmodel.GetAllCollectData
 import com.example.wetalk.data.model.objectmodel.GetAllCollectDataSearch
 import com.example.wetalk.data.model.objectmodel.GetAllListConversations
@@ -221,7 +222,7 @@ class TalkRepository @Inject constructor(
         return mChat.createGroup(roomConversation)
     }
 
-    suspend fun getAllConversations(): Response<List<GetAllListConversations>> {
+    suspend fun getAllConversations(): Response<GetAllListConversations> {
         return mChat.getAllConversations()
     }
 
@@ -229,7 +230,7 @@ class TalkRepository @Inject constructor(
         return mChat.roomChat(contactId)
     }
 
-    suspend fun getAllMessage(conversationId: Int): Response<List<Message>> {
+    suspend fun getAllMessage(conversationId: Int): Response<GetAllChatMessage> {
         return mChat.getAllMessage(conversationId)
     }
 

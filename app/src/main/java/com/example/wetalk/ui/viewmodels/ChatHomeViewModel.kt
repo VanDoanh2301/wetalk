@@ -11,6 +11,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.liveData
 import com.example.wetalk.data.model.objectmodel.ChatMessage
+import com.example.wetalk.data.model.objectmodel.GetAllChatMessage
 import com.example.wetalk.data.model.objectmodel.GetAllUserFriendRequest
 import com.example.wetalk.data.model.objectmodel.Message
 import com.example.wetalk.data.model.objectmodel.MessagePaging
@@ -41,9 +42,9 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
     val chatMessages: LiveData<ChatMessage> get() = _chatMessages
     private val _chatStatus = MutableLiveData<ChatStatus>()
     val chatStatus: LiveData<ChatStatus> get() = _chatStatus
-    private var _messages = MutableLiveData<Resource<List<Message>>>(Resource.Loading())
-    val messages: LiveData<Resource<List<Message>>> get() = _messages
-    private var messageResponse: List<Message>? = null
+    private var _messages = MutableLiveData<Resource<GetAllChatMessage>>(Resource.Loading())
+    val messages: LiveData<Resource<GetAllChatMessage>> get() = _messages
+    private var messageResponse: GetAllChatMessage? = null
 
 
     fun loadMore(messagePaging: MessagePaging): LiveData<PagingData<Message>> {
@@ -99,13 +100,7 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
         jsonObject.put("content", chatMessage.content)
         jsonObject.put("messageType", chatMessage.messageType)
         jsonObject.put("mediaLocation", chatMessage.mediaLocation)
-        socket.emit("send_message", jsonObject, Ack { args ->
-            if (args.isNotEmpty()) {
-                _chatStatus.postValue(ChatStatus.ERROR)
-            } else {
-                _chatStatus.postValue(ChatStatus.DONE)
-            }
-        })
+        socket.emit("send_message", jsonObject)
 
     }
 
@@ -118,7 +113,7 @@ class ChatHomeViewModel @Inject constructor(private val repository: TalkReposito
         }
     }
 
-    private fun handleGetAllMessages(response: Response<List<Message>>): Resource<List<Message>>? {
+    private fun handleGetAllMessages(response: Response<GetAllChatMessage>): Resource<GetAllChatMessage>? {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resource.Success(messageResponse ?: it)

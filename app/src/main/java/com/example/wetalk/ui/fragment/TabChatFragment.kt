@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetalk.R
-import com.example.wetalk.data.model.objectmodel.GetAllListConversations
+import com.example.wetalk.data.model.objectmodel.Conversations
 import com.example.wetalk.data.model.objectmodel.UserInforRequest
 import com.example.wetalk.databinding.FragmentTalkTabChatBinding
 import com.example.wetalk.ui.activity.MainActivity
@@ -23,17 +23,16 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TalkTabChatFragment.newInstance] factory method to
+ * Use the [TabChatFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TalkTabChatFragment() : Fragment() {
+class TabChatFragment() : Fragment() {
     private var _binding: FragmentTalkTabChatBinding? = null
     private val binding get() = _binding!!
     private val TAG = "TalkTabChatFragment"
     private var user: UserInforRequest? = null
     private lateinit var conversationAdapter: ConversationAdapter
-    private var resultList : ArrayList<GetAllListConversations> = ArrayList()
     private val viewModel: ChatTabViewModel by viewModels()
 
     override fun onCreateView(
@@ -65,7 +64,7 @@ class TalkTabChatFragment() : Fragment() {
         conversationAdapter.setOnClickItem(object : ConversationAdapter.OnClickItem{
             override fun onClickItem(
                 position: Int,
-                getAllListConversations: GetAllListConversations
+                getAllListConversations:Conversations
             ) {
                 SharedPreferencesUtils.saveRoom(getAllListConversations.conversationId)
                 val bundle = bundleOf("conversationId" to getAllListConversations)
@@ -81,7 +80,7 @@ class TalkTabChatFragment() : Fragment() {
              viewModel.conversions.observe(viewLifecycleOwner) {
                 when(it) {
                     is Resource.Success -> {
-                        var listConversations = it.data!!
+                        var listConversations = it.data?.data
                         if (listConversations != null) {
                             conversationAdapter.submitList(listConversations)
                             binding.rcvFriend.visibility = View.VISIBLE
